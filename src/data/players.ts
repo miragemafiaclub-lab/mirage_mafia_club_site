@@ -1,7 +1,8 @@
+import type { Translations } from "../i18n/lang";
 import alcyonePhoto from "../assets/players/alcyone.jpg";
-import aptahPhoto from "../assets/players/aptah.png";
+import aptahPhoto from "../assets/players/aptah.jpg";
 import arcticaPhoto from "../assets/players/arctica.jpg";
-import asePhoto from "../assets/players/ase.png";
+import asePhoto from "../assets/players/ase.jpg";
 import bartenderPhoto from "../assets/players/bartender.jpg";
 import batonPhoto from "../assets/players/baton.jpg";
 import beskonechnostPhoto from "../assets/players/beskonechnost.jpg";
@@ -9,30 +10,30 @@ import blinkPhoto from "../assets/players/blink.jpg";
 import bobPhoto from "../assets/players/bob.jpg";
 import calypsoPhoto from "../assets/players/calypso.jpg";
 import dreamerPhoto from "../assets/players/dreamer.jpg";
-import elviPhoto from "../assets/players/elvi.png";
+import elviPhoto from "../assets/players/elvi.jpg";
 import erinPhoto from "../assets/players/erin.jpg";
 import fenkePhoto from "../assets/players/fenke.jpg";
-import filisterPhoto from "../assets/players/filister.png";
-import fortunaPhoto from "../assets/players/fortuna.png";
+import filisterPhoto from "../assets/players/filister.jpg";
+import fortunaPhoto from "../assets/players/fortuna.jpg";
 import ftrkPhoto from "../assets/players/ftrk.png";
-import helPhoto from "../assets/players/hel.png";
+import helPhoto from "../assets/players/hel.jpg";
 import hudozhnikBatumiPhoto from "../assets/players/hudozhnik-batumi.jpg";
-import immortalPhoto from "../assets/players/immortal.png";
+import immortalPhoto from "../assets/players/immortal.jpg";
 import irynkaPhoto from "../assets/players/irynka.jpg";
 import joePeckPhoto from "../assets/players/joe-peck.jpg";
 import kamillePhoto from "../assets/players/kamille.jpg";
 import kanenPhoto from "../assets/players/kanen.jpg";
 import komarPhoto from "../assets/players/komar.jpeg";
-import kosmichnaPhoto from "../assets/players/kosmichna.png";
-import kuklaPhoto from "../assets/players/kukla.png";
+import kosmichnaPhoto from "../assets/players/kosmichna.jpg";
+import kuklaPhoto from "../assets/players/kukla.jpg";
 import kusokPhoto from "../assets/players/kusok.jpg";
-import logikaPhoto from "../assets/players/logika.png";
+import logikaPhoto from "../assets/players/logika.jpg";
 import loskuPhoto from "../assets/players/losku.jpeg";
 import lyutsPhoto from "../assets/players/lyuts.jpg";
 import mailiPhoto from "../assets/players/maili.jpg";
-import martaPhoto from "../assets/players/marta.png";
+import martaPhoto from "../assets/players/marta.jpg";
 import mayakPhoto from "../assets/players/mayak.jpg";
-import medPhoto from "../assets/players/med.png";
+import medPhoto from "../assets/players/med.jpg";
 import merGorodaPhoto from "../assets/players/mer-goroda.jpg";
 import metroPhoto from "../assets/players/metro.jpg";
 import milkinsPhoto from "../assets/players/milkins.jpg";
@@ -46,13 +47,13 @@ import nieKaPhoto from "../assets/players/nie-ka.jpg";
 import nskPhoto from "../assets/players/nsk.jpg";
 import pevitsaPhoto from "../assets/players/pevitsa.jpg";
 import phoenixPhoto from "../assets/players/phoenix.jpg";
-import prostiiPhoto from "../assets/players/prostii.png";
+import prostiiPhoto from "../assets/players/prostii.jpg";
 import prozevalPhoto from "../assets/players/prozeval.jpg";
 import sashkoPhoto from "../assets/players/sashko.jpg";
-import semero4kaPhoto from "../assets/players/semero4ka.png";
-import shahmatistPhoto from "../assets/players/shahmatist.png";
+import semero4kaPhoto from "../assets/players/semero4ka.jpg";
+import shahmatistPhoto from "../assets/players/shahmatist.jpg";
 import sherPhoto from "../assets/players/sher.jpg";
-import siriusPhoto from "../assets/players/sirius.png";
+import siriusPhoto from "../assets/players/sirius.jpg";
 import sladkiyPhoto from "../assets/players/sladkiy.jpg";
 import snafkinPhoto from "../assets/players/snafkin.jpg";
 import soloPhoto from "../assets/players/solo.jpg";
@@ -62,8 +63,8 @@ import uspehPhoto from "../assets/players/uspeh.jpg";
 import vadimskiiPhoto from "../assets/players/vadimskii.jpg";
 import vanishPhoto from "../assets/players/vanish.jpeg";
 import vegasPhoto from "../assets/players/vegas.jpg";
-import vinniPuhPhoto from "../assets/players/vinni-puh.png";
-import wallePhoto from "../assets/players/walle.png";
+import vinniPuhPhoto from "../assets/players/vinni-puh.jpg";
+import wallePhoto from "../assets/players/walle.jpg";
 import zelenskaPhoto from "../assets/players/zelenska.jpg";
 
 export type RosterPlayer = {
@@ -992,5 +993,8 @@ export const KCHK_BASE: RosterPlayer[] = [
   },
 ];
 
-export const PLACEHOLDER_BIO =
-  "Начал играть в мафию в августе 2020 года — с тех пор игра полностью затянула. Играю по 3–5 раз в неделю, участвую в турнирах, постоянно развиваюсь и стараюсь становиться лучше. Мафия для меня — это не просто игра, а люди, эмоции и бесконечное желание расти.";
+// Shown when a player has not written a bio yet.
+export const PLACEHOLDER_BIO: Translations<string> = {
+  ru: "Начал играть в мафию в августе 2020 года — с тех пор игра полностью затянула. Играю по 3–5 раз в неделю, участвую в турнирах, постоянно развиваюсь и стараюсь становиться лучше. Мафия для меня — это не просто игра, а люди, эмоции и бесконечное желание расти.",
+  en: "Started playing mafia in August 2020 and got hooked straight away. I play three to five times a week, take part in tournaments and keep working to get better. For me mafia is more than a game: it's the people, the emotions and an endless drive to grow.",
+};

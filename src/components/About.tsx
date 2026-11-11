@@ -5,46 +5,52 @@ import aboutMain from "../assets/about-main.jpeg";
 import aboutPodium from "../assets/about-podium.jpeg";
 import aboutSmall from "../assets/about-small.jpeg";
 import aboutTrophies from "../assets/about-trophies.jpeg";
+import { CLUB_STATS } from "../data/clubStats";
+import { about } from "../i18n/about";
+import { useT } from "../i18n/lang";
 import "./About.css";
+
+const IMAFIA_URL = "https://imafia.org/club/35";
 
 const PHOTO_COLUMNS = [
   [
-    { src: aboutAwards, ratio: 960 / 1280, alt: "Резиденты клуба Mirage с наградами Kraków Supreme Cup" },
-    { src: aboutSmall, ratio: 589 / 690, alt: "Игрок клуба Mirage в маске за столом" },
+    { src: aboutAwards, ratio: 960 / 1280, alt: "awards" },
+    { src: aboutSmall, ratio: 589 / 690, alt: "small" },
   ],
   [
-    { src: aboutTrophies, ratio: 1280 / 853, alt: "Победители турнира клуба Mirage" },
-    { src: aboutMain, ratio: 1206 / 817, alt: "Резиденты клуба Mirage с наградами", accent: true },
-    { src: aboutAccent, ratio: 1280 / 853, alt: "Игроки клуба Mirage" },
+    { src: aboutTrophies, ratio: 1280 / 853, alt: "trophies" },
+    { src: aboutMain, ratio: 1206 / 817, alt: "main", accent: true },
+    { src: aboutAccent, ratio: 1280 / 853, alt: "accent" },
   ],
   [
-    { src: aboutPodium, ratio: 914 / 1280, alt: "Победители турнира клуба Mirage с кубками" },
-    { src: aboutGroup, ratio: 1.15, alt: "Резиденты клуба Mirage на прогулке по Варшаве" },
+    { src: aboutPodium, ratio: 914 / 1280, alt: "podium" },
+    { src: aboutGroup, ratio: 1.15, alt: "group" },
   ],
-];
-
-const STATS = [
-  { value: "70+", label: "Players", sub: "игроков в клубе" },
-  { value: "4-5×", label: "A week", sub: "игровых вечеров" },
-  { value: "100+", label: "Tournament wins", sub: "побед на турнирах" },
-  { value: "Ludna 2", label: "Own venue", sub: "своё помещение в центре Варшавы" },
-  { value: "Mafia School", label: "Education", sub: "школа мафии" },
-];
+] as const;
 
 export default function About() {
+  const t = useT(about);
+  const stats = [
+    { key: "players", value: CLUB_STATS.players, ...t.stats.players },
+    { key: "perWeek", value: CLUB_STATS.gamesPerWeek, ...t.stats.perWeek },
+    { key: "wins", value: CLUB_STATS.tournamentWins, ...t.stats.wins },
+    { key: "venue", value: CLUB_STATS.venue, ...t.stats.venue },
+    { key: "school", ...t.stats.school },
+  ];
+
   return (
     <section className="about" id="about">
-      <p className="about__eyebrow">More than a game</p>
+      <p className="about__eyebrow">{t.eyebrow}</p>
 
       <div className="about__grid">
         <div className="about__content">
           <h2 className="about__title">
-            Mirage — клуб спортивной
+            {t.titleLine1}{" "}
             <br />
-            мафии в Варшаве<span className="about__title-mark">!</span>
+            {t.titleLine2}<span className="about__title-mark">!</span>
           </h2>
 
-          <p className="about__lead">Дата создания клуба — 28.08.2023г</p>
+          <p className="about__lead">{t.founded}</p>
 
           <p className="about__lead about__badge">
             <svg
@@ -65,28 +71,27 @@ export default function About() {
               <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
             </svg>
             <span>
-              <span className="about__accent">Лучший клуб 2025 года</span> по версии iMafia.
+              <span className="about__accent">{t.awardAccent}</span>
+              {t.awardRest}
             </span>
           </p>
 
-          <p className="about__lead">
-            В состав резидентов клуба входят одни из сильнейших игроков в мафию, которые занимают
-            призовые места на международных турнирах.
-          </p>
+          <p className="about__lead">{t.residents}</p>
 
-          <p className="about__lead">
-            Мы играем 4-5 раз в неделю, постоянно проводим клубные серии и мини турниры.
-            Развиваемся и растем вместе!
-          </p>
+          <p className="about__lead">{t.rhythm}</p>
 
           <div className="about__actions">
+            <a className="about__btn about__btn--primary" href="#schedule">
+              {t.cta} <span aria-hidden="true">→</span>
+            </a>
             <a
-              className="about__btn about__btn--primary"
-              href="https://imafia.org/club/35#club-info"
+              className="about__link"
+              href={IMAFIA_URL}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
+              aria-label={t.imafiaLinkLabel}
             >
-              Стать частью клуба <span aria-hidden="true">→</span>
+              {t.imafiaLink} <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>
@@ -99,8 +104,14 @@ export default function About() {
                 key={colIndex}
               >
                 {column.map((photo) => (
-                  <div className={`about__frame${photo.accent ? " about__frame--accent" : ""}`} key={photo.src}>
-                    <img src={photo.src} alt={photo.alt} style={{ aspectRatio: photo.ratio }} />
+                  <div className={`about__frame${"accent" in photo ? " about__frame--accent" : ""}`} key={photo.src}>
+                    <img
+                      src={photo.src}
+                      alt={t.alts[photo.alt]}
+                      style={{ aspectRatio: photo.ratio }}
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div>
                 ))}
               </div>
@@ -110,8 +121,8 @@ export default function About() {
       </div>
 
       <dl className="about__stats">
-        {STATS.map((stat) => (
-          <div className="about__stat" key={stat.label}>
+        {stats.map((stat) => (
+          <div className="about__stat" key={stat.key}>
             <dt>{stat.value}</dt>
             <dd className="about__stat-label">{stat.label}</dd>
             <dd className="about__stat-sub">{stat.sub}</dd>

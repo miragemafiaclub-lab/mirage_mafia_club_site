@@ -2,35 +2,15 @@ import { useRef, useState } from "react";
 import {
   PODIUM_TOURNAMENTS,
   PODIUM_PERIOD,
-  playerPhoto,
   podiumFinishes,
   type PodiumFinish,
   type PodiumTournament,
-  type TournamentFormat,
 } from "../data/podium";
 import { useInView } from "../hooks/useInView";
+import { useLang, useT, type Lang } from "../i18n/lang";
+import { podiumText, type Forms } from "../i18n/podium";
+import { textLang } from "../i18n/translit";
 import "./Podium.css";
-
-const MONTHS_GENITIVE = [
-  "января",
-  "февраля",
-  "марта",
-  "апреля",
-  "мая",
-  "июня",
-  "июля",
-  "августа",
-  "сентября",
-  "октября",
-  "ноября",
-  "декабря",
-];
-
-const FORMAT_LABELS: Record<TournamentFormat, string> = {
-  single: "личный",
-  team: "командный",
-  series: "этап серии",
-};
 
 // Second, first, third: the classic podium order.
 const STEPS = [2, 1, 3];
@@ -39,14 +19,9 @@ const STEPS = [2, 1, 3];
 const COLLAPSED_PHONE = 4;
 const COLLAPSED_WIDE = 6;
 
-type Forms = [one: string, few: string, many: string];
-
-const PLACES: Forms = ["место", "места", "мест"];
-const TOURNAMENTS: Forms = ["турнир", "турнира", "турниров"];
-const PLAYERS: Forms = ["игрок", "игрока", "игроков"];
-
-// Russian plural: "1 место", "3 места", "8 мест".
-function plural(count: number, forms: Forms) {
+// Russian plural: "1 место", "3 места", "8 мест"; English: "1 place", "3 places".
+function plural(count: number, forms: Forms, lang: Lang) {
+  if (lang === "en") return count === 1 ? forms[0] : forms[1];
   const lastTwo = count % 100;
   const last = count % 10;
   if (lastTwo >= 11 && lastTwo <= 14) return forms[2];
@@ -55,8 +30,8 @@ function plural(count: number, forms: Forms) {
   return forms[2];
 }
 
-function counted(count: number, forms: Forms) {
-  return `${count} ${plural(count, forms)}`;
+function counted(count: number, forms: Forms, lang: Lang) {
+  return `${count} ${plural(count, forms, lang)}`;
 }
 
 function parseDate(iso: string) {
@@ -64,21 +39,20 @@ function parseDate(iso: string) {
   return { year, month: month - 1, day };
 }
 
-function formatDay(iso: string) {
+function formatDay(iso: string, months: string[]) {
   const { month, day } = parseDate(iso);
-  return `${day} ${MONTHS_GENITIVE[month]}`;
+  return `${day} ${months[month]}`;
 }
 
-function formatRange(start: string, end: string) {
-  if (start === end) return formatDay(start);
+function formatRange(start: string, end: string, months: string[]) {
+  if (start === end) return formatDay(start, months);
   const from = parseDate(start);
   const to = parseDate(end);
-  if (from.month === to.month) return `${from.day}–${to.day} ${MONTHS_GENITIVE[to.month]}`;
-  return `${formatDay(start)} – ${formatDay(end)}`;
+  if (from.month === to.month) return `${from.day}–${to.day} ${months[to.month]}`;
+  return `${formatDay(start, months)} – ${formatDay(end, months)}`;
 }
 
-function Photo({ nick, className }: { nick: string; className: string }) {
-  const photo = playerPhoto(nick);
+function Photo({ nick, photo, className }: { nick: string; photo?: string; className: string }) {
   return (
     <span className={className} aria-hidden="true">
       {photo ? <img src={photo} alt="" loading="lazy" /> : <span>{nick.charAt(0)}</span>}
@@ -104,35 +78,47 @@ function Cup() {
   );
 }
 
-type PrizeEntry = { place: number; team: string | null; tournament: PodiumTournament; nicks: string[] };
+type PrizeEntry = {
+  place: number;
+  team: string | null;
+  tournament: PodiumTournament;
+  players: { nick: string; photo?: string }[];
+};
 
 // One entry per prize place: teammates who shared it sit together, as "Sashko и Мёд".
 function prizeEntries(finishes: PodiumFinish[]) {
   const entries: PrizeEntry[] = [];
   for (const finish of finishes) {
+    const player = { nick: finish.nick, photo: finish.photo };
     const same = entries.find(
       (entry) =>
         entry.tournament === finish.tournament && entry.place === finish.place && entry.team === finish.team,
     );
-    if (same) same.nicks.push(finish.nick);
-    else entries.push({ place: finish.place, team: finish.team, tournament: finish.tournament, nicks: [finish.nick] });
+    if (same) same.players.push(player);
+    else entries.push({ place: finish.place, team: finish.team, tournament: finish.tournament, players: [player] });
   }
   return entries;
 }
 
 // Each player once, with how many times they appear: two wins put one face on the step, marked ×2.
 function faces(finishes: PodiumFinish[]) {
-  const counts = new Map<string, number>();
-  for (const finish of finishes) counts.set(finish.nick, (counts.get(finish.nick) ?? 0) + 1);
-  return [...counts];
+  const seen = new Map<string, { nick: string; photo?: string; count: number }>();
+  for (const finish of finishes) {
+    const face = seen.get(finish.nick);
+    if (face) face.count += 1;
+    else seen.set(finish.nick, { nick: finish.nick, photo: finish.photo, count: 1 });
+  }
+  return [...seen.values()];
 }
 
 function ProtocolEvent({ tournament, entries }: { tournament: PodiumTournament; entries: PrizeEntry[] }) {
+  const { lang } = useLang();
+  const t = podiumText[lang];
   const facts = [
-    formatRange(tournament.start, tournament.end),
+    formatRange(tournament.start, tournament.end, t.monthsAfterDay),
     tournament.location,
-    FORMAT_LABELS[tournament.format],
-    counted(tournament.players, PLAYERS),
+    t.formats[tournament.format],
+    counted(tournament.players, t.players, lang),
   ];
 
   // By place; on the same place the personal standing comes before the team one.
@@ -151,21 +137,24 @@ function ProtocolEvent({ tournament, entries }: { tournament: PodiumTournament; 
 
       <ol className="protocol__rows">
         {rows.map((entry) => (
-          <li className="protocol__row" key={`${entry.place}-${entry.team ?? entry.nicks.join()}`}>
-            <span className={`protocol__place protocol__place--${entry.place}`} aria-label={`${entry.place} место`}>
+          <li
+            className="protocol__row"
+            key={`${entry.place}-${entry.team ?? entry.players.map((player) => player.nick).join()}`}
+          >
+            <span className={`protocol__place protocol__place--${entry.place}`} aria-label={t.placeLabel(entry.place)}>
               {entry.place}
             </span>
             <span className="protocol__photos">
-              {entry.nicks.map((nick) => (
-                <Photo nick={nick} className="protocol__photo" key={nick} />
+              {entry.players.map((player) => (
+                <Photo nick={player.nick} photo={player.photo} className="protocol__photo" key={player.nick} />
               ))}
             </span>
             <span className="protocol__who">
-              <span className="protocol__nick">{entry.nicks.join(" и ")}</span>
+              <span className="protocol__nick">{entry.players.map((player) => player.nick).join(` ${t.and} `)}</span>
               {/* Only a team place is marked: a personal one is the default. */}
               {entry.team && (
                 <span className="protocol__team">
-                  {entry.nicks.length > 1 ? "команда" : "в команде"} {entry.team}
+                  {entry.players.length > 1 ? t.team : t.inTeam} {entry.team}
                 </span>
               )}
             </span>
@@ -177,6 +166,8 @@ function ProtocolEvent({ tournament, entries }: { tournament: PodiumTournament; 
 }
 
 function Protocol({ tournaments, entries }: { tournaments: PodiumTournament[]; entries: PrizeEntry[] }) {
+  const { lang } = useLang();
+  const t = podiumText[lang];
   const [open, setOpen] = useState(false);
   const moreRef = useRef<HTMLButtonElement>(null);
 
@@ -194,7 +185,7 @@ function Protocol({ tournaments, entries }: { tournaments: PodiumTournament[]; e
 
   return (
     <div className="protocol">
-      <h3 className="protocol__heading">Турниры</h3>
+      <h3 className="protocol__heading">{t.heading}</h3>
 
       <div className={`protocol__events${open ? " is-open" : ""}`} id="podium-tournaments">
         {tournaments.map((tournament) => (
@@ -215,7 +206,7 @@ function Protocol({ tournaments, entries }: { tournaments: PodiumTournament[]; e
           onClick={toggle}
           ref={moreRef}
         >
-          {open ? "Свернуть" : `Показать все ${counted(tournaments.length, TOURNAMENTS)}`}
+          {open ? t.collapse : t.showAll(counted(tournaments.length, t.tournaments, lang))}
         </button>
       )}
     </div>
@@ -223,6 +214,8 @@ function Protocol({ tournaments, entries }: { tournaments: PodiumTournament[]; e
 }
 
 export default function Podium() {
+  const { lang } = useLang();
+  const t = useT(podiumText);
   const [stageRef, stageInView] = useInView<HTMLDivElement>(0.3);
   const finishes = podiumFinishes();
   const entries = prizeEntries(finishes);
@@ -232,24 +225,21 @@ export default function Podium() {
   const medalists = new Set(finishes.map((finish) => finish.nick));
 
   const stats = [
-    { value: prizeTournaments.length, label: "Турниров" },
-    { value: medalists.size, label: "Призёров" },
-    { value: finishes.length, label: "Призовых мест" },
+    { value: prizeTournaments.length, label: t.stats.tournaments },
+    { value: medalists.size, label: t.stats.medalists },
+    { value: finishes.length, label: t.stats.places },
   ];
 
   return (
     <section className="podium" id="podium">
       <div className="podium__layout">
         <div className="podium__intro">
-          <p className="podium__eyebrow">Podium</p>
-          <h2 className="podium__title">Пьедестал победителей</h2>
+          <p className="podium__eyebrow">{t.eyebrow}</p>
+          <h2 className="podium__title">{t.title}</h2>
           <p className="podium__subtitle">
-            {formatRange(PODIUM_PERIOD.start, PODIUM_PERIOD.end)} {parseDate(PODIUM_PERIOD.end).year}
+            {formatRange(PODIUM_PERIOD.start, PODIUM_PERIOD.end, t.monthsAfterDay)} {parseDate(PODIUM_PERIOD.end).year}
           </p>
-          <p className="podium__lead">
-            Игроки Mirage, которые заняли призовые места на турнирах за последние две недели. Результаты с
-            iMafia и MafGame, обновляются раз в две недели.
-          </p>
+          <p className="podium__lead">{t.lead}</p>
 
           <dl className="podium__stats">
             {stats.map((stat) => (
@@ -263,7 +253,7 @@ export default function Podium() {
 
         <div className="podium__main">
           {finishes.length === 0 ? (
-            <p className="podium__empty">За эти две недели без призовых мест. Ждём следующих турниров!</p>
+            <p className="podium__empty">{t.empty}</p>
           ) : (
             <div className={`podium-stage${stageInView ? " is-in" : ""}`} ref={stageRef}>
               {STEPS.map((place) => {
@@ -271,18 +261,18 @@ export default function Podium() {
                 return (
                   <div className={`podium-step podium-step--${place}`} key={place}>
                     <Cup />
-                    <ul className="podium-step__faces" aria-label={`${place} место`}>
-                      {faces(placed).map(([nick, count]) => (
+                    <ul className="podium-step__faces" aria-label={t.placeLabel(place)}>
+                      {faces(placed).map(({ nick, photo, count }) => (
                         <li className="podium-face" key={nick}>
-                          <Photo nick={nick} className="podium-face__photo" />
+                          <Photo nick={nick} photo={photo} className="podium-face__photo" />
                           {count > 1 && <span className="podium-face__count">×{count}</span>}
-                          <span className="podium-face__nick">{nick}</span>
+                          <span className="podium-face__nick" lang={textLang(nick)}>{nick}</span>
                         </li>
                       ))}
                     </ul>
                     <div className="podium-step__block">
                       <span className="podium-step__number">{place}</span>
-                      <span className="podium-step__label">{counted(placed.length, PLACES)}</span>
+                      <span className="podium-step__label">{counted(placed.length, t.place, lang)}</span>
                     </div>
                   </div>
                 );

@@ -85,7 +85,7 @@
 
 .podium__stat dd {
   margin-top: var(--space-2);
-  font-size: 12px;
+  font-size: var(--fs-ui);
   font-weight: 600;
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
@@ -180,11 +180,12 @@
 .podium-face__nick {
   display: block;
   margin-top: 6px;
-  font-size: 12px;
+  font-size: var(--fs-ui);
   font-weight: 600;
   line-height: 1.25;
   color: var(--text-2);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 /* How many times the player finished on this step. */
@@ -196,7 +197,7 @@
   border-radius: var(--radius-pill);
   background: var(--medal);
   color: var(--ink-1);
-  font-size: 12px;
+  font-size: var(--fs-ui);
   font-weight: 700;
   line-height: 1.1;
 }
@@ -222,7 +223,7 @@
 }
 
 .podium-step__label {
-  font-size: 12px;
+  font-size: var(--fs-ui);
   font-weight: 700;
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;

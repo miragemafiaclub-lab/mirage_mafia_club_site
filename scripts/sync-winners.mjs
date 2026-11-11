@@ -1,5 +1,5 @@
 // Refreshes src/data/winners.json and public/winners/ from the club's iMafia "Month Rating" league.
-import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readdir, rename, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const SITE = "https://imafia.org";
@@ -133,12 +133,14 @@ async function main() {
     if (!profile.photoPath) continue;
     await pause();
     const image = await request(profile.photoPath);
-    const extension = profile.photoPath.split(".").pop().toLowerCase();
+    // The avatar URL may carry a cache-busting query; keep it out of the file name.
+    const extension = profile.photoPath.split(/[?#]/)[0].split(".").pop().toLowerCase();
     photos.set(id, { name: `${id}.${extension}`, bytes: Buffer.from(await image.arrayBuffer()) });
   }
 
+  // Write the new photos first and remove stale ones only after winners.json is in place,
+  // so a failure halfway never leaves the data pointing at deleted files.
   await mkdir(photoDir, { recursive: true });
-  for (const file of await readdir(photoDir)) await rm(photoDir + file);
   for (const { name, bytes } of photos.values()) await writeFile(photoDir + name, bytes);
 
   const output = Object.fromEntries(
@@ -154,7 +156,11 @@ async function main() {
         },
       ]),
   );
-  await writeFile(dataFile, `${JSON.stringify(output, null, 2)}\n`);
+  // Write to a temp file and rename, so an interrupted run cannot leave a truncated winners.json.
+  await writeFile(`${dataFile}.tmp`, `${JSON.stringify(output, null, 2)}\n`);
+  await rename(`${dataFile}.tmp`, dataFile);
+  const kept = new Set([...photos.values()].map(({ name }) => name));
+  for (const file of await readdir(photoDir)) if (!kept.has(file)) await rm(photoDir + file);
   console.log(`Saved ${Object.keys(output).length} winners`);
 }
 

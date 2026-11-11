@@ -367,24 +367,35 @@
   color: var(--color-orange);
 }
 
+/* A 44px tap zone around the 28px circle that is drawn by ::before. */
 .winners__frame-link {
   position: absolute;
-  right: 14px;
-  bottom: 16px;
+  right: 6px;
+  bottom: 8px;
   z-index: 2;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  width: 44px;
+  height: 44px;
   color: var(--color-white);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--fs-ui);
+}
+
+.winners__frame-link::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.winners__frame-link:hover {
+.winners__frame-link span {
+  position: relative;
+}
+
+.winners__frame-link:hover::before {
   background: var(--color-orange);
   border-color: var(--color-orange);
 }
@@ -445,11 +456,11 @@
   display: block;
   margin-top: 4px;
   font-family: var(--font-body);
-  font-size: var(--fs-label);
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-2);
 }
 
 
@@ -457,7 +468,25 @@
 @media (max-width: 1100px) {
   .winners {
     padding-top: 90px;
-    background: linear-gradient(180deg, #f7f6f3 0%, #f7f6f3 36%, #1c140d 50%, #0a0806 100%);
+    background: linear-gradient(180deg, #1c140d 0%, #0a0806 100%);
+  }
+
+  /* Light backdrop sized to the intro itself, so the stats never land on the dark part of the gradient. */
+  .winners__intro {
+    position: relative;
+  }
+
+  .winners__intro::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -90px;
+    bottom: -72px;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, var(--color-light) calc(100% - 72px), #1c140d 100%);
+    pointer-events: none;
   }
 
   .winners__month-word {
@@ -528,8 +557,12 @@
     display: none;
   }
 
+  /* Four stats as a 2×2 grid rather than three in a row and one left over. */
   .winners__stats {
-    gap: 18px 28px;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+    gap: 18px 40px;
   }
 }
 
@@ -571,24 +604,6 @@
   color: var(--text-3);
 }
 
-.archive__view-all {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 6px 0;
-  font-size: var(--fs-ui);
-  font-weight: 700;
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  color: var(--color-orange);
-  transition: gap var(--ease), color var(--ease);
-}
-
-.archive__view-all:hover {
-  gap: var(--space-3);
-  color: var(--color-orange-hover);
-}
-
 .archive__years {
   display: flex;
   gap: 10px;
@@ -597,6 +612,7 @@
 }
 
 .archive__year {
+  min-height: 44px;
   padding: 7px 22px;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -615,11 +631,6 @@
   color: var(--btn-primary-fg);
 }
 
-.archive__year:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
-
 .archive__grid {
   position: relative;
   display: grid;
@@ -630,6 +641,9 @@
   overflow-x: auto;
   scrollbar-color: var(--color-orange) rgba(255, 255, 255, 0.08);
   scrollbar-width: thin;
+  /* Soft edges: a card cut by the scroller fades out instead of looking clipped. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
 }
 
 .archive-card {
@@ -686,6 +700,7 @@
 }
 
 .archive-card__month {
+  z-index: 1;
   position: absolute;
   top: 14px;
   left: 14px;
@@ -747,6 +762,8 @@
     row-gap: 24px;
     padding: 0;
     overflow-x: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .archive-card__photo {
@@ -888,4 +905,15 @@
     opacity: 0;
     transform: translateY(8px);
   }
+}
+
+/* Scrim behind the month label so it stays readable on light photos. */
+.archive-card__photo::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 72px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent);
+  pointer-events: none;
+  z-index: 1;
 }

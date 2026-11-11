@@ -9,17 +9,21 @@ export function useInView<T extends Element>(threshold = 0.2) {
   useEffect(() => {
     const element = ref.current;
     if (!element || inView) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect();
-        }
-      },
-      { threshold },
-    );
-    observer.observe(element);
-    return () => observer.disconnect();
+    const reveal = (entries: IntersectionObserverEntry[]) => {
+      if (entries.some((entry) => entry.isIntersecting)) setInView(true);
+    };
+    // A share of the element: enough for anything shorter than the screen.
+    const byElement = new IntersectionObserver(reveal, { threshold });
+    // A share of the screen: an element taller than the screen may never show `threshold` of itself.
+    const byScreen = new IntersectionObserver(reveal, {
+      rootMargin: `0px 0px -${Math.round(threshold * 100)}% 0px`,
+    });
+    byElement.observe(element);
+    byScreen.observe(element);
+    return () => {
+      byElement.disconnect();
+      byScreen.disconnect();
+    };
   }, [threshold, inView]);
 
   return [ref, inView] as const;
