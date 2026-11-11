@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>Страница не найдена — Mirage Mafia Club</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Golos+Text:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --orange: #f2600c;
+        --text-2: rgba(255, 255, 255, 0.72);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        padding: 24px 16px;
+        background: radial-gradient(circle at 70% 20%, rgba(242, 96, 12, 0.14), transparent 55%), var(--bg);
+        color: #fff;
+        font-family: "Golos Text", system-ui, sans-serif;
+      }
+      main {
+        max-width: 560px;
+      }
+      .code {
+        margin: 0;
+        font-family: Oswald, Impact, sans-serif;
+        font-weight: 600;
+        font-size: clamp(96px, 28vw, 200px);
+        line-height: 0.9;
+        color: var(--orange);
+      }
+      h1 {
+        margin: 16px 0 12px;
+        font-family: Oswald, Impact, sans-serif;
+        font-weight: 600;
+        font-size: clamp(28px, 7vw, 44px);
+        line-height: 1.05;
+        text-transform: uppercase;
+      }
+      p {
+        margin: 0 0 8px;
+        color: var(--text-2);
+        line-height: 1.6;
+      }
+      a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 48px;
+        margin-top: 24px;
+        padding: 0 28px;
+        border-radius: 999px;
+        background: var(--orange);
+        color: #0a0a0a;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      a:hover {
+        background: #ff7a2e;
+      }
+      a:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="code" aria-hidden="true">404</p>
+      <h1>Этой страницы нет за столом</h1>
+      <p>Похоже, её выставили на голосовании. Вернитесь на главную — там расписание и ближайшая игра.</p>
+      <p lang="en">This page was voted out. Head back to the main page for the schedule and the next game.</p>
+      <a href="/">На главную <span aria-hidden="true">→</span></a>
+    </main>
+  </body>
+</html>
