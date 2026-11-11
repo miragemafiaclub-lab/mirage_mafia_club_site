@@ -1,0 +1,604 @@
+{
+  "period": {
+    "start": "2026-10-26",
+    "end": "2026-11-08"
+  },
+  "tournaments": [
+    {
+      "source": "iMafia",
+      "title": "Joker Cup 2026",
+      "url": "https://imafia.org/tournament/1808",
+      "start": "2026-11-07",
+      "end": "2026-11-08",
+      "location": "Yerevan",
+      "format": "single",
+      "players": 40,
+      "results": [
+        {
+          "nick": "Певица",
+          "group": "ЧК",
+          "place": 1,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/2404"
+        },
+        {
+          "nick": "Walle",
+          "group": "ЧК",
+          "place": 4,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/63"
+        },
+        {
+          "nick": "Лоску",
+          "group": "ЧК",
+          "place": 34,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/183"
+        }
+      ]
+    },
+    {
+      "source": "MafGame",
+      "title": "Warsaw Mafia Open 2026",
+      "url": "https://mafgame.org/tournaments/864/view",
+      "start": "2026-11-07",
+      "end": "2026-11-08",
+      "location": "Warsaw",
+      "format": "single",
+      "players": 30,
+      "results": [
+        {
+          "nick": "Lюц",
+          "group": "ЧК",
+          "place": 1,
+          "team": null,
+          "profileUrl": null
+        },
+        {
+          "nick": "Сью⚡️",
+          "group": "ЧК",
+          "place": 2,
+          "team": null,
+          "profileUrl": null
+        },
+        {
+          "nick": "Вінні-Пух",
+          "group": "ЧК",
+          "place": 16,
+          "team": null,
+          "profileUrl": null
+        },
+        {
+          "nick": "Musk💫",
+          "group": "КЧК",
+          "place": 19,
+          "team": null,
+          "profileUrl": null
+        },
+        {
+          "nick": "Immortal",
+          "group": "КЧК",
+          "place": 30,
+          "team": null,
+          "profileUrl": null
+        }
+      ]
+    },
+    {
+      "source": "MafGame",
+      "title": "White Mafia Best Player",
+      "url": "https://mafgame.org/tournaments/645/view",
+      "start": "2026-11-07",
+      "end": "2026-11-08",
+      "location": "Wroclaw",
+      "format": "series",
+      "players": 55,
+      "results": [
+        {
+          "nick": "aptah",
+          "group": "ЧК",
+          "place": 1,
+          "team": null,
+          "profileUrl": null
+        },
+        {
+          "nick": "Lюц",
+          "group": "ЧК",
+          "place": 65535,
+          "team": null,
+          "profileUrl": null
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "LEVIATHAN Серія 3",
+      "url": "https://imafia.org/tournament/1990",
+      "start": "2026-11-07",
+      "end": "2026-11-07",
+      "location": "Swipeal.com",
+      "format": "series",
+      "players": 12,
+      "results": [
+        {
+          "nick": "Мэр города",
+          "group": "КЧК",
+          "place": 2,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/3702"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "Закрытый стол Чебурики",
+      "url": "https://imafia.org/tournament/1995",
+      "start": "2026-11-07",
+      "end": "2026-11-07",
+      "location": "Warsaw",
+      "format": "single",
+      "players": 10,
+      "results": [
+        {
+          "nick": "Alcyone",
+          "group": "ЧК",
+          "place": 1,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/749"
+        },
+        {
+          "nick": "Батон",
+          "group": "ЧК",
+          "place": 2,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/1769"
+        },
+        {
+          "nick": "Качка",
+          "group": "КЧК",
+          "place": 3,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/4988"
+        },
+        {
+          "nick": "Vanish",
+          "group": "ЧК",
+          "place": 4,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/143"
+        },
+        {
+          "nick": "Metro",
+          "group": "КЧК",
+          "place": 7,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/2768"
+        },
+        {
+          "nick": "Bartender",
+          "group": "ЧК",
+          "place": 9,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/591"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "LEVIATHAN Серія 2",
+      "url": "https://imafia.org/tournament/1988",
+      "start": "2026-11-04",
+      "end": "2026-11-04",
+      "location": "Swipeal.com",
+      "format": "series",
+      "players": 11,
+      "results": [
+        {
+          "nick": "MaYak",
+          "group": "КЧК",
+          "place": 1,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/3795"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "Poker Lovers Warsaw",
+      "url": "https://imafia.org/tournament/1957",
+      "start": "2026-11-04",
+      "end": "2026-11-04",
+      "location": "Ludna 2, Mirage Mafia Club",
+      "format": "single",
+      "players": 10,
+      "results": [
+        {
+          "nick": "Фортуна",
+          "group": "ЧК",
+          "place": 1,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/3701"
+        },
+        {
+          "nick": "Шахматист",
+          "group": "ЧК",
+          "place": 2,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/343"
+        },
+        {
+          "nick": "Комар",
+          "group": "ЧК",
+          "place": 3,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/90"
+        },
+        {
+          "nick": "Phoenix",
+          "group": "ЧК",
+          "place": 4,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/751"
+        },
+        {
+          "nick": "Sashko",
+          "group": "ЧК",
+          "place": 7,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/124"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "LEVIATHAN Серія 1",
+      "url": "https://imafia.org/tournament/1987",
+      "start": "2026-11-03",
+      "end": "2026-11-03",
+      "location": "Swipeal.com",
+      "format": "series",
+      "players": 10,
+      "results": [
+        {
+          "nick": "Milkins",
+          "group": "КЧК",
+          "place": 4,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/1413"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "LEVIATHAN ШОУМАТЧ",
+      "url": "https://imafia.org/tournament/1986",
+      "start": "2026-11-02",
+      "end": "2026-11-02",
+      "location": "Swipeal.com",
+      "format": "series",
+      "players": 10,
+      "results": [
+        {
+          "nick": "Мэр города",
+          "group": "КЧК",
+          "place": 5,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/3702"
+        },
+        {
+          "nick": "Kamille",
+          "group": "ЧК",
+          "place": 8,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/908"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "Halloween Double Cup 2026",
+      "url": "https://imafia.org/tournament/1427",
+      "start": "2026-10-31",
+      "end": "2026-11-01",
+      "location": "Warsaw",
+      "format": "team",
+      "players": 40,
+      "results": [
+        {
+          "nick": "Логика",
+          "group": "ЧК",
+          "place": 1,
+          "team": {
+            "name": "Just dance",
+            "place": 4
+          },
+          "profileUrl": "https://imafia.org/u/861"
+        },
+        {
+          "nick": "Sashko",
+          "group": "ЧК",
+          "place": 6,
+          "team": {
+            "name": "sugar & daffy",
+            "place": 3
+          },
+          "profileUrl": "https://imafia.org/u/124"
+        },
+        {
+          "nick": "Мёд",
+          "group": "ЧК",
+          "place": 8,
+          "team": {
+            "name": "sugar & daffy",
+            "place": 3
+          },
+          "profileUrl": "https://imafia.org/u/911"
+        },
+        {
+          "nick": "Марта",
+          "group": "ЧК",
+          "place": 9,
+          "team": {
+            "name": "Mind in Sync",
+            "place": 9
+          },
+          "profileUrl": "https://imafia.org/u/1269"
+        },
+        {
+          "nick": "Кукла",
+          "group": "ЧК",
+          "place": 10,
+          "team": {
+            "name": "Most Toxic Top Players",
+            "place": 2
+          },
+          "profileUrl": "https://imafia.org/u/1407"
+        },
+        {
+          "nick": "Комар",
+          "group": "ЧК",
+          "place": 11,
+          "team": {
+            "name": "Учимся не гореть",
+            "place": 7
+          },
+          "profileUrl": "https://imafia.org/u/90"
+        },
+        {
+          "nick": "Calypso",
+          "group": "КЧК",
+          "place": 12,
+          "team": {
+            "name": "Holy Duo",
+            "place": 15
+          },
+          "profileUrl": "https://imafia.org/u/3273"
+        },
+        {
+          "nick": "Успех",
+          "group": "КЧК",
+          "place": 17,
+          "team": {
+            "name": "Перепелині ніжкі",
+            "place": 16
+          },
+          "profileUrl": "https://imafia.org/u/3690"
+        },
+        {
+          "nick": "Шахматист",
+          "group": "ЧК",
+          "place": 20,
+          "team": {
+            "name": "Just dance",
+            "place": 4
+          },
+          "profileUrl": "https://imafia.org/u/343"
+        },
+        {
+          "nick": "Космічна",
+          "group": "ЧК",
+          "place": 22,
+          "team": {
+            "name": "Логіка і Тоні",
+            "place": 13
+          },
+          "profileUrl": "https://imafia.org/u/1233"
+        },
+        {
+          "nick": "Elvi",
+          "group": "ЧК",
+          "place": 23,
+          "team": {
+            "name": "Учимся не гореть",
+            "place": 7
+          },
+          "profileUrl": "https://imafia.org/u/1910"
+        },
+        {
+          "nick": "Sirius ✨",
+          "group": "ЧК",
+          "place": 27,
+          "team": {
+            "name": "Логіка і Тоні",
+            "place": 13
+          },
+          "profileUrl": "https://imafia.org/u/1142"
+        },
+        {
+          "nick": "Hel",
+          "group": "ЧК",
+          "place": 34,
+          "team": {
+            "name": "Перепелині ніжкі",
+            "place": 16
+          },
+          "profileUrl": "https://imafia.org/u/3661"
+        },
+        {
+          "nick": "Mixxx",
+          "group": "ЧК",
+          "place": 39,
+          "team": {
+            "name": "Violet’s Tale",
+            "place": 20
+          },
+          "profileUrl": "https://imafia.org/u/2500"
+        },
+        {
+          "nick": "Metro",
+          "group": "КЧК",
+          "place": 40,
+          "team": {
+            "name": "Из грязи в князи",
+            "place": 18
+          },
+          "profileUrl": "https://imafia.org/u/2768"
+        }
+      ]
+    },
+    {
+      "source": "MafGame",
+      "title": "Mediterranean Grand-Prix",
+      "url": "https://mafgame.org/tournaments/687/view",
+      "start": "2026-10-31",
+      "end": "2026-11-01",
+      "location": "Limassol",
+      "format": "single",
+      "players": 41,
+      "results": [
+        {
+          "nick": "Lюц",
+          "group": "ЧК",
+          "place": 19,
+          "team": null,
+          "profileUrl": null
+        },
+        {
+          "nick": "aptah",
+          "group": "ЧК",
+          "place": 20,
+          "team": null,
+          "profileUrl": null
+        },
+        {
+          "nick": "Сью⚡️",
+          "group": "ЧК",
+          "place": 26,
+          "team": null,
+          "profileUrl": null
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "IMafia Pro League Online 2026 5TH SF Series 2",
+      "url": "https://imafia.org/tournament/1970",
+      "start": "2026-10-29",
+      "end": "2026-10-29",
+      "location": "Online",
+      "format": "series",
+      "players": 10,
+      "results": [
+        {
+          "nick": "Sima",
+          "group": "ЧК",
+          "place": 4,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/1243"
+        },
+        {
+          "nick": "Semero4ka",
+          "group": "ЧК",
+          "place": 8,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/1044"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "Goat 3 серія",
+      "url": "https://imafia.org/tournament/1983",
+      "start": "2026-10-28",
+      "end": "2026-10-28",
+      "location": "Swipeal.com",
+      "format": "team",
+      "players": 29,
+      "results": [
+        {
+          "nick": "Kamille",
+          "group": "ЧК",
+          "place": 7,
+          "team": {
+            "name": "Ezukage",
+            "place": 6
+          },
+          "profileUrl": "https://imafia.org/u/908"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "PEAK USA",
+      "url": "https://imafia.org/tournament/1958",
+      "start": "2026-10-26",
+      "end": "2026-10-28",
+      "location": "Swipeal",
+      "format": "single",
+      "players": 20,
+      "results": [
+        {
+          "nick": "Логика",
+          "group": "ЧК",
+          "place": 1,
+          "team": null,
+          "profileUrl": "https://imafia.org/u/861"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "Goat 2 серія",
+      "url": "https://imafia.org/tournament/1979",
+      "start": "2026-10-27",
+      "end": "2026-10-27",
+      "location": "Swipeal.com",
+      "format": "team",
+      "players": 27,
+      "results": [
+        {
+          "nick": "Kamille",
+          "group": "ЧК",
+          "place": 4,
+          "team": {
+            "name": "Ezukage",
+            "place": 5
+          },
+          "profileUrl": "https://imafia.org/u/908"
+        }
+      ]
+    },
+    {
+      "source": "iMafia",
+      "title": "Goat 1 серія",
+      "url": "https://imafia.org/tournament/1978",
+      "start": "2026-10-26",
+      "end": "2026-10-26",
+      "location": "Swipeal.com",
+      "format": "team",
+      "players": 24,
+      "results": [
+        {
+          "nick": "Kamille",
+          "group": "ЧК",
+          "place": 13,
+          "team": {
+            "name": "Ezukage",
+            "place": 8
+          },
+          "profileUrl": "https://imafia.org/u/908"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,660 @@
+.podium {
+  color: var(--color-white);
+  padding: var(--section-y) var(--side-padding);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--color-bg);
+}
+
+/* Intro on the left, the pedestal on the right; both end on the same line. */
+.podium__layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) 1fr;
+  gap: var(--space-7);
+  align-items: end;
+}
+
+/* ---------- Intro (same rhythm as Players) ---------- */
+
+.podium__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.podium__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.podium__eyebrow::after {
+  content: "";
+  flex: 1;
+  max-width: 80px;
+  height: 1px;
+  background: var(--color-orange);
+}
+
+.podium__title {
+  margin-bottom: var(--space-4);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+}
+
+.podium__subtitle {
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.podium__lead {
+  max-width: 280px;
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-2);
+}
+
+.podium__stats {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: var(--space-5);
+}
+
+.podium__stat dt {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-stat);
+  line-height: 1;
+  color: var(--color-orange);
+}
+
+.podium__stat dd {
+  margin-top: var(--space-2);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.podium__main {
+  min-width: 0;
+}
+
+.podium__empty {
+  padding: 60px 20px;
+  border: 1px dashed var(--color-line);
+  text-align: center;
+  color: var(--color-muted);
+}
+
+/* ---------- Podium steps: faces stand on them, details live in the protocol ---------- */
+
+.podium-stage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: var(--space-4);
+}
+
+.podium-step {
+  --medal: var(--medal-2);
+  --step-height: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.podium-step--1 {
+  --medal: var(--medal-1);
+  --step-height: 96px;
+}
+
+.podium-step--3 {
+  --medal: var(--medal-3);
+  --step-height: 56px;
+}
+
+/* Shown only where the steps react to the pointer: see "Hover" below. */
+.podium-step__cup {
+  display: none;
+}
+
+/* Up to four faces in a row, centred over the step. */
+.podium-step__faces {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3) 6px;
+  width: 100%;
+  max-width: 298px;
+  margin-inline: auto;
+}
+
+.podium-face {
+  position: relative;
+  width: 70px;
+  text-align: center;
+}
+
+.podium-face__photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-inline: auto;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-3);
+}
+
+.podium-face__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.podium-face__nick {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+
+/* How many times the player finished on this step. */
+.podium-face__count {
+  position: absolute;
+  top: -6px;
+  right: 2px;
+  padding: 2px 5px;
+  border-radius: var(--radius-pill);
+  background: var(--medal);
+  color: var(--ink-1);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.podium-step__block {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  height: var(--step-height);
+  padding-top: var(--space-3);
+  border-top: 3px solid var(--medal);
+  /* Lighter than the surface colour: the step has to read as a block against the page. */
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.podium-step__number {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--medal);
+}
+
+.podium-step__label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ---------- Tournaments of the period: the only list of results ---------- */
+
+.protocol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: var(--space-7);
+}
+
+.protocol__heading {
+  margin-bottom: var(--space-5);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.protocol__events {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6) var(--space-7);
+  align-items: start;
+  width: 100%;
+}
+
+.protocol__event {
+  min-width: 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line-strong);
+}
+
+/* Collapsed: six tournaments here, four on a phone (see COLLAPSED_* in Podium.tsx). */
+.protocol__events:not(.is-open) .protocol__event:nth-child(n + 7) {
+  display: none;
+}
+
+.protocol__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+/* The padding makes the link tall enough to tap; the margin keeps the title where it was. */
+.protocol__title a {
+  display: block;
+  padding-block: 11px;
+  margin-block: -11px;
+  transition: color var(--ease);
+}
+
+.protocol__title a:hover {
+  color: var(--color-orange);
+}
+
+.protocol__facts {
+  margin-top: var(--space-1);
+  font-size: var(--fs-ui);
+  color: var(--text-3);
+}
+
+.protocol__rows {
+  margin-top: var(--space-3);
+}
+
+.protocol__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding-block: 6px;
+}
+
+.protocol__row + .protocol__row {
+  border-top: 1px solid var(--color-line);
+}
+
+/* Flat place mark: a metal-coloured ring with the number, no images. */
+.protocol__place {
+  --medal: var(--medal-1);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--medal);
+  border-radius: 50%;
+  color: var(--medal);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.protocol__place--2 {
+  --medal: var(--medal-2);
+}
+
+.protocol__place--3 {
+  --medal: var(--medal-3);
+}
+
+.protocol__photos {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.protocol__photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-surface);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-3);
+}
+
+.protocol__photo + .protocol__photo {
+  margin-left: -8px;
+  box-shadow: 0 0 0 2px var(--color-bg);
+}
+
+.protocol__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.protocol__who {
+  display: grid;
+  min-width: 0;
+}
+
+.protocol__nick {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.protocol__team {
+  font-size: var(--fs-ui);
+  color: var(--text-3);
+}
+
+.protocol__more {
+  height: var(--btn-h);
+  margin-top: var(--space-6);
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-white);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  transition:
+    border-color var(--ease),
+    color var(--ease);
+}
+
+.protocol__more:hover {
+  border-color: var(--color-orange);
+  color: var(--color-orange);
+}
+
+/* Six tournaments or fewer: nothing is hidden on a wide screen, so the button is for phones only. */
+.protocol__more--phone {
+  display: none;
+}
+
+/* Narrow: the steps become rows, first place on top, each with its bar and the faces under it. */
+@media (max-width: 1100px) {
+  .podium__layout {
+    align-items: start;
+  }
+
+  .podium-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .podium-step--1 {
+    order: -1;
+  }
+
+  .podium-step {
+    flex-direction: column-reverse;
+    gap: var(--space-3);
+  }
+
+  .podium-step__faces {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+    gap: var(--space-3) var(--space-1);
+    max-width: none;
+  }
+
+  .podium-face {
+    width: auto;
+  }
+
+  .podium-step__block {
+    justify-content: flex-start;
+    height: auto;
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .podium-step__number {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 900px) {
+  .podium__layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .podium__lead {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 720px) {
+  .podium {
+    padding: var(--section-y) 20px;
+  }
+
+  .protocol__events {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .protocol__events:not(.is-open) .protocol__event:nth-child(n + 5) {
+    display: none;
+  }
+
+  .protocol__more,
+  .protocol__more--phone {
+    display: block;
+    width: 100%;
+  }
+}
+
+/* ---------- Entrance: the pedestal rises once it is on screen ---------- */
+
+.podium-step__block {
+  transform-origin: bottom;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.podium-step__faces {
+  transition:
+    opacity 0.4s ease-out,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.podium-stage:not(.is-in) .podium-step__block {
+  transform: scaleY(0);
+}
+
+.podium-stage:not(.is-in) .podium-step__faces {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* Third, second, then first: the winner lands last. */
+.podium-step--2 .podium-step__block {
+  transition-delay: 0.1s;
+}
+
+.podium-step--1 .podium-step__block {
+  transition-delay: 0.2s;
+}
+
+.podium-step--3 .podium-step__faces {
+  transition-delay: 0.45s;
+}
+
+.podium-step--2 .podium-step__faces {
+  transition-delay: 0.55s;
+}
+
+.podium-step--1 .podium-step__faces {
+  transition-delay: 0.65s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .podium-stage:not(.is-in) .podium-step__block,
+  .podium-stage:not(.is-in) .podium-step__faces {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* ---------- Hover: the step under the pointer is pushed up out of the floor ----------
+   Only with a mouse and only on the wide layout: below 1100px the steps are rows. */
+
+@media (hover: hover) and (min-width: 1101px) {
+  .podium-step {
+    --lift: 22px;
+    position: relative;
+  }
+
+  .podium-step__block {
+    position: relative;
+  }
+
+  /* Light falling from the medal-coloured edge. */
+  .podium-step__block::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(var(--medal), transparent);
+    opacity: 0;
+    transition: opacity 0.35s ease-out;
+    pointer-events: none;
+  }
+
+  .podium-step__number,
+  .podium-step__label {
+    position: relative;
+  }
+
+  /* The cup stands on the step, behind the faces. Its box ends at the top
+     edge of the step, so while it comes up the rest is hidden behind that edge. */
+  .podium-step__cup {
+    display: block;
+    position: absolute;
+    z-index: 0;
+    /* A little wider than the step: with three rows of faces on a narrow step
+       the cup would otherwise have to shrink below the photos. */
+    left: -24px;
+    right: -24px;
+    bottom: var(--step-height);
+    /* Taller than the faces, however many rows they take, so the bowl and
+       the handles show above the photos. 100% is the whole step. */
+    height: max(190px, calc(100% - var(--step-height) + 72px));
+    overflow: hidden;
+    pointer-events: none;
+    /* In shadow: clearer at the rim, fading towards the base. */
+    mask-image: linear-gradient(#000, rgba(0, 0, 0, 0.35));
+  }
+
+  /* Fitted into the box from the bottom (see preserveAspectRatio in Podium.tsx),
+     so on a narrow step the cup gets smaller and still stands on it. */
+  .podium-step__cup svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: var(--medal);
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+
+  .podium-step__faces {
+    position: relative;
+    z-index: 1;
+  }
+
+  .podium-stage.is-in .podium-step:hover .podium-step__cup svg {
+    opacity: 0.22;
+  }
+
+  .podium-stage.is-in .podium-step:hover .podium-step__block::before {
+    opacity: 0.2;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .podium-step {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* The part that comes out of the floor. It grows down exactly as far as the
+       step moves up, with the same timing, so the base never leaves the line. */
+    .podium-step::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      height: var(--lift);
+      background: rgba(255, 255, 255, 0.05);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .podium-step__number {
+      transform-origin: 50% 100%;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .podium-stage.is-in .podium-step:hover {
+      transform: translateY(calc(var(--lift) * -1));
+    }
+
+    .podium-stage.is-in .podium-step:hover::after {
+      transform: scaleY(1);
+    }
+
+    .podium-stage.is-in .podium-step:hover .podium-step__number {
+      transform: scale(1.15);
+    }
+
+    /* Leaves quickly, comes up a little slower than the step itself. */
+    .podium-step__cup svg {
+      transform: translateY(55%);
+      transition:
+        opacity 0.25s ease-in,
+        transform 0.25s ease-in;
+    }
+
+    .podium-stage.is-in .podium-step:hover .podium-step__cup svg {
+      transform: none;
+      transition:
+        opacity 0.45s ease-out 0.05s,
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+    }
+  }
+}

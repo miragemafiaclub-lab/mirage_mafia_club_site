@@ -1,0 +1,405 @@
+.schedule {
+  padding: var(--section-y) var(--side-padding);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background:
+    radial-gradient(40% 60% at 100% 50%, rgba(242, 96, 12, 0.12), transparent 70%),
+    var(--color-bg);
+  color: var(--color-white);
+}
+
+/* ---------- Head ---------- */
+
+.schedule__head {
+  margin-bottom: var(--space-7);
+}
+
+.schedule__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.schedule__eyebrow::after {
+  content: "";
+  width: 80px;
+  height: 1px;
+  background: var(--color-orange);
+}
+
+.schedule__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+}
+
+.schedule__subtitle {
+  margin-top: var(--space-3);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* Next game card | week | photo. The photo takes what is left, up to a width it still looks sharp at. */
+.schedule__layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(260px, 340px) minmax(0, 640px);
+  gap: var(--space-5);
+  align-items: stretch;
+}
+
+/* ---------- Next game ---------- */
+
+.schedule-next {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.schedule-next__details {
+  animation: schedule-next-in 0.25s ease both;
+}
+
+@keyframes schedule-next-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.schedule-next__day {
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.schedule-next__date {
+  margin-top: var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(40px, 3.6vw, 52px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.schedule-next__time {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  line-height: 1.1;
+  color: var(--color-orange);
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule-next__facts {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-6) 0;
+}
+
+.schedule-next__facts li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-body);
+  color: var(--text-2);
+}
+
+.schedule-next__facts svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--color-orange);
+}
+
+.schedule-next__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  height: var(--btn-h);
+  margin-top: auto;
+  padding: 0 22px;
+  border-radius: var(--radius-sm);
+  background: var(--color-orange);
+  color: var(--btn-primary-fg);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  transition:
+    background var(--ease),
+    transform var(--ease),
+    box-shadow var(--ease);
+}
+
+.schedule-next__cta:hover {
+  background: var(--color-orange-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(242, 96, 12, 0.28);
+}
+
+/* ---------- Week ---------- */
+
+.schedule-week {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+/* Week switcher */
+.schedule-week__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.schedule-week__range {
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule-week__arrow {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-white);
+  transition:
+    background var(--ease),
+    color var(--ease);
+}
+
+.schedule-week__arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.schedule-week__arrow:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-orange);
+}
+
+.schedule-week__arrow:disabled {
+  color: var(--text-3);
+  opacity: 0.45;
+  cursor: default;
+}
+
+.schedule-week__arrow:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Days: the rows share any spare height, so the list fills the frame. */
+.schedule-week__days {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.schedule-week__item {
+  display: flex;
+  flex: 1 0 auto;
+}
+
+.schedule-week__item + .schedule-week__item {
+  border-top: 1px solid var(--color-line);
+}
+
+.schedule-week__row {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 60px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+/* A day with a game ahead is a button: it puts that game on the card. */
+button.schedule-week__row {
+  transition: background var(--ease);
+}
+
+button.schedule-week__row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+button.schedule-week__row:focus-visible {
+  /* The frame clips anything outside it. */
+  outline-offset: -3px;
+}
+
+.schedule-week__day {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-body);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-2);
+}
+
+.schedule-week__date {
+  margin-left: 2px;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule-week__event {
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+
+.schedule-week__event > * + * {
+  margin-left: var(--space-3);
+}
+
+.schedule-week__kind {
+  color: var(--color-orange);
+}
+
+.schedule-week__time {
+  font-weight: 600;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule-week__rest {
+  color: var(--text-3);
+}
+
+/* The day shown on the card is the one row that stands out. */
+.schedule-week__item.is-selected .schedule-week__row,
+.schedule-week__item.is-selected .schedule-week__row:hover {
+  background: var(--color-orange-soft);
+  box-shadow: inset 3px 0 0 var(--color-orange);
+}
+
+.schedule-week__item.is-today .schedule-week__day,
+.schedule-week__item.is-selected .schedule-week__day {
+  color: var(--color-white);
+}
+
+/* A game that has already started: listed, but closed for sign-up. */
+.schedule-week__item.is-past .schedule-week__kind {
+  color: var(--text-3);
+}
+
+/* ---------- Photo ---------- */
+
+.schedule-photo {
+  position: relative;
+  min-height: 360px;
+  margin: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.schedule-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Crop from the bottom and the left: the masked player's head stays in frame. */
+  object-position: 60% 0;
+}
+
+.schedule-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0) 50%, rgba(10, 10, 10, 0.88) 100%);
+}
+
+.schedule-photo__caption {
+  position: absolute;
+  z-index: 1;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  left: var(--space-5);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: 1.15;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.schedule-photo__caption span {
+  color: var(--color-orange);
+}
+
+/* Two columns: card and photo side by side, the week below at full width. */
+@media (max-width: 1100px) {
+  .schedule__layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .schedule-photo {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .schedule-week {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 720px) {
+  .schedule {
+    padding: var(--section-y) 20px;
+  }
+
+  .schedule__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .schedule-photo,
+  .schedule-week {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  /* On its own row the photo keeps the proportions of the shot. */
+  .schedule-photo {
+    min-height: 0;
+    aspect-ratio: 589 / 690;
+  }
+}
