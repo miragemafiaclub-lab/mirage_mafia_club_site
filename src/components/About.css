@@ -1,7 +1,7 @@
 .about {
   position: relative;
-  background: #f7f6f3;
-  color: #0a0a0a;
+  background: var(--color-light);
+  color: var(--ink-1);
   padding: var(--section-y) var(--side-padding);
 }
 
@@ -121,6 +121,33 @@
   box-shadow: 0 10px 24px rgba(242, 96, 12, 0.28);
 }
 
+/* Secondary text link next to the main CTA; min-height keeps a 44px tap target. */
+.about__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 44px;
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-orange-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color var(--ease);
+}
+
+.about__link:hover {
+  color: var(--ink-1);
+}
+
+.about__link:focus-visible {
+  outline: 2px solid var(--color-orange-ink);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
 .about__visual {
   display: flex;
   align-items: stretch;
@@ -153,7 +180,7 @@
 }
 
 .about__frame {
-  background: #fff;
+  background: var(--color-white);
   padding: 7px 7px 20px;
   box-shadow: 0 14px 28px rgba(10, 10, 10, 0.16);
   border-radius: var(--radius-sm);
@@ -205,7 +232,7 @@
   font-weight: 600;
   font-size: var(--fs-stat);
   line-height: 1.05;
-  color: var(--color-orange);
+  color: var(--color-orange-ink);
   margin-bottom: 12px;
 }
 
@@ -218,7 +245,7 @@
 
 .about__stat-sub {
   font-size: var(--fs-body);
-  color: var(--ink-3);
+  color: var(--ink-2);
   margin-top: 4px;
 }
 
@@ -227,7 +254,34 @@
     grid-template-columns: 1fr;
   }
 
-  .about__visual {
+  /* Secondary text link next to the main CTA; min-height keeps a 44px tap target. */
+.about__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 44px;
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-orange-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color var(--ease);
+}
+
+.about__link:hover {
+  color: var(--ink-1);
+}
+
+.about__link:focus-visible {
+  outline: 2px solid var(--color-orange-ink);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.about__visual {
     justify-content: center;
     margin-top: 0;
   }
@@ -238,8 +292,8 @@
   }
 
   .about__stats {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 20px;
   }
 
   .about__stat {
@@ -249,9 +303,14 @@
     border-top: 1px solid rgba(10, 10, 10, 0.12);
   }
 
-  .about__stat:first-child {
+  .about__stat:nth-child(-n + 2) {
     padding-top: 0;
     border-top: none;
+  }
+
+  /* An odd last stat takes the full row instead of leaving a hole. */
+  .about__stat:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 }
 

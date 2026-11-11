@@ -1,6 +1,6 @@
 // Refreshes src/data/podium.json: how the club's ЧК and КЧК placed at tournaments that ended
 // in the last finished two-week period, taken from imafia.org and mafgame.org.
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, rename, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const IMAFIA = "https://imafia.org";
@@ -34,6 +34,11 @@ function stripTags(html) {
 // Lowercased letters and digits only, so "Сью⚡️" matches "Сью" and "Мёд" matches "Мед".
 function normalizeNick(nick) {
   return nick.normalize("NFKC").toLowerCase().replace(/ё/g, "е").replace(/[^\p{L}\p{N}]/gu, "");
+}
+
+// A real finishing place: unplaced players come back as 0, null, NaN or MafGame's 65535.
+function isPlace(place) {
+  return Number.isInteger(place) && place > 0 && place < 65535;
 }
 
 function isoDate(date) {
@@ -74,6 +79,7 @@ async function readRoster() {
       group,
     }));
   const roster = [...parse(source.slice(0, split), "ЧК"), ...parse(source.slice(split), "КЧК")];
+  if (split === -1 || roster.length === 0) throw new Error(`No players read from ${playersFile}`);
 
   const clubHtml = await fetchText(`${IMAFIA}/club/${IMAFIA_CLUB_ID}`);
   const imafiaIds = new Map();
@@ -81,6 +87,7 @@ async function readRoster() {
     const label = stripTags(match[2]);
     if (label.includes("●")) imafiaIds.set(label.split("●")[0].trim(), match[1]);
   }
+  if (imafiaIds.size === 0) throw new Error(`iMafia: no club members found on /club/${IMAFIA_CLUB_ID}`);
   for (const player of roster) player.imafiaId = imafiaIds.get(player.nick) ?? null;
   return roster;
 }
@@ -126,8 +133,10 @@ async function readImafia(period, roster) {
     const html = await fetchText(`${IMAFIA}/tournaments?f[date]=old&page=${page}`);
     const items = [...html.matchAll(/href="\/tournament\/(\d+)" class="tournaments_item_link">(.*?)<\/a>/gs)].map(
       (match) => {
-        const [, day, month, year] = stripTags(match[2]).match(/^(\d\d)\.(\d\d)\.(\d\d)/);
-        return { id: match[1], start: `20${year}-${month}-${day}` };
+        const date = stripTags(match[2]).match(/^(\d\d)\.(\d\d)\.(\d{4}|\d\d)(?!\d)/);
+        if (!date) throw new Error(`iMafia: no date for tournament ${match[1]}`);
+        const [, day, month, year] = date;
+        return { id: match[1], start: `${year.length === 2 ? `20${year}` : year}-${month}-${day}` };
       },
     );
     listed.push(...items);
@@ -155,12 +164,12 @@ async function readImafia(period, roster) {
       }
     }
     const results = [...personal.keys()]
-      .filter((playerId) => ours.has(playerId))
+      .filter((playerId) => ours.has(playerId) && isPlace(personal.get(playerId)))
       .map((playerId) => ({
         nick: ours.get(playerId).nick,
         group: ours.get(playerId).group,
         place: personal.get(playerId),
-        team: teams.get(playerId) ?? null,
+        team: isPlace(teams.get(playerId)?.place) ? teams.get(playerId) : null,
         profileUrl: `${IMAFIA}/u/${playerId}`,
       }));
     if (results.length === 0) continue;
@@ -235,7 +244,7 @@ async function readMafgame(period, roster) {
     const ours = [...participants.values()].flatMap((player) => {
       const member = byNick.get(normalizeNick(player.nickname));
       // Places appear once the organiser publishes the final points.
-      if (!member || !placeOf.has(player.user_id)) return [];
+      if (!member || !isPlace(placeOf.get(player.user_id))) return [];
       // Nicks repeat across clubs, so also require the first name or the club to match.
       const firstName = member.name.split(" ")[0].toLowerCase();
       const name = (nameOf.get(player.user_id) ?? "").toLowerCase();
@@ -276,7 +285,10 @@ async function main() {
   for (const tournament of tournaments) tournament.results.sort((a, b) => a.place - b.place);
   tournaments.sort((a, b) => b.end.localeCompare(a.end) || a.title.localeCompare(b.title));
 
-  await writeFile(dataFile, `${JSON.stringify({ period, tournaments }, null, 2)}\n`);
+  // Write next to the file and swap it in, so an interrupted run never leaves half a JSON behind.
+  const tempFile = `${dataFile}.tmp`;
+  await writeFile(tempFile, `${JSON.stringify({ period, tournaments }, null, 2)}\n`);
+  await rename(tempFile, dataFile);
   console.log(`Saved ${tournaments.length} tournaments`);
 }
 

@@ -100,13 +100,6 @@
           "place": 1,
           "team": null,
           "profileUrl": null
-        },
-        {
-          "nick": "Lюц",
-          "group": "ЧК",
-          "place": 65535,
-          "team": null,
-          "profileUrl": null
         }
       ]
     },

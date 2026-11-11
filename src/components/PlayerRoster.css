@@ -21,6 +21,8 @@
 .roster__back {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
+  padding: 0;
   gap: 8px;
   background: none;
   border: none;
@@ -30,7 +32,7 @@
   letter-spacing: var(--ls-tight);
   text-transform: uppercase;
   cursor: pointer;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
   transition: color 0.2s ease;
 }
 
@@ -205,6 +207,7 @@
   line-height: 1.25;
   letter-spacing: var(--ls-tight);
   text-transform: uppercase;
+  overflow-wrap: anywhere;
   margin-bottom: 4px;
 }
 
@@ -275,12 +278,13 @@
 
 .roster__panel-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 32px;
-  height: 32px;
+  top: 14px;
+  right: 14px;
+  /* 44px tap target. */
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--color-line-strong);
   background: none;
   color: var(--color-white);
   font-size: 18px;
@@ -447,4 +451,10 @@
   .roster__grid {
     overflow-y: visible;
   }
+}
+
+/* Take focus only from script (roster or profile opening); they are not controls. */
+.roster__title:focus,
+.roster__panel:focus {
+  outline: none;
 }

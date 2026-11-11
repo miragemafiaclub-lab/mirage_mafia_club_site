@@ -249,11 +249,15 @@
 
 /* A day with a game ahead is a button: it puts that game on the card. */
 button.schedule-week__row {
-  transition: background var(--ease);
+  cursor: pointer;
+  transition:
+    background var(--ease),
+    box-shadow var(--ease);
 }
 
 button.schedule-week__row:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-orange-soft);
+  box-shadow: inset 3px 0 0 rgba(242, 96, 12, 0.5);
 }
 
 button.schedule-week__row:focus-visible {

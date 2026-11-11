@@ -40,7 +40,7 @@
   --fs-lead: 17px;
   --fs-body: 15px;
   --fs-ui: 13px;
-  --fs-label: 11px;
+  --fs-label: 12px;
 
   --lh-tight: 1;
   --lh-heading: 1.05;
@@ -122,6 +122,11 @@ ul {
 :focus-visible {
   outline: 2px solid var(--color-orange);
   outline-offset: 3px;
+}
+
+/* <main> only takes focus from the skip link; an outline around the whole page is noise. */
+main:focus {
+  outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -49,7 +49,7 @@
 }
 
 .players__tab {
-  height: 32px;
+  min-height: 44px;
   padding: 0 16px;
   border: 1px solid var(--color-line-strong);
   border-radius: var(--radius-pill);
@@ -68,7 +68,8 @@
 }
 
 .players__tab:hover {
-  border-color: var(--color-white);
+  border-color: var(--color-orange);
+  background: var(--color-orange-soft);
   color: var(--color-white);
 }
 
@@ -269,10 +270,10 @@
   display: flex;
   flex-direction: column;
   text-align: left;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--color-line);
   border-radius: var(--radius-sm);
   overflow: hidden;
-  background: #0f0d0c;
+  background: var(--color-surface);
   cursor: pointer;
   padding: 0;
   font: inherit;
@@ -345,6 +346,7 @@
   line-height: 1.25;
   letter-spacing: var(--ls-tight);
   text-transform: uppercase;
+  overflow-wrap: anywhere;
   margin-bottom: 4px;
 }
 
@@ -406,20 +408,21 @@
      towards the height, a long text scrolls inside. */
   contain: size;
   overflow-y: auto;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--color-line);
   border-radius: var(--radius-sm);
   padding: 32px;
-  background: #0c0a09;
+  background: var(--color-surface);
 }
 
 .players__panel-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 32px;
-  height: 32px;
+  top: 14px;
+  right: 14px;
+  /* 44px tap target. */
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--color-line-strong);
   background: none;
   color: var(--color-white);
   font-size: 18px;
@@ -608,4 +611,9 @@
   .players__grid.is-in .players-card {
     animation: none;
   }
+}
+
+/* Takes focus only from script when the profile opens; it is not a control. */
+.players__panel:focus {
+  outline: none;
 }
