@@ -1,6 +1,7 @@
 # Mirage Mafia Club — сайт клуба
 
-React 19 + TypeScript + Vite, обычный CSS, линтер oxlint.
+React 19 + TypeScript + Vite, обычный CSS, линтер oxlint, тесты Vitest.
+Каждая страница при сборке сохраняется готовым HTML (пререндер), см. `docs/decisions/`.
 
 ## Запуск
 
@@ -14,15 +15,24 @@ npm run dev        # сайт на http://localhost:5173
 Проверки перед тем, как отправлять правки:
 
 ```bash
-npm run build      # сборка с проверкой типов
+npm test           # тесты
 npm run lint       # линтер
+npm run build      # сборка: проверка типов + готовый HTML каждой страницы в dist/
+npm run preview    # посмотреть собранный сайт на http://localhost:4173
 ```
+
+Те же проверки GitHub запускает сам на каждый PR (`.github/workflows/ci.yml`).
 
 ## Где что лежит
 
 | Что | Где |
 | --- | --- |
-| Секции сайта (Hero, About, Players, Winners, Podium, Schedule) | `src/components/` — у каждой свой `.tsx` и `.css` |
+| Секции главной (Hero, About, Players, Winners, Podium, Schedule) | `src/components/` — у каждой свой `.tsx` и `.css` |
+| Отдельные страницы (игрок, рейтинг, турниры, «первый раз») | `src/pages/` |
+| Адреса страниц, RU (`/…`) и EN (`/en/…`) | `src/routes.ts` |
+| Заголовки, описания и превью страниц | `src/meta.ts`, тексты в `src/i18n/meta.ts` |
+| Адрес сайта (одна настройка) | переменная `SITE_URL`, см. `docs/decisions/0003-site-url.md` |
+| Почему сделано так, а не иначе | `docs/decisions/` |
 | Игроки клуба (ЧК и КЧК), фото, даты вступления | `src/data/players.ts` |
 | Победители месяца | `src/data/winners.ts` |
 | Цвета, отступы, шрифты | `src/index.css` (переменные в `:root`) |

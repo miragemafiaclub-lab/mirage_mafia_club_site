@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import tablePhoto from "../assets/about-small.jpeg";
-import { SIGNUP_URL, gameOn, nextGame, warsawNow, weekDates, weekIndex } from "../data/schedule";
+import { SIGNUP_URL, gameOn, nextGame, weekDates, weekIndex } from "../data/schedule";
+import { useClubNow, useHydrated } from "../hooks/useHydrated";
 import { schedule } from "../i18n/schedule";
 import { useT } from "../i18n/lang";
 import "./Schedule.css";
@@ -44,9 +45,15 @@ function daysBetween(from: Date, to: Date) {
   return Math.round((to.getTime() - from.getTime()) / DAY_MS);
 }
 
+// The prerendered HTML shows the week as of the build; once the page is live it is rebuilt for the
+// visitor's real "now" (the key remounts it, so the week and the picked day start over).
 export default function Schedule() {
+  const hydrated = useHydrated();
+  return <ScheduleView key={hydrated ? "live" : "build"} now={useClubNow()} />;
+}
+
+function ScheduleView({ now }: { now: Date }) {
   const t = useT(schedule);
-  const now = warsawNow();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const next = nextGame(now);
 

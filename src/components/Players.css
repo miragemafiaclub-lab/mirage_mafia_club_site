@@ -586,7 +586,7 @@
 
 /* ---------- Entrance: cards arrive in a wave, 60ms apart ---------- */
 
-.players__grid:not(.is-in) .players-card {
+.js .players__grid:not(.is-in) .players-card {
   opacity: 0;
 }
 
@@ -604,7 +604,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .players__grid:not(.is-in) .players-card {
+  .js .players__grid:not(.is-in) .players-card {
     opacity: 1;
   }
 

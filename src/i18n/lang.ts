@@ -25,14 +25,22 @@ export function useT<T>(dict: Translations<T>): T {
   return dict[useContext(LangContext).lang];
 }
 
-/** Saved choice first; otherwise Russian for ru/uk/be browsers, English for everyone else. */
-export function detectLang(): Lang {
+/** The language the visitor picked with the switch, if they ever did. */
+export function savedLang(): Lang | null {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === "ru" || saved === "en") return saved;
   } catch {
-    // Storage can be blocked (private mode) — fall through to the browser language.
+    // Storage can be blocked (private mode): nothing saved then.
   }
-  const langs = typeof navigator === "undefined" ? [] : navigator.languages ?? [navigator.language];
-  return langs.some((l) => /^(ru|uk|be)\b/i.test(l)) ? "ru" : "en";
+  return null;
+}
+
+/** Remembers the visitor's explicit choice, so the home page opens in that language next time. */
+export function saveLang(lang: Lang): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, lang);
+  } catch {
+    // Ignore blocked storage; the choice just won't be remembered.
+  }
 }

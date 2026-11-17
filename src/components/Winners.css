@@ -817,12 +817,12 @@
     transition-delay: 0.1s;
   }
 
-  .winners__showcase:not(.is-in) .winners__phone {
+  .js .winners__showcase:not(.is-in) .winners__phone {
     opacity: 0;
     transform: translateX(64px);
   }
 
-  .winners__showcase:not(.is-in) .winners__month-word {
+  .js .winners__showcase:not(.is-in) .winners__month-word {
     opacity: 0;
     transform: translateX(-64px);
   }
@@ -901,7 +901,7 @@
     transition-delay: calc(var(--i, 0) * 45ms);
   }
 
-  .archive__grid:not(.is-in) .archive-card {
+  .js .archive__grid:not(.is-in) .archive-card {
     opacity: 0;
     transform: translateY(8px);
   }

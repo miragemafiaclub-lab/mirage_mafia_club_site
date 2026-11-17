@@ -12,7 +12,7 @@ const MAP: Record<string, string> = {
   ы: "y", ь: "", э: "e", ю: "yu", я: "ya", "’": "", "'": "",
 };
 
-function transliterate(text: string): string {
+export function transliterate(text: string): string {
   return [...text]
     .map((ch) => {
       const lower = ch.toLowerCase();
@@ -32,4 +32,14 @@ export function displayName(name: string, lang: Lang): string {
 /** "ru" for Cyrillic text, so the browser hyphenates it correctly even on the English page. */
 export function textLang(text: string): "ru" | undefined {
   return /[а-яёіїєґ]/i.test(text) ? "ru" : undefined;
+}
+
+/** URL-safe Latin slug: "Логика" → "logika", "Mr. Waggi" → "mr-waggi". Empty for text with no letters or digits. */
+export function slugify(text: string): string {
+  return transliterate(text)
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }

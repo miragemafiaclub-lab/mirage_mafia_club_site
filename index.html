@@ -3,35 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mirage Mafia Club — Warsaw</title>
-    <meta
-      name="description"
-      content="Mirage Mafia Club — клуб спортивной мафии в Варшаве. Открытые игровые вечера по вторникам и пятницам, капитанский стол, день новичка. Ludna 2."
-    />
+    <!-- Page-specific tags (title, description, canonical, hreflang, Open Graph) are written for every page
+         by scripts/build.mjs from src/meta.ts, between these markers. The ones here are only for `npm run dev`. -->
+    <!--head-start-->
+    <title>Mirage Mafia Club — спортивная мафия в Варшаве</title>
+    <meta data-head name="description" content="Mirage Mafia Club — клуб спортивной мафии в Варшаве." />
+    <!--head-end-->
     <meta name="theme-color" content="#0a0a0a" />
+    <!-- Tells the CSS that JavaScript runs, so entrance animations may hide content until it scrolls into view.
+         Without JS (or for crawlers that skip it) everything stays visible. -->
+    <script>document.documentElement.classList.add("js")</script>
 
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/jpeg" href="/favicon.jpeg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-    <!-- Open Graph / link previews.
-         Note: og:image, og:url and canonical hold the full site address; change all three if the domain changes. -->
-    <link rel="canonical" href="https://mirage-mafia-club-site.vercel.app/" />
-    <meta property="og:url" content="https://mirage-mafia-club-site.vercel.app/" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Mirage Mafia Club" />
-    <meta property="og:title" content="Mirage Mafia Club — спортивная мафия в Варшаве" />
-    <meta
-      property="og:description"
-      content="Клуб спортивной мафии в Варшаве: игровые вечера, турниры и большое комьюнити. Ludna 2."
-    />
-    <meta property="og:locale" content="ru_RU" />
-    <meta property="og:locale:alternate" content="en_US" />
-    <meta property="og:image" content="https://mirage-mafia-club-site.vercel.app/og-image.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Игроки Mirage Mafia Club" />
-    <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -41,7 +26,7 @@
     />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app-html--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

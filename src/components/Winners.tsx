@@ -5,9 +5,12 @@ import { buildMonths, buildYearTabs, type WinnerMonth } from "../data/winners";
 import { useInView } from "../hooks/useInView";
 import { useLang, useT, type Lang } from "../i18n/lang";
 import { winnersText } from "../i18n/winners";
+import { BUILD_TIME } from "../site";
 import "./Winners.css";
 
-const NOW = new Date();
+// The month list is fixed at build time (the site rebuilds whenever new winner data arrives),
+// so the prerendered HTML and the live page show the same months.
+const NOW = new Date(BUILD_TIME);
 const MONTHS = buildMonths(NOW);
 const YEAR_TABS = buildYearTabs(MONTHS);
 
