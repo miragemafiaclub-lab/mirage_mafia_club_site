@@ -75,6 +75,7 @@
   --ease: 0.2s ease;
 
   --container-width: 1440px;
+  --header-h: 76px;
   --side-padding: clamp(20px, 5vw, 90px);
 }
 
@@ -86,8 +87,22 @@
 
 html {
   scroll-behavior: smooth;
-  /* Anchored sections clear the fixed header. */
-  scroll-padding-top: 80px;
+  /* Anchored sections start exactly under the fixed header. */
+  scroll-padding-top: var(--header-h);
+}
+
+/* Sections shorter than the window fill it under the header, so a menu jump shows one
+   whole section with nothing of the next one peeking in. Desktop only: on phones they are taller anyway. */
+@media (min-width: 1024px) and (min-height: 640px) {
+  .about,
+  .schedule,
+  .players,
+  .winners {
+    min-height: calc(100svh - var(--header-h));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 body {
