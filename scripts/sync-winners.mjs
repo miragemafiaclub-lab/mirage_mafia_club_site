@@ -1,6 +1,7 @@
 // Refreshes src/data/winners.json and public/winners/ from the club's iMafia "Month Rating" league.
 import { mkdir, readdir, rename, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import sharp from "sharp";
 
 const SITE = "https://imafia.org";
 const CLUB_ID = "35";
@@ -133,9 +134,14 @@ async function main() {
     if (!profile.photoPath) continue;
     await pause();
     const image = await request(profile.photoPath);
-    // The avatar URL may carry a cache-busting query; keep it out of the file name.
-    const extension = profile.photoPath.split(/[?#]/)[0].split(".").pop().toLowerCase();
-    photos.set(id, { name: `${id}.${extension}`, bytes: Buffer.from(await image.arrayBuffer()) });
+    // Avatars come as JPEG or heavy PNG; store every one as a compressed JPEG, at most 1000 px.
+    const bytes = await sharp(Buffer.from(await image.arrayBuffer()))
+      .rotate()
+      .resize(1000, 1000, { fit: "inside", withoutEnlargement: true })
+      .flatten({ background: "#0a0a0a" })
+      .jpeg({ quality: 82, mozjpeg: true })
+      .toBuffer();
+    photos.set(id, { name: `${id}.jpg`, bytes });
   }
 
   // Write the new photos first and remove stale ones only after winners.json is in place,
