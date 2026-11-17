@@ -5,7 +5,6 @@ type StubCopy = { eyebrow: string; title: string; text: string };
 export const pages: Translations<{
   soon: string;
   toHome: string;
-  rating: StubCopy;
   tournaments: StubCopy;
   firstTime: StubCopy;
   notFound: { eyebrow: string; title: string; text: string };
@@ -13,17 +12,14 @@ export const pages: Translations<{
     back: string;
     joined: string;
     about: string;
+    guest: string;
+    imafia: string;
     photoAlt: (nick: string) => string;
   };
 }> = {
   ru: {
     soon: "Скоро",
     toHome: "На главную",
-    rating: {
-      eyebrow: "Рейтинг",
-      title: "Рейтинг клуба",
-      text: "Здесь будет рейтинг игроков по лигам и сезонам iMafia: места, баллы и как они меняются. Готовим.",
-    },
     tournaments: {
       eyebrow: "Турниры",
       title: "Турниры",
@@ -43,17 +39,14 @@ export const pages: Translations<{
       back: "Все игроки",
       joined: "В клубе с",
       about: "О себе",
+      guest: "Игрок рейтинга клуба",
+      imafia: "Профиль на iMafia",
       photoAlt: (nick) => `${nick}, игрок Mirage Mafia Club`,
     },
   },
   en: {
     soon: "Coming soon",
     toHome: "Home",
-    rating: {
-      eyebrow: "Rating",
-      title: "Club rating",
-      text: "The player rating by iMafia league and season is coming here: places, points and how they change.",
-    },
     tournaments: {
       eyebrow: "Tournaments",
       title: "Tournaments",
@@ -73,6 +66,8 @@ export const pages: Translations<{
       back: "All players",
       joined: "Member since",
       about: "About",
+      guest: "Club rating player",
+      imafia: "iMafia profile",
       photoAlt: (nick) => `${nick}, Mirage Mafia Club player`,
     },
   },

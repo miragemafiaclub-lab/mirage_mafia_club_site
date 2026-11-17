@@ -8,7 +8,7 @@
     "build": "tsc -b && node scripts/build.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
-    "sync-winners": "node scripts/sync-winners.mjs",
+    "sync-rating": "node scripts/sync-rating.mjs",
     "sync-podium": "node scripts/sync-podium.mjs",
     "test": "vitest run"
   },

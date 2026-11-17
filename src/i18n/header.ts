@@ -8,6 +8,8 @@ export const header: Translations<{
   logoAlt: string;
   navLabel: string;
   nav: Record<NavId, string>;
+  /** Link to the /rating page, shown in the menu after Players. */
+  rating: string;
   cta: string;
   ctaShort: string;
   menuOpen: string;
@@ -31,6 +33,7 @@ export const header: Translations<{
       schedule: "Расписание",
       contact: "Контакты",
     },
+    rating: "Рейтинг",
     cta: "Записаться на игру",
     ctaShort: "Записаться",
     menuOpen: "Открыть меню",
@@ -54,6 +57,7 @@ export const header: Translations<{
       schedule: "Schedule",
       contact: "Contacts",
     },
+    rating: "Rating",
     cta: "Join the game",
     ctaShort: "Join",
     menuOpen: "Open menu",

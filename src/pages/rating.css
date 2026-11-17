@@ -1,0 +1,352 @@
+/* /rating: league tabs, filters and the table. Same tokens as the rest of the site. */
+
+.rating__controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin-top: var(--space-7);
+}
+
+.rating__leagues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.rating__league {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color var(--ease),
+    color var(--ease),
+    background var(--ease);
+}
+
+.rating__league:hover {
+  border-color: var(--color-orange);
+  background: var(--color-orange-soft);
+  color: var(--color-white);
+}
+
+.rating__league.is-active {
+  border-color: var(--color-orange);
+  background: var(--color-orange);
+  color: var(--btn-primary-fg);
+}
+
+.rating__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.rating__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 220px;
+}
+
+.rating__field--search {
+  flex: 0 1 320px;
+}
+
+.rating__field label {
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.rating__field select,
+.rating__field input {
+  height: var(--btn-h);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-white);
+  font: inherit;
+  font-size: var(--fs-body);
+  transition: border-color var(--ease);
+}
+
+.rating__field select:hover,
+.rating__field input:hover,
+.rating__field select:focus-visible,
+.rating__field input:focus-visible {
+  border-color: var(--color-orange);
+}
+
+.rating__field select {
+  cursor: pointer;
+}
+
+.rating__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-6);
+  font-size: var(--fs-ui);
+  color: var(--text-3);
+}
+
+.rating__meta span:first-child {
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.rating__meta a {
+  color: var(--text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rating__meta a:hover {
+  color: var(--color-orange);
+}
+
+.rating__empty {
+  margin-top: var(--space-6);
+  padding: var(--space-6);
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  color: var(--text-2);
+  text-align: center;
+}
+
+/* ---------- Table ---------- */
+
+.rating-table__wrap {
+  margin-top: var(--space-4);
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+
+.rating-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.rating-table th,
+.rating-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--color-line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.rating-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.rating-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.rating-table abbr {
+  text-decoration: none;
+  cursor: help;
+}
+
+.rating-table tbody tr {
+  transition: background var(--ease);
+}
+
+.rating-table tbody tr:hover {
+  background: var(--color-orange-soft);
+}
+
+.rating-table__place {
+  width: 3.5em;
+  padding-left: var(--space-5) !important;
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.rating-table__change {
+  width: 3em;
+}
+
+.rating-table__name {
+  width: 100%;
+  font-weight: 600;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+.rating-table__player {
+  color: var(--color-white);
+  transition: color var(--ease);
+}
+
+.rating-table__player:hover {
+  color: var(--color-orange);
+}
+
+.rating-table__num {
+  text-align: right !important;
+  color: var(--text-2);
+}
+
+.rating-table__num:last-child {
+  padding-right: var(--space-5);
+}
+
+/* Top three: a medal-coloured bar and place number. */
+.rating-table tr.is-top > :first-child {
+  box-shadow: inset 3px 0 0 var(--medal);
+  color: var(--medal);
+}
+
+.rating-table tr.is-top-1 {
+  --medal: var(--medal-1);
+}
+
+.rating-table tr.is-top-2 {
+  --medal: var(--medal-2);
+}
+
+.rating-table tr.is-top-3 {
+  --medal: var(--medal-3);
+}
+
+.rating-table tr.is-top .rating-table__player {
+  color: var(--color-white);
+}
+
+.rating-table tr.is-uncounted {
+  opacity: 0.6;
+}
+
+.rating-table__cutoff td {
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-surface);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+  white-space: normal;
+}
+
+.rating-change {
+  font-size: var(--fs-label);
+  font-weight: 700;
+}
+
+.rating-change--up {
+  color: #5fbf7f;
+}
+
+.rating-change--down {
+  color: #e2675a;
+}
+
+.rating-change--same,
+.rating-change--new {
+  color: var(--text-3);
+}
+
+.rating-change--new {
+  color: var(--color-orange);
+}
+
+/* ---------- Legend ---------- */
+
+.rating__legend {
+  margin-top: var(--space-6);
+  color: var(--text-2);
+  font-size: var(--fs-ui);
+}
+
+.rating__legend summary {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rating__legend summary:hover {
+  color: var(--color-orange);
+}
+
+.rating__legend dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-3);
+}
+
+.rating__legend dl div {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.rating__legend dt {
+  min-width: 3em;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.rating__legend p {
+  margin-top: var(--space-3);
+}
+
+/* Phones: keep place, player, games, points, average and wins; the rest is in the legend and on iMafia. */
+@media (max-width: 760px) {
+  /* One swipeable row of leagues instead of three lines of buttons. */
+  .rating__leagues {
+    flex-wrap: nowrap;
+    margin-inline: calc(-1 * var(--side-padding));
+    padding-inline: var(--side-padding);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .rating__league {
+    flex: none;
+  }
+
+  .rating-table .is-narrow {
+    display: none;
+  }
+
+  .rating-table th,
+  .rating-table td {
+    padding: 12px 8px;
+  }
+
+  .rating-table__place {
+    padding-left: var(--space-4) !important;
+  }
+
+  .rating__field,
+  .rating__field--search {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+}

@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PageLayout from "./pages/PageLayout";
 import PlayerPage from "./pages/PlayerPage";
+import RatingPage from "./pages/RatingPage";
 import StubPage from "./pages/StubPage";
 import { RouteContext } from "./RouteContext";
 import { localize, resolveRoute, type Route } from "./routes";
@@ -19,6 +20,12 @@ function Page({ route }: { route: Route }) {
       return (
         <PageLayout>
           <PlayerPage player={route.player} />
+        </PageLayout>
+      );
+    case "rating":
+      return (
+        <PageLayout>
+          <RatingPage />
         </PageLayout>
       );
     case "notFound":

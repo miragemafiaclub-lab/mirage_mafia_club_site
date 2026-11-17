@@ -1,4 +1,4 @@
-# Pulls fresh winners and podium data from iMafia / MafGame every day.
+# Pulls the club rating (and the month's winner), plus podium data, from iMafia / MafGame every day.
 # If anything changed and the site still builds, it commits to main and Vercel redeploys.
 name: Sync club data
 
@@ -25,7 +25,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run sync-winners
+      - run: npm run sync-rating
       - run: npm run sync-podium
       # Never publish data that breaks the site.
       - run: npm run build
@@ -38,5 +38,5 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Sync winners and podium from iMafia"
+          git commit -m "Sync rating, winners and podium from iMafia"
           git push

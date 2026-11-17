@@ -5,6 +5,7 @@ import { SIGNUP_URL } from "../data/schedule";
 import { header, type NavId } from "../i18n/header";
 import { LANGS, useLang, useT } from "../i18n/lang";
 import { useRoute, useSectionHref } from "../RouteContext";
+import { localize } from "../routes";
 import "./Header.css";
 
 const INSTAGRAM_URL = "https://instagram.com/mirage_mafia_club";
@@ -138,6 +139,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const active = useActiveSection();
+  const route = useRoute();
 
   // While the menu is open: lock page scroll, close on Esc and when the window grows past the breakpoint.
   useEffect(() => {
@@ -178,13 +180,28 @@ export default function Header() {
   };
 
   const navItems = (onClick?: () => void) =>
-    NAV_IDS.map((id) => (
-      <li key={id}>
-        <SectionLink section={id} aria-current={active === id ? "true" : undefined} onClick={onClick}>
-          {t.nav[id]}
-        </SectionLink>
-      </li>
-    ));
+    NAV_IDS.flatMap((id) => {
+      const item = (
+        <li key={id}>
+          <SectionLink section={id} aria-current={active === id ? "true" : undefined} onClick={onClick}>
+            {t.nav[id]}
+          </SectionLink>
+        </li>
+      );
+      if (id !== "players") return [item];
+      return [
+        item,
+        <li key="rating">
+          <Link
+            to={localize("/rating", route.lang)}
+            aria-current={route.page === "rating" ? "page" : undefined}
+            onClick={onClick}
+          >
+            {t.rating}
+          </Link>
+        </li>,
+      ];
+    });
 
   return (
     <header className={`header${menuOpen ? " is-menu-open" : ""}`} onBlur={onHeaderBlur}>
