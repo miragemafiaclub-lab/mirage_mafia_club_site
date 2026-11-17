@@ -1,0 +1,42 @@
+# Pulls fresh winners and podium data from iMafia / MafGame every day.
+# If anything changed and the site still builds, it commits to main and Vercel redeploys.
+name: Sync club data
+
+on:
+  schedule:
+    - cron: "0 5 * * *" # every day, 07:00 Warsaw summer time / 06:00 winter time
+  workflow_dispatch: # "Run workflow" button on the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run sync-winners
+      - run: npm run sync-podium
+      # Never publish data that breaks the site.
+      - run: npm run build
+      - name: Commit changes
+        run: |
+          git add -A src/data public/winners
+          if git diff --cached --quiet; then
+            echo "Data unchanged, nothing to deploy."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Sync winners and podium from iMafia"
+          git push

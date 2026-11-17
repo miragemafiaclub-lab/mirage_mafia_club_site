@@ -31,6 +31,15 @@ npm run lint       # линтер
 
 ## Обновление данных
 
+Обновляется само: каждый день в 05:00 UTC GitHub Actions (`.github/workflows/sync-data.yml`)
+забирает победителей и пьедестал с iMafia/MafGame. Если что-то изменилось и сайт собирается,
+бот коммитит в `main`, и Vercel публикует сайт. Запустить вручную: вкладка **Actions** →
+**Sync club data** → **Run workflow**. Если запуск упал, GitHub пришлёт письмо, а сайт останется прежним.
+
+Фото с iMafia скрипт сам сжимает в JPG до 1000 px.
+
+Локально, если нужно:
+
 ```bash
 npm run sync-winners   # победители месяца
 npm run sync-podium    # пьедестал победителей
