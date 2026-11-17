@@ -1,6 +1,6 @@
-import { useState } from "react";
 import heroTable from "../assets/hero-table.jpeg";
-import { CLUB_PLACE, nextGame, warsawNow, weekIndex } from "../data/schedule";
+import { CLUB_PLACE, nextGame, weekIndex } from "../data/schedule";
+import { useClubNow, useHydrated } from "../hooks/useHydrated";
 import { hero } from "../i18n/hero";
 import { useT } from "../i18n/lang";
 import "./Hero.css";
@@ -12,9 +12,10 @@ function isoDate(date: Date) {
 
 export default function Hero() {
   const t = useT(hero);
-  // Computed once per visit, in the club's time zone.
-  const [now] = useState(warsawNow);
-  const game = nextGame(now);
+  // In the club's time zone. "Today/tomorrow" depends on the visitor's clock, so it appears once the page is live.
+  const now = useClubNow();
+  const hydrated = useHydrated();
+  const game = hydrated ? nextGame(now) : null;
 
   let gameLine: string | null = null;
   if (game) {

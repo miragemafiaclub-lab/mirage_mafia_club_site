@@ -64,7 +64,7 @@ export function weekDates(now: Date, weekOffset: number) {
 }
 
 // The club's wall-clock time (Europe/Warsaw) as a local Date, so the schedule is right in any time zone.
-export function warsawNow() {
+export function warsawNow(at: Date = new Date()) {
   const parts = Object.fromEntries(
     new Intl.DateTimeFormat("en-US", {
       timeZone: "Europe/Warsaw",
@@ -76,7 +76,7 @@ export function warsawNow() {
       second: "numeric",
       hourCycle: "h23",
     })
-      .formatToParts(new Date())
+      .formatToParts(at)
       .map((part) => [part.type, Number(part.value)]),
   );
   return new Date(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);

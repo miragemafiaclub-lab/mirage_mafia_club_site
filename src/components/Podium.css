@@ -495,11 +495,11 @@
     transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.podium-stage:not(.is-in) .podium-step__block {
+.js .podium-stage:not(.is-in) .podium-step__block {
   transform: scaleY(0);
 }
 
-.podium-stage:not(.is-in) .podium-step__faces {
+.js .podium-stage:not(.is-in) .podium-step__faces {
   opacity: 0;
   transform: translateY(16px);
 }
@@ -526,8 +526,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .podium-stage:not(.is-in) .podium-step__block,
-  .podium-stage:not(.is-in) .podium-step__faces {
+  .js .podium-stage:not(.is-in) .podium-step__block,
+  .js .podium-stage:not(.is-in) .podium-step__faces {
     transform: none;
     opacity: 1;
   }

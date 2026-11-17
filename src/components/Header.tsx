@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState, type FocusEvent } from "react";
+import { useEffect, useRef, useState, type ComponentProps, type FocusEvent } from "react";
+import { Link } from "react-router";
 import logo from "../assets/logo.jpeg";
 import { SIGNUP_URL } from "../data/schedule";
 import { header, type NavId } from "../i18n/header";
 import { LANGS, useLang, useT } from "../i18n/lang";
+import { useRoute, useSectionHref } from "../RouteContext";
 import "./Header.css";
 
 const INSTAGRAM_URL = "https://instagram.com/mirage_mafia_club";
@@ -12,6 +14,13 @@ const SPY_IDS = ["home", ...NAV_IDS];
 /** Must match the burger breakpoint in Header.css. */
 const DESKTOP_QUERY = "(min-width: 1101px)";
 const MENU_ID = "header-menu";
+
+/** A link to a home-page section: a plain anchor on the home page, a router link from other pages. */
+function SectionLink({ section, ...props }: { section: string } & Omit<ComponentProps<"a">, "href">) {
+  const onHome = useRoute().page === "home";
+  const href = useSectionHref()(section);
+  return onHome ? <a href={href} {...props} /> : <Link to={href} {...props} />;
+}
 
 function InstagramIcon() {
   return (
@@ -171,9 +180,9 @@ export default function Header() {
   const navItems = (onClick?: () => void) =>
     NAV_IDS.map((id) => (
       <li key={id}>
-        <a href={`#${id}`} aria-current={active === id ? "true" : undefined} onClick={onClick}>
+        <SectionLink section={id} aria-current={active === id ? "true" : undefined} onClick={onClick}>
           {t.nav[id]}
-        </a>
+        </SectionLink>
       </li>
     ));
 
@@ -183,9 +192,9 @@ export default function Header() {
         {t.skip}
       </a>
 
-      <a className="header__brand" href="#home" aria-label={t.homeLabel} onClick={closeMenu}>
+      <SectionLink className="header__brand" section="home" aria-label={t.homeLabel} onClick={closeMenu}>
         <img className="header__logo" src={logo} alt={t.logoAlt} />
-      </a>
+      </SectionLink>
 
       <nav className="header__nav" aria-label={t.navLabel}>
         <ul>{navItems()}</ul>
@@ -194,11 +203,11 @@ export default function Header() {
       <div className="header__actions">
         <SocialLinks className="header__social" />
         <LangSwitch className="header__lang" />
-        <a className="header__cta" href="#schedule" onClick={closeMenu}>
+        <SectionLink className="header__cta" section="schedule" onClick={closeMenu}>
           <span className="header__cta-full">{t.cta}</span>
           <span className="header__cta-short">{t.ctaShort}</span>
           <span aria-hidden="true">→</span>
-        </a>
+        </SectionLink>
         <button
           ref={burgerRef}
           type="button"
@@ -217,9 +226,9 @@ export default function Header() {
           <ul className="header__menu-links">{navItems(closeMenu)}</ul>
         </nav>
         <div className="header__menu-footer">
-          <a className="header__cta header__menu-cta" href="#schedule" onClick={closeMenu}>
+          <SectionLink className="header__cta header__menu-cta" section="schedule" onClick={closeMenu}>
             {t.cta} <span aria-hidden="true">→</span>
-          </a>
+          </SectionLink>
           <div className="header__menu-row">
             <div className="header__menu-socials">
               <SocialLinks className="header__social" />

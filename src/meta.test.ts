@@ -1,0 +1,51 @@
+import { describe, expect, it } from "vitest";
+import { headHtml, headTags, pageMeta } from "./meta";
+import { prerenderPaths, resolveRoute } from "./routes";
+import { SITE_URL } from "./site";
+
+const metaFor = (path: string) => pageMeta(resolveRoute(path));
+
+describe("page meta", () => {
+  it("gives every prerendered page its own title and canonical address", () => {
+    const paths = prerenderPaths();
+    const titles = new Set(paths.map((p) => metaFor(p).title));
+    const canonicals = new Set(paths.map((p) => metaFor(p).canonical));
+    expect(titles.size).toBe(paths.length);
+    expect(canonicals.size).toBe(paths.length);
+  });
+
+  it("uses full addresses built from the one site setting", () => {
+    const m = metaFor("/en/players/walle");
+    expect(m.canonical).toBe(`${SITE_URL}/en/players/walle`);
+    expect(m.alternates).toEqual({ ru: `${SITE_URL}/players/walle`, en: `${SITE_URL}/en/players/walle` });
+    expect(m.image.startsWith(SITE_URL)).toBe(true);
+  });
+
+  it("keeps placeholder pages out of search results, but not real ones", () => {
+    expect(metaFor("/rating").noindex).toBe(true);
+    expect(metaFor("/en/first-time").noindex).toBe(true);
+    expect(metaFor("/").noindex).toBe(false);
+    expect(metaFor("/players/logika").noindex).toBe(false);
+  });
+
+  it("writes player pages in the page's language, nick as written", () => {
+    expect(metaFor("/players/logika").title).toBe("Логика — игрок Mirage Mafia Club");
+    expect(metaFor("/en/players/logika").title).toBe("Логика — Mirage Mafia Club player");
+    expect(metaFor("/en/players/logika").description).toContain("Elvira Vezgeim");
+  });
+
+  it("escapes quotes and angle brackets in the HTML", () => {
+    const html = headHtml([
+      { tag: "title", text: 'A <b> "c"' },
+      { tag: "meta", attrs: { name: "description", content: 'x" onload="y' } },
+    ]);
+    expect(html).toContain("<title>A &lt;b&gt; &quot;c&quot;</title>");
+    expect(html).toContain('content="x&quot; onload=&quot;y"');
+  });
+
+  it("adds robots noindex only when asked", () => {
+    const has = (path: string) => headTags(metaFor(path)).some((t) => t.tag === "meta" && t.attrs.name === "robots");
+    expect(has("/rating")).toBe(true);
+    expect(has("/")).toBe(false);
+  });
+});

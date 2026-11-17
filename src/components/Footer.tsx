@@ -1,6 +1,7 @@
 import { CLUB_PLACE, SIGNUP_URL } from "../data/schedule";
 import { footer } from "../i18n/footer";
 import { useT } from "../i18n/lang";
+import { BUILD_TIME } from "../site";
 import "./Footer.css";
 
 const INSTAGRAM_URL = "https://instagram.com/mirage_mafia_club";
@@ -55,7 +56,7 @@ export default function Footer() {
       </div>
 
       <p className="footer__copy">
-        © {new Date().getFullYear()} Mirage Mafia Club. {t.rights}
+        © {new Date(BUILD_TIME).getFullYear()} Mirage Mafia Club. {t.rights}
       </p>
     </footer>
   );

@@ -1,17 +1,21 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { detectLang, LangContext, STORAGE_KEY, type Lang } from "./lang";
+import { useEffect, type ReactNode } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { switchLang } from "../routes";
+import { LangContext, saveLang, type Lang } from "./lang";
 
-export default function LangProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Lang>(detectLang);
+/** The language comes from the address (/en/… is English); switching it opens the same page in the other language. */
+export default function LangProvider({ lang, children }: { lang: Lang; children: ReactNode }) {
+  const navigate = useNavigate();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
     document.documentElement.lang = lang;
-    try {
-      localStorage.setItem(STORAGE_KEY, lang);
-    } catch {
-      // Ignore blocked storage; the choice just won't be remembered.
-    }
   }, [lang]);
+
+  const setLang = (next: Lang) => {
+    saveLang(next);
+    if (next !== lang) navigate(switchLang(pathname, next) + hash, { preventScrollReset: true });
+  };
 
   return <LangContext.Provider value={{ lang, setLang }}>{children}</LangContext.Provider>;
 }

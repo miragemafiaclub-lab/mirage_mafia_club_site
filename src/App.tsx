@@ -1,50 +1,77 @@
-import { useLayoutEffect, useRef, useState } from "react";
-import About from "./components/About";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import PlayerRoster from "./components/PlayerRoster";
-import Players from "./components/Players";
-import Podium from "./components/Podium";
-import Schedule from "./components/Schedule";
-import Winners from "./components/Winners";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useLocation, useNavigate } from "react-router";
+import LangProvider from "./i18n/LangProvider";
+import { savedLang } from "./i18n/lang";
+import { applyHead, headTags, pageMeta } from "./meta";
+import HomePage from "./pages/HomePage";
+import NotFoundPage from "./pages/NotFoundPage";
+import PageLayout from "./pages/PageLayout";
+import PlayerPage from "./pages/PlayerPage";
+import StubPage from "./pages/StubPage";
+import { RouteContext } from "./RouteContext";
+import { localize, resolveRoute, type Route } from "./routes";
+
+function Page({ route }: { route: Route }) {
+  switch (route.page) {
+    case "home":
+      return <HomePage />;
+    case "player":
+      return (
+        <PageLayout>
+          <PlayerPage player={route.player} />
+        </PageLayout>
+      );
+    case "notFound":
+      return (
+        <PageLayout>
+          <NotFoundPage />
+        </PageLayout>
+      );
+    default:
+      return (
+        <PageLayout>
+          <StubPage page={route.page} />
+        </PageLayout>
+      );
+  }
+}
 
 export default function App() {
-  const [rosterGroup, setRosterGroup] = useState<"chk" | "kchk" | null>(null);
-  // Page scroll position before the roster opened, restored when it closes.
-  const savedScroll = useRef(0);
-  const prevGroup = useRef(rosterGroup);
+  const { pathname, hash } = useLocation();
+  const navigate = useNavigate();
+  const route = useMemo(() => resolveRoute(pathname), [pathname]);
 
-  const openRoster = (groupId: "chk" | "kchk") => {
-    savedScroll.current = window.scrollY;
-    setRosterGroup(groupId);
-  };
+  // Title, description and link-preview tags follow the page when moving around without a reload.
+  useEffect(() => {
+    applyHead(headTags(pageMeta(route)));
+  }, [route]);
 
-  // The roster replaces the whole page: start it at the top, and return to where the user was on close.
+  // Someone who switched to English earlier gets the English home page next time.
+  useEffect(() => {
+    if (route.page === "home" && route.lang === "ru" && savedLang() === "en") {
+      navigate(localize("/", "en") + hash, { replace: true });
+    }
+    // Only on arrival: later switches go through the language switch itself.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // After moving to another page: start at the top, or at the section in the #hash.
+  const first = useRef(true);
   useLayoutEffect(() => {
-    // Only on an actual open/close, so deep links (#schedule) and reload scroll restoration still work.
-    if (prevGroup.current === rosterGroup) return;
-    prevGroup.current = rosterGroup;
-    window.scrollTo({ top: rosterGroup ? 0 : savedScroll.current, behavior: "instant" });
-  }, [rosterGroup]);
-
-  if (rosterGroup) {
-    return <PlayerRoster groupId={rosterGroup} onClose={() => setRosterGroup(null)} />;
-  }
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    const target = hash && document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (target) target.scrollIntoView();
+    else window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname, hash]);
 
   return (
-    <>
-      <Header />
-      {/* Skip-link target (Header); tabIndex lets it take focus. */}
-      <main id="main" tabIndex={-1}>
-        <Hero />
-        <About />
-        <Schedule />
-        <Players onOpenRoster={openRoster} />
-        <Winners />
-        <Podium />
-      </main>
-      <Footer />
-    </>
+    <RouteContext.Provider value={route}>
+      <LangProvider lang={route.lang}>
+        <Page route={route} />
+      </LangProvider>
+    </RouteContext.Provider>
   );
 }
