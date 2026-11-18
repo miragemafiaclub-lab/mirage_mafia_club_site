@@ -20,6 +20,8 @@
 
 .first-time__photo--main {
   width: 100%;
+  /* The <img> carries width/height attributes; without this its height attribute would win over the ratio. */
+  height: auto;
   aspect-ratio: 16 / 10;
   object-position: 50% 45%;
   border: 1px solid var(--color-line);
