@@ -1,7 +1,9 @@
+import { Link } from "react-router";
 import { CLUB_PLACE, SIGNUP_URL, TELEGRAM_URL, warsawNow } from "../data/schedule";
 import { footer } from "../i18n/footer";
 import { YOUTUBE_URL } from "../data/youtube";
-import { useT } from "../i18n/lang";
+import { useLang, useT } from "../i18n/lang";
+import { STATIC_PAGES, localize } from "../routes";
 import { BUILD_TIME } from "../site";
 import "./Footer.css";
 
@@ -14,6 +16,7 @@ const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 
 export default function Footer() {
   const t = useT(footer);
+  const { lang } = useLang();
   const links = [
     { href: SIGNUP_URL, label: t.signup },
     { href: TELEGRAM_URL, label: t.channel },
@@ -28,6 +31,10 @@ export default function Footer() {
         <div className="footer__brand">
           <p className="footer__name">Mirage Mafia Club</p>
           <p className="footer__tagline">{t.tagline}</p>
+          {/* The header has no room for a ninth item between 1361 and 1600px, so the calendar is linked here. */}
+          <Link className="footer__link" to={localize(STATIC_PAGES.tournaments, lang)}>
+            {t.tournaments} <span aria-hidden="true">→</span>
+          </Link>
         </div>
 
         <div className="footer__col">

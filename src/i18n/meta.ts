@@ -30,7 +30,8 @@ export const meta: Translations<{
     },
     tournaments: {
       title: "Турниры — Mirage Mafia Club",
-      description: "Ближайшие турниры и результаты игроков Mirage Mafia Club.",
+      description:
+        "Календарь турниров по спортивной мафии, в которых играют члены Mirage Mafia Club: Европа и онлайн, на три месяца вперёд, по данным iMafia и MafGame.",
     },
     firstTime: {
       title: "Первый раз на мафии — Mirage Mafia Club",
@@ -68,7 +69,8 @@ export const meta: Translations<{
     },
     tournaments: {
       title: "Tournaments — Mirage Mafia Club",
-      description: "Upcoming tournaments and results of Mirage Mafia Club players.",
+      description:
+        "Calendar of sports mafia tournaments Mirage Mafia Club members are playing: Europe and online, three months ahead, from iMafia and MafGame.",
     },
     firstTime: {
       title: "First time at mafia — Mirage Mafia Club",

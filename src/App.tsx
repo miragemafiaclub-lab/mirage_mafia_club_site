@@ -10,7 +10,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import PageLayout from "./pages/PageLayout";
 import PlayerPage from "./pages/PlayerPage";
 import RatingPage from "./pages/RatingPage";
-import StubPage from "./pages/StubPage";
+import TournamentsPage from "./pages/TournamentsPage";
 import { RouteContext } from "./RouteContext";
 import { localize, resolveRoute, type Route } from "./routes";
 
@@ -42,16 +42,16 @@ function Page({ route }: { route: Route }) {
           <FirstTimePage />
         </PageLayout>
       );
+    case "tournaments":
+      return (
+        <PageLayout>
+          <TournamentsPage />
+        </PageLayout>
+      );
     case "notFound":
       return (
         <PageLayout>
           <NotFoundPage />
-        </PageLayout>
-      );
-    default:
-      return (
-        <PageLayout>
-          <StubPage page={route.page} />
         </PageLayout>
       );
   }

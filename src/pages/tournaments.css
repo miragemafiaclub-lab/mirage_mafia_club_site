@@ -1,0 +1,309 @@
+/* /tournaments: upcoming tournaments with club members in them. Builds on the shared .page__* styles in pages.css. */
+
+.tournaments__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-7);
+}
+
+/* Same segmented pills as the rating's leagues. */
+.tournaments__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tournaments__filter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color var(--ease),
+    color var(--ease),
+    background var(--ease);
+}
+
+.tournaments__filter:hover {
+  border-color: var(--color-orange);
+  background: var(--color-orange-soft);
+  color: var(--color-white);
+}
+
+.tournaments__filter.is-active {
+  border-color: var(--color-orange);
+  background: var(--color-orange);
+  color: var(--btn-primary-fg);
+}
+
+.tournaments__count {
+  min-width: 22px;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.1);
+  font-size: var(--fs-label);
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.tournaments__filter.is-active .tournaments__count {
+  background: rgba(10, 10, 10, 0.18);
+}
+
+.tournaments__updated {
+  font-size: var(--fs-ui);
+  color: var(--text-3);
+}
+
+/* ---------- The list ---------- */
+
+.tournaments__list {
+  display: grid;
+  list-style: none;
+  padding: 0;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.tournament {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto;
+  gap: var(--space-5);
+  align-items: start;
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition: border-color var(--ease);
+}
+
+.tournament:hover {
+  border-color: var(--color-line-strong);
+}
+
+.tournament__date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 88px;
+  padding: var(--space-2);
+  border: 1px solid var(--color-orange);
+  border-radius: var(--radius-lg);
+  background: var(--color-orange-soft);
+  text-align: center;
+}
+
+.tournament__day {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  white-space: nowrap;
+}
+
+.tournament--online .tournament__date {
+  border-color: var(--color-line-strong);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tournament__month {
+  margin-top: var(--space-1);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.tournament--online .tournament__month {
+  color: var(--text-2);
+}
+
+.tournament__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.15;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.tournament__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-2);
+  margin-top: var(--space-2);
+  font-size: var(--fs-body);
+  color: var(--text-2);
+}
+
+.tournament__online::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-orange);
+  vertical-align: 1px;
+}
+
+.tournament__players {
+  margin-top: var(--space-4);
+}
+
+.tournament__players-title {
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.tournament__players ul,
+.tournaments__lists {
+  list-style: none;
+  padding: 0;
+}
+
+.tournament__players ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tournament__player {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 3px 12px 3px 3px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--color-white);
+  transition:
+    border-color var(--ease),
+    background var(--ease);
+}
+
+a.tournament__player:hover {
+  border-color: var(--color-orange);
+  background: var(--color-orange-soft);
+}
+
+.tournament__avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tournament__applied {
+  padding: 0 6px;
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-label);
+  font-weight: 400;
+  color: var(--text-3);
+}
+
+.tournament__source {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-white);
+  transition:
+    border-color var(--ease),
+    color var(--ease);
+}
+
+.tournament__source:hover {
+  border-color: var(--color-orange);
+  color: var(--color-orange);
+}
+
+/* ---------- Empty state and the note ---------- */
+
+.tournaments__empty {
+  margin-top: var(--space-5);
+  padding: var(--space-6);
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+}
+
+.tournaments__empty-hint {
+  margin-top: var(--space-3);
+  font-size: var(--fs-body);
+  color: var(--text-2);
+}
+
+.tournaments__lists {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.tournaments__note {
+  max-width: 70ch;
+  margin-top: var(--space-6);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-body);
+  color: var(--text-3);
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 720px) {
+  .tournaments__bar {
+    margin-top: var(--space-6);
+  }
+
+  .tournament {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .tournament__date {
+    min-height: 64px;
+  }
+
+  .tournament__day {
+    font-size: 22px;
+  }
+
+  .tournament__source {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}

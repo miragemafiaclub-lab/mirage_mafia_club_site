@@ -20,7 +20,7 @@ import { useLang, useT } from "../i18n/lang";
 import { rating as dict, type ColumnId } from "../i18n/rating";
 import { textLang } from "../i18n/translit";
 import { usePageData } from "../pageDataCache";
-import { localize } from "../routes";
+import { localize, STATIC_PAGES } from "../routes";
 import RatingLeaders from "./RatingLeaders";
 import "./rating.css";
 
@@ -86,6 +86,7 @@ function PlayerName({ row, avatar = false }: { row: Pick<RatingRow, "id" | "nick
 
 export default function RatingPage() {
   const t = useT(dict);
+  const { lang } = useLang();
   const { data, failed } = usePageData<StoredRating>("/data/rating.json");
   const leagues = useMemo(() => (data ? unpackRating(data) : null), [data]);
 
@@ -96,6 +97,9 @@ export default function RatingPage() {
           <p className="page__eyebrow">{t.eyebrow}</p>
           <h1 className="page__title">{t.title}</h1>
           <p className="page__lead">{t.lead}</p>
+          <Link className="rating__tournaments" to={localize(STATIC_PAGES.tournaments, lang)}>
+            {t.tournamentsLink} <span aria-hidden="true">→</span>
+          </Link>
         </div>
         {leagues && <RatingLeaders leagues={leagues} />}
       </header>
