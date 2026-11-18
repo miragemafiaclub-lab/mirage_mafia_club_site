@@ -3,7 +3,17 @@ import { CHK_BASE, KCHK_BASE, type RosterPlayer } from "./players";
 import index from "./player-index.json";
 
 /** Small list of everyone in the club rating, written by the sync scripts (scripts/lib/playerIndex.mjs). */
-const INDEX = index as { members: { id: string; nick: string }[]; players: { id: string; nick: string; avatar?: string }[] };
+const INDEX = index as {
+  members: { id: string; nick: string }[];
+  players: { id: string; nick: string; avatar?: string; thumb?: number }[];
+};
+
+const HAS_THUMB = new Set(INDEX.players.filter((p) => p.thumb).map((p) => p.id));
+
+/** Small round photo for tables (public/thumbs, made by scripts/make-thumbs.mjs), if there is one. */
+export function thumbFor(imafiaId: string): string | undefined {
+  return HAS_THUMB.has(imafiaId) ? `/thumbs/${imafiaId}.jpg` : undefined;
+}
 
 export type GroupId = "chk" | "kchk";
 

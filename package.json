@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "sync-rating": "node scripts/sync-rating.mjs",
     "sync-profiles": "node scripts/sync-profiles.mjs",
+    "thumbs": "node scripts/make-thumbs.mjs",
     "sync-podium": "node scripts/sync-podium.mjs",
     "test": "vitest run"
   },
