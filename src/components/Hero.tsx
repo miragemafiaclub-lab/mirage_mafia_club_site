@@ -59,6 +59,18 @@ export default function Hero() {
           {t.leadText}
         </p>
 
+        {/* Until the page is live the next game is unknown: an invisible line of the same shape holds its place,
+            so the hero text does not jump up when it appears (the hero is bottom-aligned). */}
+        {!hydrated && (
+          <p className="hero__next is-pending" aria-hidden="true">
+            <span className="hero__next-dot" />
+            {t.nextLabel}:{" "}
+            <span className="hero__next-value">
+              {[t.tomorrow, "~18:30", CLUB_PLACE.address.split(",")[0]].join(", ")} · {t.fromPrice(MIN_PRICE_ZL)}
+            </span>
+          </p>
+        )}
+
         {game && gameLine && (
           <p className="hero__next">
             <span className="hero__next-dot" aria-hidden="true" />

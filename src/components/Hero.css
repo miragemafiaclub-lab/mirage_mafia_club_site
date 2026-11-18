@@ -88,6 +88,10 @@
   color: var(--text-2);
 }
 
+.hero__next.is-pending {
+  visibility: hidden;
+}
+
 .hero__next-value {
   color: var(--color-white);
 }

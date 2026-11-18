@@ -77,9 +77,9 @@ function Shot({ month, onGone }: { month: WinnerMonth; onGone?: () => void }) {
   return (
     <div className={`winners__shot${onGone ? " is-leaving" : ""}`} onAnimationEnd={onGone}>
       {winner?.photo ? (
-        <img src={winner.photo} alt={onGone ? "" : t.photoAlt(winner.nick)} draggable={false} />
+        <img src={winner.photo} alt={onGone ? "" : t.photoAlt(winner.nick)} width={360} height={480} draggable={false} />
       ) : (
-        <img className="winners__frame-logo" src={logo} alt="" draggable={false} />
+        <img className="winners__frame-logo" src={logo} alt="" width={480} height={480} draggable={false} />
       )}
     </div>
   );
@@ -213,7 +213,7 @@ export default function Winners() {
     <div className="winners-page">
       <section className="winners" id="winners">
         <div className="winners__bg" aria-hidden="true">
-          <img className="winners__watermark-logo" src={logo} alt="" loading="lazy" decoding="async" />
+          <img className="winners__watermark-logo" src={logo} alt="" width={480} height={480} loading="lazy" decoding="async" />
           <span className="winners__ring" />
         </div>
 
@@ -364,6 +364,8 @@ export default function Winners() {
                   <img
                     src={month.winner.photo}
                     alt={t.archivePhotoAlt(month.winner.nick, t.months[month.month])}
+                    width={360}
+                    height={480}
                     loading="lazy"
                     decoding="async"
                   />
