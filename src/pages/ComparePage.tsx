@@ -167,15 +167,12 @@ function Suggestions({ pairs }: { pairs: ComparePair[] }) {
             <Link
               className="compare__chip"
               to={`${base}?a=${encodeURIComponent(pair.a)}&b=${encodeURIComponent(pair.b)}`}
-              aria-label={`${t.pairKinds[pair.kind]}: ${t.pairLabel(pair.pa.nick, pair.pb.nick)}`}
               preventScrollReset
             >
               <span className="compare__chip-kind">{t.pairKinds[pair.kind]}</span>
               <span className="compare__chip-pair">
                 <span lang={textLang(pair.pa.nick)}>{pair.pa.nick}</span>
-                <span className="compare__chip-vs" aria-hidden="true">
-                  vs
-                </span>
+                <span className="compare__chip-vs"> vs </span>
                 <span lang={textLang(pair.pb.nick)}>{pair.pb.nick}</span>
               </span>
             </Link>

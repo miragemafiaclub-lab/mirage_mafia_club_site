@@ -27,7 +27,6 @@ export const compare: Translations<{
   go: string;
   suggest: string;
   pairKinds: Record<"annual" | "month" | "leaders" | "winners", string>;
-  pairLabel: (a: string, b: string) => string;
   slotHint: string;
 }> = {
   ru: {
@@ -62,7 +61,6 @@ export const compare: Translations<{
       leaders: "Лидер года и лидер месяца",
       winners: "Два последних игрока месяца",
     },
-    pairLabel: (a, b) => `Сравнить ${a} и ${b}`,
     slotHint: "Выберите игрока",
   },
   en: {
@@ -97,7 +95,6 @@ export const compare: Translations<{
       leaders: "Leader of the year vs. of the month",
       winners: "Last two players of the month",
     },
-    pairLabel: (a, b) => `Compare ${a} and ${b}`,
     slotHint: "Pick a player",
   },
 };
