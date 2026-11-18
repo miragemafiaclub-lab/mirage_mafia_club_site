@@ -41,11 +41,29 @@ export const profile: Translations<{
     download: string;
     share: string;
     close: string;
-    monthLabel: (month: string) => string;
-    annualLabel: (year: string) => string;
+    monthPlace: (place: number) => string;
+    annualPlace: (place: number, year: string) => string;
+    perGame: string;
+    wins: string;
+    asDon: string;
+    asSheriff: string;
+    extraPerGame: string;
+    winRate: string;
+  };
+  card: {
+    title: string;
+    label: (month: string) => string;
+    avg: string;
+    place: (n: number) => string;
+    of: (n: number) => string;
+    uncounted: string;
     games: string;
     wins: string;
     winRate: string;
+    extraPerGame: string;
+    don: string;
+    sheriff: string;
+    open: string;
   };
   compareWith: string;
 }> = {
@@ -96,11 +114,29 @@ export const profile: Translations<{
       download: "Скачать",
       share: "Поделиться",
       close: "Закрыть",
-      monthLabel: (month) => `в рейтинге клуба · ${month}`,
-      annualLabel: (year) => `в годовом рейтинге ${year}`,
-      games: "игр",
+      monthPlace: (place) => `${place} место в рейтинге месяца`,
+      annualPlace: (place, year) => `${place} место в годовом рейтинге ${year}`,
+      perGame: "за игру",
       wins: "побед",
+      asDon: "доном",
+      asSheriff: "шерифом",
+      extraPerGame: "доп. за игру",
       winRate: "винрейт",
+    },
+    card: {
+      title: "Карточка месяца",
+      label: (month) => `Рейтинг месяца · ${month}`,
+      avg: "Ср.",
+      place: (n) => `${n} место`,
+      of: (n) => `из ${n}`,
+      uncounted: "вне зачёта",
+      games: "Игр",
+      wins: "Побед",
+      winRate: "Винрейт",
+      extraPerGame: "Доп/игра",
+      don: "Дон",
+      sheriff: "Шериф",
+      open: "Открыть таблицу месяца",
     },
     compareWith: "Сравнить с другим игроком",
   },
@@ -145,11 +181,29 @@ export const profile: Translations<{
       download: "Download",
       share: "Share",
       close: "Close",
-      monthLabel: (month) => `in the club rating · ${month}`,
-      annualLabel: (year) => `in the annual rating ${year}`,
-      games: "games",
+      monthPlace: (place) => `Place ${place} in the monthly rating`,
+      annualPlace: (place, year) => `Place ${place} in the annual rating ${year}`,
+      perGame: "per game",
       wins: "wins",
+      asDon: "as Don",
+      asSheriff: "as Sheriff",
+      extraPerGame: "extra per game",
       winRate: "win rate",
+    },
+    card: {
+      title: "Card of the month",
+      label: (month) => `Monthly rating · ${month}`,
+      avg: "Avg",
+      place: (n) => `Place ${n}`,
+      of: (n) => `of ${n}`,
+      uncounted: "not counted",
+      games: "Games",
+      wins: "Wins",
+      winRate: "Win rate",
+      extraPerGame: "Ex/game",
+      don: "Don",
+      sheriff: "Sheriff",
+      open: "Open the month's table",
     },
     compareWith: "Compare with another player",
   },

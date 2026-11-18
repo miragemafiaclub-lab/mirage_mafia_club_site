@@ -126,6 +126,7 @@
     .players__cta,
     .page__back,
     .roster__back,
+    .row-details__profile,
     .rating__meta a,
     .player-page__link,
     .first-time__link,
@@ -143,7 +144,8 @@
     a.schedule-next__cta,
     .winners__cta,
     .page__btn,
-    .players__cta
+    .players__cta,
+    .row-details__profile
   ):is(:hover, :focus-visible)
   > span[aria-hidden="true"] {
   transform: translateX(4px);

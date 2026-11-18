@@ -1,0 +1,264 @@
+/* Home: "Best players of <month>", right after the players. Same tokens as the other home sections. */
+
+.month-top {
+  background: var(--color-bg);
+  color: var(--color-white);
+  padding: var(--section-y) var(--side-padding);
+  border-top: 1px solid var(--color-line);
+}
+
+.month-top__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: var(--space-6) var(--space-8);
+  max-width: var(--container-width);
+  margin-inline: auto;
+}
+
+.month-top__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.month-top__eyebrow::after {
+  content: "";
+  flex: 0 1 80px;
+  height: 1px;
+  background: var(--color-orange);
+}
+
+.month-top__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+}
+
+.month-top__lead {
+  max-width: 46ch;
+  margin-top: var(--space-4);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--text-2);
+}
+
+.month-top__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.month-top__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--btn-h);
+  padding: var(--btn-pad);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  color: var(--color-white);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  transition:
+    background var(--ease),
+    border-color var(--ease),
+    color var(--ease),
+    transform var(--ease),
+    box-shadow var(--ease);
+}
+
+.month-top__btn:is(:hover, :focus-visible) {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--btn-primary-fg);
+  transform: translateY(-1px);
+}
+
+.month-top__btn--primary {
+  border-color: var(--color-orange);
+  background: var(--color-orange);
+  color: var(--btn-primary-fg);
+}
+
+.month-top__btn--primary:is(:hover, :focus-visible) {
+  border-color: var(--color-orange-hover);
+  background: var(--color-orange-hover);
+  box-shadow: 0 10px 24px rgba(242, 96, 12, 0.28);
+}
+
+.month-top__btn > span[aria-hidden="true"] {
+  display: inline-block;
+  transition: transform var(--ease);
+}
+
+.month-top__btn:is(:hover, :focus-visible) > span[aria-hidden="true"] {
+  transform: translateX(4px);
+}
+
+.month-top__list {
+  display: grid;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.month-top__item {
+  --medal: var(--text-3);
+}
+
+.month-top__item.is-top-1 {
+  --medal: var(--medal-1);
+}
+
+.month-top__item.is-top-2 {
+  --medal: var(--medal-2);
+}
+
+.month-top__item.is-top-3 {
+  --medal: var(--medal-3);
+}
+
+.month-top__row {
+  display: grid;
+  grid-template-columns: 34px 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 64px;
+  padding: 10px var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition:
+    border-color var(--ease),
+    transform var(--ease),
+    background var(--ease);
+}
+
+.month-top__item.is-top-1 .month-top__row {
+  border-color: color-mix(in srgb, var(--medal-1) 55%, transparent);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--medal-1) 14%, transparent), transparent 60%),
+    var(--color-surface);
+}
+
+a.month-top__row:is(:hover, :focus-visible) {
+  border-color: var(--color-orange);
+  transform: translateX(3px);
+}
+
+a.month-top__row:is(:hover, :focus-visible) .month-top__nick {
+  color: var(--color-orange-hover);
+}
+
+.month-top__place {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1;
+  text-align: center;
+  color: var(--medal);
+}
+
+.month-top__photo {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 50%;
+  background: var(--color-line);
+  font-family: var(--font-display);
+  color: var(--text-2);
+}
+
+.month-top__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.month-top__who {
+  display: grid;
+  min-width: 0;
+}
+
+.month-top__nick {
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--ease);
+}
+
+.month-top__sub {
+  font-size: var(--fs-label);
+  color: var(--text-3);
+}
+
+.month-top__value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.month-top__value small {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+/* The rows slide in once, one after another, when the list scrolls into view (JS on, motion allowed). */
+@media (prefers-reduced-motion: no-preference) {
+  .js .month-top__list:not(.is-in) .month-top__item {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .month-top__item {
+    transition:
+      opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@media (max-width: 860px) {
+  .month-top__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .month-top__row {
+    grid-template-columns: 24px 40px minmax(0, 1fr) auto;
+    gap: var(--space-2);
+    padding-inline: var(--space-3);
+  }
+
+  .month-top__photo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .month-top__btn {
+    flex: 1 1 100%;
+  }
+}

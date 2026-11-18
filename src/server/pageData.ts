@@ -4,6 +4,7 @@ import { buildPlayerStats, type ProfileRecord } from "../data/playerStats";
 import profilesJson from "../data/profiles.json";
 import { unpackRating, type StoredRating } from "../data/rating";
 import ratingJson from "../data/rating.json";
+import { monthTop } from "../data/ratingView";
 import winnersJson from "../data/winners.json";
 import { pageDataUrl } from "../pageDataUrl";
 import type { Route } from "../routes";
@@ -14,6 +15,8 @@ const profiles = profilesJson as unknown as Record<string, ProfileRecord>;
 export function pageDataFor(route: Route): { url: string; data: unknown } | null {
   const url = pageDataUrl(route);
   if (!url) return null;
+  // A few hundred bytes for the home page instead of the whole rating.
+  if (route.page === "home") return { url, data: monthTop(unpackRating(rating)) };
   if (route.page === "rating") return { url, data: rating };
   if (route.page === "compare") return { url, data: suggestedPairs(unpackRating(rating), winnersJson) };
   if (route.page === "player" && route.player.imafiaId) {
