@@ -1,12 +1,14 @@
 import { Fragment, useId, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { playerByImafiaId, thumbFor } from "../data/playerDirectory";
+import { clubRecords, recordsSince } from "../data/records";
 import { IMAFIA_CLUB_URL, unpackRating, type League, type RatingRow, type Season, type StoredRating } from "../data/rating";
 import {
   filterRows,
   formatDate,
   formatNumber,
   leagueLabel,
+  monthLabel,
   pickSelection,
   placeChange,
   seasonLabel,
@@ -57,7 +59,7 @@ export function Avatar({ id, nick }: { id: string; nick: string }) {
   );
 }
 
-function PlayerName({ row, avatar = false }: { row: RatingRow; avatar?: boolean }) {
+function PlayerName({ row, avatar = false }: { row: Pick<RatingRow, "id" | "nick">; avatar?: boolean }) {
   const { lang } = useLang();
   const player = playerByImafiaId(row.id);
   const nick = (
@@ -86,7 +88,10 @@ export default function RatingPage() {
       <h1 className="page__title">{t.title}</h1>
       <p className="page__lead">{t.lead}</p>
       {leagues && data ? (
-        <RatingTables leagues={leagues} updatedAt={data.updatedAt} />
+        <>
+          <RatingTables leagues={leagues} updatedAt={data.updatedAt} />
+          <ClubRecords leagues={leagues} />
+        </>
       ) : (
         <p className="rating__empty" role="status">
           {failed ? t.loadFailed : t.loading}
@@ -270,5 +275,41 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
         <p>{t.legendArrows}</p>
       </details>
     </>
+  );
+}
+
+/** The club's records over all monthly ratings: the same for every league and season, so outside the table's controls. */
+function ClubRecords({ leagues }: { leagues: League[] }) {
+  const t = useT(dict);
+  const { lang } = useLang();
+  const records = useMemo(() => clubRecords(leagues), [leagues]);
+  const since = recordsSince(leagues);
+  if (!records.length || !since) return null;
+
+  return (
+    <section className="records" aria-labelledby="records-title">
+      <h2 className="records__title" id="records-title">
+        {t.recordsTitle}
+      </h2>
+      <p className="records__lead">{t.recordsLead(`${t.monthsSince[since.month]} ${since.year}`)}</p>
+      <ul className="records__grid">
+        {records.map((record) => (
+          <li className="records__card" key={record.id}>
+            <h3 className="records__label">{t.records[record.id]}</h3>
+            <p className="records__value">{record.id === "mvp" ? t.times(record.value) : formatNumber(record.value)}</p>
+            <ul className="records__holders">
+              {record.holders.map((holder) => (
+                <li key={`${holder.id}-${holder.month}-${holder.year}`}>
+                  <PlayerName row={holder} avatar />
+                  {holder.month !== null && holder.year !== null && (
+                    <span className="records__when">{monthLabel(holder.month, holder.year, lang)}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

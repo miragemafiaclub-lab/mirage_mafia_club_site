@@ -18,6 +18,11 @@ describe("prerender", () => {
     expect(html).toContain("players-card");
   });
 
+  it("shows the club records under the rating, in both languages", () => {
+    expect(render("/rating").html).toContain("Рекорды клуба");
+    expect(render("/en/rating").html).toContain("Club records");
+  });
+
   it("puts the whole first-visit guide into the HTML, in both languages", () => {
     const ru = render("/first-time");
     expect(ru.noindex).toBe(false);

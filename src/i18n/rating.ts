@@ -1,3 +1,4 @@
+import type { RecordId } from "../data/records";
 import type { Translations } from "./lang";
 
 /** Rating columns, in table order. `short` is the header, `full` the tooltip and the legend. */
@@ -35,6 +36,14 @@ export const rating: Translations<{
   same: string;
   legendTitle: string;
   legendArrows: string;
+  recordsTitle: string;
+  /** "По месячным рейтингам с февраля 2026": where the records come from. */
+  recordsLead: (since: string) => string;
+  records: Record<RecordId, string>;
+  /** Value of the MVP record: "2 раза". */
+  times: (n: number) => string;
+  /** Month names for "since …" (0 = January): "февраля". */
+  monthsSince: string[];
   mvp: string;
   loading: string;
   loadFailed: string;
@@ -79,6 +88,23 @@ export const rating: Translations<{
     same: "Без изменений",
     legendTitle: "Что значат колонки",
     legendArrows: "Стрелки — как изменилось место с прошлого обновления таблицы.",
+    recordsTitle: "Рекорды клуба",
+    recordsLead: (since) => `Лучшие результаты в месячных рейтингах клуба на iMafia с ${since}.`,
+    records: {
+      points: "Больше всего баллов за месяц",
+      wins: "Больше всего побед за месяц",
+      games: "Больше всего игр за месяц",
+      extra: "Больше всего доп. баллов за месяц",
+      extraPerGame: "Лучший доп. балл за игру за месяц",
+      mvp: "Чаще всех MVP месяца",
+    },
+    times: (n) => {
+      const mod10 = n % 10;
+      const mod100 = n % 100;
+      const word = mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? "раза" : "раз";
+      return `${n} ${word}`;
+    },
+    monthsSince: ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"],
     mvp: "MVP сезона",
     loading: "Загружаем рейтинг…",
     loadFailed: "Не удалось загрузить рейтинг. Обновите страницу.",
@@ -123,6 +149,18 @@ export const rating: Translations<{
     same: "No change",
     legendTitle: "What the columns mean",
     legendArrows: "Arrows show how the place changed since the table's previous update.",
+    recordsTitle: "Club records",
+    recordsLead: (since) => `Best results in the club's monthly iMafia ratings since ${since}.`,
+    records: {
+      points: "Most points in a month",
+      wins: "Most wins in a month",
+      games: "Most games in a month",
+      extra: "Most extra points in a month",
+      extraPerGame: "Best extra points per game in a month",
+      mvp: "Most times MVP of the month",
+    },
+    times: (n) => (n === 1 ? "once" : `${n} times`),
+    monthsSince: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     mvp: "Season MVP",
     loading: "Loading the rating…",
     loadFailed: "Could not load the rating. Please reload the page.",
