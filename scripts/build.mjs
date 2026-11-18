@@ -31,6 +31,7 @@ for (const marker of ["<!--head-start-->", "<!--head-end-->", "<!--app-html-->",
 
 const indexable = [];
 const paths = prerenderPaths();
+const dataFiles = new Map();
 for (const path of paths) {
   const page = render(path);
   // A page without a heading means something rendered empty: stop the deploy rather than publish it.
@@ -38,7 +39,16 @@ for (const path of paths) {
   const html = template
     .replace('<html lang="ru">', `<html lang="${page.lang}">`)
     .replace(/<!--head-start-->[\s\S]*?<!--head-end-->/, page.head)
-    .replace("<!--app-html-->", page.html);
+    .replace("<!--app-html-->", page.html)
+    // The page's own data (rating, player stats), so the browser does not fetch it again. "<" is escaped
+    // so the JSON can never close the <script> early.
+    .replace(
+      "</body>",
+      page.pageData
+        ? `<script type="application/json" id="page-data">${JSON.stringify(page.pageData).replace(/</g, "\\u003c")}</script>\n  </body>`
+        : "</body>",
+    );
+  if (page.pageData) dataFiles.set(page.pageData.url, page.pageData.data);
   // "/rating" → rating.html: served at the clean address by Vercel (cleanUrls) and by `vite preview`.
   const file = path === "/" ? join(dist, "index.html") : join(dist, `${path.slice(1)}.html`);
   await mkdir(dirname(file), { recursive: true });
@@ -46,7 +56,14 @@ for (const path of paths) {
   if (!page.noindex) indexable.push(path);
 }
 
-// 4. For search engines: which pages exist, and where that list is.
+// 4. The same data as files, for moving between pages without a reload (src/pageData.tsx).
+for (const [url, data] of dataFiles) {
+  const file = join(dist, url.slice(1));
+  await mkdir(dirname(file), { recursive: true });
+  await writeFile(file, JSON.stringify(data));
+}
+
+// 5. For search engines: which pages exist, and where that list is.
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${indexable.map((path) => `  <url><loc>${SITE_URL}${path}</loc></url>`).join("\n")}

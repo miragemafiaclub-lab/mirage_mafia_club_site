@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { LEAGUES, type RatingRow, type Season } from "./rating";
+import { unpackRating, type RatingRow, type Season, type StoredRating } from "./rating";
+import ratingJson from "./rating.json";
+
+const LEAGUES = unpackRating(ratingJson as StoredRating);
 import { filterRows, formatDate, formatNumber, leagueLabel, pickSelection, placeChange, seasonLabel } from "./ratingView";
 
 const row = (place: number, nick: string, prevPlace?: number): RatingRow =>

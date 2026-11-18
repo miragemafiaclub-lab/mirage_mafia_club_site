@@ -1,16 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import CalendarIcon from "./CalendarIcon";
+import { useEffect, useRef } from "react";
+import { Link } from "react-router";
 import "./PlayerRoster.css";
 import { useLang, useT } from "../i18n/lang";
 import { displayName } from "../i18n/translit";
 import { players as playersDict } from "../i18n/players";
-import {
-  CHK_BASE,
-  KCHK_BASE,
-  PLACEHOLDER_BIO,
-  playerTitle,
-  type RosterPlayer,
-} from "../data/players";
+import { rosterPlayer } from "../data/playerDirectory";
+import { CHK_BASE, KCHK_BASE, playerTitle, type RosterPlayer } from "../data/players";
+import { localize } from "../routes";
 
 type GroupId = "chk" | "kchk";
 
@@ -18,8 +14,6 @@ const ROSTER_PLAYERS: Record<GroupId, RosterPlayer[]> = {
   chk: CHK_BASE,
   kchk: KCHK_BASE,
 };
-
-const PANEL_ID = "roster-profile";
 
 /**
  * Full-page list of a group's players. Behaves like a dialog over the main page:
@@ -37,11 +31,8 @@ export default function PlayerRoster({
   const { lang } = useLang();
   const copy = t.groups[groupId];
   const players = ROSTER_PLAYERS[groupId];
-  const [selected, setSelected] = useState<RosterPlayer | null>(null);
 
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const panelRef = useRef<HTMLElement>(null);
-  const openerRef = useRef<HTMLButtonElement | null>(null);
   // True while our history entry is the current one. A ref, so React StrictMode's
   // second mount in dev does not push a second entry.
   const pushedRef = useRef(false);
@@ -98,28 +89,12 @@ export default function PlayerRoster({
     headingRef.current?.focus({ preventScroll: true });
   }, []);
 
-  function openProfile(player: RosterPlayer, card: HTMLButtonElement) {
-    openerRef.current = card;
-    setSelected(player);
-  }
-
-  function closeProfile() {
-    setSelected(null);
-    openerRef.current?.focus();
-  }
-
-  const selectedNick = selected?.nick;
-  useEffect(() => {
-    if (selectedNick) panelRef.current?.focus();
-  }, [selectedNick]);
-
-  // Esc closes the profile first, then the roster itself.
+  // Esc closes the roster.
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key !== "Escape" || event.defaultPrevented) return;
       event.preventDefault();
-      if (selected) closeProfile();
-      else close();
+      close();
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
@@ -145,15 +120,14 @@ export default function PlayerRoster({
         </div>
       </div>
 
-      <div className={`roster__grid${selected ? " roster__grid--narrow" : ""}`}>
+      <div className="roster__grid">
         {players.map((player) => (
-          <button
-            type="button"
+          // replace: the profile takes the roster's own history entry, so Back returns to the home page.
+          <Link
             className="roster-card"
             key={player.nick}
-            aria-expanded={selected?.nick === player.nick}
-            aria-controls={PANEL_ID}
-            onClick={(event) => openProfile(player, event.currentTarget)}
+            to={localize(`/players/${rosterPlayer(player.nick)?.slug ?? ""}`, lang)}
+            replace
           >
             <div className="roster-card__photo" aria-hidden="true">
               {player.photo ? <img src={player.photo} alt="" loading="lazy" decoding="async" /> : <span>{player.nick.charAt(0)}</span>}
@@ -179,49 +153,10 @@ export default function PlayerRoster({
                 </span>
               </div>
             </div>
-          </button>
+          </Link>
         ))}
       </div>
 
-      {selected && (
-        <aside
-          className="roster__panel"
-          id={PANEL_ID}
-          ref={panelRef}
-          tabIndex={-1}
-          aria-labelledby={`${PANEL_ID}-nick`}
-        >
-          <button type="button" className="roster__panel-close" onClick={closeProfile} aria-label={t.closeProfile}>
-            ×
-          </button>
-
-          <div className="roster__panel-head">
-            <div className="roster__panel-photo" aria-hidden="true">
-              {selected.photo ? <img src={selected.photo} alt="" loading="lazy" decoding="async" /> : <span>{selected.nick.charAt(0)}</span>}
-            </div>
-
-            <div>
-              <h2 id={`${PANEL_ID}-nick`}>{selected.nick}</h2>
-              <p className="roster__panel-name">{displayName(selected.name, lang) || " "}</p>
-              {playerTitle(selected) && <span className="roster__panel-badge">{playerTitle(selected)}</span>}
-            </div>
-          </div>
-
-          <p className="roster__panel-joined">
-            <CalendarIcon />
-            <span>
-              {t.joined} <strong>{selected.joinedAt}</strong>
-            </span>
-          </p>
-
-          <div className="roster__panel-body">
-            <h3>{t.about}</h3>
-            {(selected.bio ?? [PLACEHOLDER_BIO[lang]]).map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </div>
-        </aside>
-      )}
     </div>
   );
 }

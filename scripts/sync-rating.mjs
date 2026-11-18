@@ -5,6 +5,7 @@ import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { assignYears, parseLeagues, parseMembers, parseMvp, parseProfile, parseRatingTable } from "./lib/imafia.mjs";
+import { writePlayerIndex } from "./lib/playerIndex.mjs";
 import { mergeSeason, newWinners } from "./lib/rating.mjs";
 
 const SITE = "https://imafia.org";
@@ -112,6 +113,7 @@ async function main() {
   // Compact (no indentation): it is the biggest data file and nobody edits it by hand.
   await writeJson(ratingFile, { updatedAt: changed ? now.toISOString() : old.updatedAt, ...next }, 0);
   await writeJson(winnersFile, Object.fromEntries(Object.entries(winners).sort(([a], [b]) => a.localeCompare(b))));
+  await writePlayerIndex();
   console.log(changed ? `Saved ${total} rating rows` : "Rating unchanged");
 }
 

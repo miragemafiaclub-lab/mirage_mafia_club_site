@@ -9,6 +9,8 @@ export type HeadTag = { tag: "title"; text: string } | { tag: "meta" | "link"; a
 
 /** Pages that are placeholders for now: kept out of search results until they get real content. */
 const NOT_READY = new Set<Route["page"]>(["tournaments", "firstTime"]);
+/** Pages whose content depends on the address (?a=…&b=…): nothing worth indexing on its own. */
+const NO_INDEX = new Set<Route["page"]>(["compare"]);
 
 const DEFAULT_IMAGE = { url: "/og-image.jpg", width: "1200", height: "630" };
 
@@ -38,7 +40,7 @@ export function pageMeta(route: Route): PageMeta {
     type: "website" as const,
     locale: t.locale,
     altLocale: dict[other].locale,
-    noindex: NOT_READY.has(route.page) || route.page === "notFound",
+    noindex: NOT_READY.has(route.page) || NO_INDEX.has(route.page) || route.page === "notFound",
   };
 
   switch (route.page) {
@@ -63,6 +65,7 @@ export function pageMeta(route: Route): PageMeta {
     case "rating":
     case "tournaments":
     case "firstTime":
+    case "compare":
     case "notFound":
       return { ...base, ...t[route.page] };
   }

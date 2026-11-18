@@ -1,0 +1,56 @@
+.month-chart__scroll {
+  overflow-x: auto;
+}
+
+.month-chart__svg {
+  display: block;
+  max-width: none;
+  font-family: var(--font-body);
+}
+
+.month-chart__grid line {
+  stroke: var(--color-line);
+  stroke-width: 1;
+}
+
+.month-chart__grid text,
+.month-chart__label {
+  fill: var(--text-3);
+  font-size: 11px;
+}
+
+.month-chart__bar {
+  cursor: default;
+  outline: none;
+}
+
+.month-chart__bar path {
+  fill: var(--color-orange);
+  transition: fill var(--ease);
+}
+
+.month-chart__bar.is-uncounted path {
+  fill: rgba(242, 96, 12, 0.45);
+}
+
+.month-chart__bar.is-active path {
+  fill: var(--color-orange-hover);
+}
+
+.month-chart__bar:focus-visible .month-chart__label {
+  fill: var(--color-white);
+  text-decoration: underline;
+}
+
+.month-chart__value {
+  fill: var(--color-white);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.month-chart__tip {
+  min-height: 1.6em;
+  margin-top: var(--space-2);
+  font-size: var(--fs-ui);
+  color: var(--text-2);
+}

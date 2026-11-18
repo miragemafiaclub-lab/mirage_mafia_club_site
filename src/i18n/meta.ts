@@ -7,6 +7,7 @@ export const meta: Translations<{
   rating: { title: string; description: string };
   tournaments: { title: string; description: string };
   firstTime: { title: string; description: string };
+  compare: { title: string; description: string };
   notFound: { title: string; description: string };
   player: {
     title: (nick: string) => string;
@@ -34,6 +35,10 @@ export const meta: Translations<{
     firstTime: {
       title: "Первый раз на мафии — Mirage Mafia Club",
       description: "Как проходит игровой вечер в Mirage Mafia Club, сколько стоит, где нас найти и как записаться в первый раз.",
+    },
+    compare: {
+      title: "Сравнение игроков — Mirage Mafia Club",
+      description: "Сравните двух игроков Mirage Mafia Club: места в рейтинге, игры, победы и роли.",
     },
     notFound: {
       title: "Страница не найдена — Mirage Mafia Club",
@@ -68,6 +73,10 @@ export const meta: Translations<{
     firstTime: {
       title: "First time at mafia — Mirage Mafia Club",
       description: "What a game night at Mirage Mafia Club looks like, what it costs, how to find us and how to sign up for your first game.",
+    },
+    compare: {
+      title: "Compare players — Mirage Mafia Club",
+      description: "Compare two Mirage Mafia Club players: rating places, games, wins and roles.",
     },
     notFound: {
       title: "Page not found — Mirage Mafia Club",

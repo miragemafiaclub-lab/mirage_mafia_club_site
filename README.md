@@ -32,6 +32,7 @@ npm run preview    # посмотреть собранный сайт на http:
 | Адреса страниц, RU (`/…`) и EN (`/en/…`) | `src/routes.ts` |
 | Заголовки, описания и превью страниц | `src/meta.ts`, тексты в `src/i18n/meta.ts` |
 | Адрес сайта (одна настройка) | переменная `SITE_URL`, см. `docs/decisions/0003-site-url.md` |
+| Рейтинг, профили iMafia (данные) | `src/data/rating.json`, `src/data/profiles.json` — пишут скрипты, руками не править |
 | Почему сделано так, а не иначе | `docs/decisions/` |
 | Игроки клуба (ЧК и КЧК), фото, даты вступления | `src/data/players.ts` |
 | Победители месяца | `src/data/winners.ts` |
@@ -54,6 +55,7 @@ npm run preview    # посмотреть собранный сайт на http:
 
 ```bash
 npm run sync-rating    # рейтинг клуба и игрок месяца
+npm run sync-profiles  # статистика из профилей iMafia (до 25 профилей за запуск)
 npm run sync-podium    # пьедестал победителей
 ```
 

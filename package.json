@@ -9,6 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "sync-rating": "node scripts/sync-rating.mjs",
+    "sync-profiles": "node scripts/sync-profiles.mjs",
     "sync-podium": "node scripts/sync-podium.mjs",
     "test": "vitest run"
   },

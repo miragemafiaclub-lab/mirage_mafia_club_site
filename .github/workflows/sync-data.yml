@@ -26,12 +26,14 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run sync-rating
+      # A few iMafia profiles per day (roles, prize places, guests' avatars): docs/decisions/0005-profile-sync.md
+      - run: npm run sync-profiles
       - run: npm run sync-podium
       # Never publish data that breaks the site.
       - run: npm run build
       - name: Commit changes
         run: |
-          git add -A src/data public/winners
+          git add -A src/data public/winners public/players
           if git diff --cached --quiet; then
             echo "Data unchanged, nothing to deploy."
             exit 0

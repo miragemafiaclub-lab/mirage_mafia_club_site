@@ -51,7 +51,7 @@ describe("prerenderPaths", () => {
 
   it("lists every page once in both languages", () => {
     expect(new Set(paths).size).toBe(paths.length);
-    expect(paths.length).toBe(2 * (4 + CLUB_PLAYERS.length));
+    expect(paths.length).toBe(2 * (5 + CLUB_PLAYERS.length));
     expect(paths).toContain("/");
     expect(paths).toContain("/en/first-time");
   });

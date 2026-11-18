@@ -15,7 +15,6 @@ export const players: Translations<{
   joined: string;
   prevPlayers: string;
   nextPlayers: string;
-  closeProfile: string;
   about: string;
   back: string;
   footerCity: string;
@@ -43,7 +42,6 @@ export const players: Translations<{
     joined: "В клубе с",
     prevPlayers: "Предыдущие игроки",
     nextPlayers: "Следующие игроки",
-    closeProfile: "Закрыть профиль",
     about: "О себе",
     back: "Назад",
     footerCity: "Варшава · с 2023 года",
@@ -71,7 +69,6 @@ export const players: Translations<{
     joined: "Member since",
     prevPlayers: "Previous players",
     nextPlayers: "Next players",
-    closeProfile: "Close profile",
     about: "About",
     back: "Back",
     footerCity: "Warsaw · Est. 2023",
