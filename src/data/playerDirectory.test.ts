@@ -24,6 +24,18 @@ describe("buildDirectory", () => {
     ]);
     expect(dir.map((p) => p.slug)).toEqual(["mir", "mir-2", "mir-777", "player"]);
   });
+
+  it("never hands out a slug twice, even when a nick already looks like a numbered one", () => {
+    const dir = buildDirectory([
+      { nick: "Мир", group: "chk" },
+      { nick: "Mir", group: "kchk" },
+      { nick: "Mir 2", group: "guest", imafiaId: "9" },
+      { nick: "Mir 777", group: "guest", imafiaId: "10" },
+      { nick: "МИР", group: "guest", imafiaId: "777" },
+    ]);
+    const slugs = dir.map((p) => p.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
 });
 
 describe("the club's directory", () => {
