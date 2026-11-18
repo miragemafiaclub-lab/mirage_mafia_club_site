@@ -85,11 +85,18 @@ function SocialLinks({ className }: { className: string }) {
   );
 }
 
-/** Id of the section currently in the middle of the viewport (null on the hero or before any section). */
-function useActiveSection() {
-  const [active, setActive] = useState<string | null>(null);
+/**
+ * Id of the home-page section currently in the middle of the viewport (null on the hero or before any section).
+ * Only the home page has these sections: elsewhere the footer (#contact) would light up "Contacts" next to the
+ * current page's item, so the spy is off there and nothing is highlighted. `path` keys the result to one page view:
+ * a highlight left from an earlier visit is never shown after coming back.
+ */
+function useActiveSection(enabled: boolean, path: string) {
+  const [spied, setSpied] = useState<{ path: string; id: string } | null>(null);
 
   useEffect(() => {
+    if (!enabled) return;
+    const setActive = (id: string) => setSpied({ path, id });
     // Sections are siblings of the header, so they exist by the time this effect runs; missing ids are skipped.
     const sections = SPY_IDS.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
     if (sections.length === 0 || typeof IntersectionObserver === "undefined") return;
@@ -131,17 +138,17 @@ function useActiveSection() {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [enabled, path]);
 
-  return active;
+  return enabled && spied?.path === path ? spied.id : null;
 }
 
 export default function Header() {
   const t = useT(header);
   const [menuOpen, setMenuOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
-  const active = useActiveSection();
   const route = useRoute();
+  const active = useActiveSection(route.page === "home", route.path);
 
   // Another page shown without a menu click (browser Back/Forward): the menu must not stay open over it.
   const [menuPath, setMenuPath] = useState(route.path);

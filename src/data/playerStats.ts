@@ -84,5 +84,24 @@ export function buildPlayerStats(rating: StoredRating, profiles: Record<string, 
   }
 
   monthly.sort((a, b) => a.year * 12 + a.month - (b.year * 12 + b.month));
-  return { id, places, monthly, mvpMonths, profile: profiles[id] ?? null, updatedAt: rating.updatedAt };
+  const profile = profiles[id];
+  return {
+    id,
+    places,
+    monthly,
+    mvpMonths,
+    profile: profile ? { ...profile, awards: uniqueAwards(profile.awards) } : null,
+    updatedAt: rating.updatedAt,
+  };
+}
+
+/** iMafia's profile page lists some awards twice (same year, same name): keep the first of each, in order. */
+export function uniqueAwards(awards: ProfileRecord["awards"]): ProfileRecord["awards"] {
+  const seen = new Set<string>();
+  return awards.filter((award) => {
+    const key = `${award.year}|${award.name.trim()}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }

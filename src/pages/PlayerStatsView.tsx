@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import MonthlyChart, { type MonthBar } from "../components/MonthlyChart";
 import type { PlayerPlace, PlayerStats } from "../data/playerStats";
 import { DEFAULT_LEAGUE_NAME, formatDate, formatNumber } from "../data/ratingView";
+import { awardName } from "../i18n/awards";
 import { useLang, useT, type Lang } from "../i18n/lang";
 import { profile as dict } from "../i18n/profile";
 import { rating as ratingDict } from "../i18n/rating";
@@ -11,6 +12,8 @@ import { localize } from "../routes";
 const ROLE_ORDER = ["don", "mafia", "civilian", "sheriff"] as const;
 /** Prize places shown before "show all". */
 const PRIZES_SHOWN = 8;
+/** Fewer months than this read better as a line of text than as a near-empty chart. */
+const CHART_MIN_MONTHS = 3;
 
 function leagueName(place: PlayerPlace, lang: Lang) {
   const t = ratingDict[lang];
@@ -47,6 +50,7 @@ export default function PlayerStatsView({ stats }: { stats: PlayerStats }) {
     place: m.place,
     counted: m.counted,
   }));
+  const chartTip = (bar: MonthBar) => t.chartTip(bar.fullLabel, formatNumber(bar.points), bar.place, bar.counted);
 
   return (
     <div className="player-stats">
@@ -129,11 +133,11 @@ export default function PlayerStatsView({ stats }: { stats: PlayerStats }) {
           <h2 className="player-page__about" id="chart-title">
             {t.chartTitle}
           </h2>
-          <MonthlyChart
-            bars={bars}
-            caption={t.chartTitle}
-            tooltip={(bar) => t.chartTip(bar.fullLabel, formatNumber(bar.points), bar.place, bar.counted)}
-          />
+          {bars.length < CHART_MIN_MONTHS ? (
+            <p className="player-stats__months">{bars.map(chartTip).join(" · ")}</p>
+          ) : (
+            <MonthlyChart bars={bars} caption={t.chartTitle} tooltip={chartTip} />
+          )}
         </section>
       )}
 
@@ -142,8 +146,9 @@ export default function PlayerStatsView({ stats }: { stats: PlayerStats }) {
           <h2 className="player-page__about" id="places-title">
             {t.placesTitle}
           </h2>
-          <div className="rating-table__wrap">
-            <table className="rating-table">
+          {/* Phones: each row becomes a small card (player-stats.css), so nothing hides past the right edge. */}
+          <div className="rating-table__wrap player-stats__places-wrap">
+            <table className="rating-table player-stats__places">
               <thead>
                 <tr>
                   <th scope="col">{t.league}</th>
@@ -165,15 +170,20 @@ export default function PlayerStatsView({ stats }: { stats: PlayerStats }) {
               <tbody>
                 {stats.places.map((p) => (
                   <tr key={`${p.leagueId}/${p.seasonId}`}>
-                    <td>{leagueName(p, lang)}</td>
-                    <td>{seasonName(p, lang)}</td>
-                    <td className={`rating-table__num${p.counted && p.place <= 3 ? ` player-stats__podium is-top-${p.place}` : ""}`}>
-                      <Link className="rating-table__player" to={ratingHref(p, lang)}>
+                    <td className="player-stats__league">{leagueName(p, lang)}</td>
+                    <td className="player-stats__season">{seasonName(p, lang)}</td>
+                    <td
+                      className={`rating-table__num player-stats__place${p.counted && p.place <= 3 ? ` player-stats__podium is-top-${p.place}` : ""}`}
+                    >
+                      {/* The whole "3 / 25" is the link, padded to a 44px target. */}
+                      <Link className="rating-table__player player-stats__place-link" to={ratingHref(p, lang)}>
                         {p.place}
-                      </Link>{" "}
-                      <span className="player-stats__of">/ {p.of}</span>
+                        <span className="player-stats__of">&nbsp;/ {p.of}</span>
+                      </Link>
                     </td>
-                    <td className="rating-table__num">{formatNumber(p.points)}</td>
+                    <td className="rating-table__num player-stats__points" data-label={t.points}>
+                      {formatNumber(p.points)}
+                    </td>
                     <td className="rating-table__num is-narrow">{formatNumber(p.avg)}</td>
                     <td className="rating-table__num is-narrow">{p.games}</td>
                   </tr>
@@ -226,11 +236,14 @@ export default function PlayerStatsView({ stats }: { stats: PlayerStats }) {
             {t.awardsTitle}
           </h2>
           <ul className="player-stats__awards">
-            {profile.awards.map((award) => (
-              <li key={`${award.year}-${award.name}`}>
-                <strong>{award.year}</strong> {award.name}
-              </li>
-            ))}
+            {profile.awards.map((award) => {
+              const name = awardName(award.name, lang);
+              return (
+                <li key={`${award.year}-${award.name}`}>
+                  <strong>{award.year}</strong> <span lang={name.lang}>{name.text}</span>
+                </li>
+              );
+            })}
           </ul>
         </section>
       )}

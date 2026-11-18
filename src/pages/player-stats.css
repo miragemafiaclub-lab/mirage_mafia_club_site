@@ -193,14 +193,14 @@
 }
 
 @media (max-width: 760px) {
+  /* Phones: the percentage stays on the bar's line; the bar takes what is left. */
   .player-stats__role {
-    grid-template-columns: 5.5em minmax(0, 1fr);
+    grid-template-columns: 4.75em minmax(48px, 1fr) auto;
+    gap: var(--space-2);
   }
 
   .player-stats__role-value {
-    grid-column: 1 / -1;
     min-width: 0;
-    text-align: left;
   }
 
   .player-stats__prize {
@@ -238,4 +238,107 @@
 .player-stats__podium .rating-table__player {
   color: var(--medal);
   font-weight: 700;
+}
+
+/* One or two months: a line of text instead of a near-empty chart. */
+.player-stats__months {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-2);
+}
+
+/* "All club ratings": the place link fills a 44px target without making desktop rows taller
+   (the negative margin eats the cell's 10px padding). */
+.player-stats__place-link {
+  justify-content: flex-end;
+  min-width: 44px;
+  min-height: 44px;
+  margin-block: -10px;
+}
+
+/* "Profile on iMafia": a 44px-tall target instead of an 18px line of text. */
+.player-page__facts .player-page__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block: -10px;
+}
+
+/* Desktop: the photo stays in view beside the long stats column instead of leaving an empty column. */
+@media (min-width: 761px) {
+  .player-page__photo {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+  }
+}
+
+/* Phones: every rating row is a small card — league and season on the left, place and points on the right. */
+@media (max-width: 760px) {
+  .player-stats__places-wrap {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .player-stats__places,
+  .player-stats__places tbody {
+    display: block;
+  }
+
+  .player-stats__places thead {
+    display: none;
+  }
+
+  .player-stats__places tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "league place"
+      "season points";
+    align-items: center;
+    gap: 2px var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+
+  .player-stats__places tr + tr {
+    margin-top: var(--space-2);
+  }
+
+  .player-stats__places td {
+    padding: 0 !important;
+    border: 0 !important;
+    white-space: normal;
+  }
+
+  .player-stats__places .player-stats__league {
+    grid-area: league;
+    font-weight: 600;
+  }
+
+  .player-stats__places .player-stats__season {
+    grid-area: season;
+    font-size: var(--fs-ui);
+    color: var(--text-3);
+  }
+
+  .player-stats__places .player-stats__place {
+    grid-area: place;
+  }
+
+  .player-stats__places .player-stats__points {
+    grid-area: points;
+    font-size: var(--fs-ui);
+    white-space: nowrap;
+  }
+
+  .player-stats__places .player-stats__points::before {
+    content: attr(data-label) " ";
+    color: var(--text-3);
+  }
+
+  .player-stats__place-link {
+    margin-block: 0;
+  }
 }
