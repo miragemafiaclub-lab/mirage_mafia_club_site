@@ -1,48 +1,27 @@
 // Refreshes src/data/podium.json: how the club's ЧК and КЧК placed at tournaments that ended
 // in the last finished two-week period, taken from imafia.org and mafgame.org.
-import { readFile, rename, writeFile } from "node:fs/promises";
+import { rename, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-
-const IMAFIA = "https://imafia.org";
-const MAFGAME = "https://mafgame.org";
-const IMAFIA_CLUB_ID = "35";
-const MAFGAME_CLUB_ID = 62;
+import {
+  addDays,
+  fetchText,
+  IMAFIA,
+  IMAFIA_CLUB_ID,
+  isoDate,
+  MAFGAME,
+  MAFGAME_CLUB_ID,
+  normalizeNick,
+  parseClubMemberIds,
+  readInertiaProps,
+  readRosterFile,
+  stripTags,
+} from "./lib/sources.mjs";
 
 const dataFile = fileURLToPath(new URL("../src/data/podium.json", import.meta.url));
-const playersFile = fileURLToPath(new URL("../src/data/players.ts", import.meta.url));
-
-const pause = () => new Promise((resolve) => setTimeout(resolve, 700));
-
-async function fetchText(url) {
-  await pause();
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
-  return response.text();
-}
-
-function stripTags(html) {
-  return html
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&#8217;/g, "’")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-// Lowercased letters and digits only, so "Сью⚡️" matches "Сью" and "Мёд" matches "Мед".
-function normalizeNick(nick) {
-  return nick.normalize("NFKC").toLowerCase().replace(/ё/g, "е").replace(/[^\p{L}\p{N}]/gu, "");
-}
 
 // A real finishing place: unplaced players come back as 0, null, NaN or MafGame's 65535.
 function isPlace(place) {
   return Number.isInteger(place) && place > 0 && place < 65535;
-}
-
-function isoDate(date) {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 // Periods are two weeks long, Monday to Sunday, counted from this Monday:
@@ -64,29 +43,10 @@ function lastPeriod(now) {
   return { start: isoDate(start), end: isoDate(end) };
 }
 
-function addDays(iso, days) {
-  const [year, month, day] = iso.split("-").map(Number);
-  return isoDate(new Date(year, month - 1, day + days));
-}
-
 async function readRoster() {
-  const source = await readFile(playersFile, "utf8");
-  const split = source.indexOf("export const KCHK_BASE");
-  const parse = (part, group) =>
-    [...part.matchAll(/^ {4}nick: "([^"]+)",\n {4}name: "([^"]*)"/gm)].map((match) => ({
-      nick: match[1],
-      name: match[2],
-      group,
-    }));
-  const roster = [...parse(source.slice(0, split), "ЧК"), ...parse(source.slice(split), "КЧК")];
-  if (split === -1 || roster.length === 0) throw new Error(`No players read from ${playersFile}`);
-
+  const roster = await readRosterFile();
   const clubHtml = await fetchText(`${IMAFIA}/club/${IMAFIA_CLUB_ID}`);
-  const imafiaIds = new Map();
-  for (const match of clubHtml.matchAll(/href="\/u\/(\d+)"[^>]*>(.*?)<\/a>/gs)) {
-    const label = stripTags(match[2]);
-    if (label.includes("●")) imafiaIds.set(label.split("●")[0].trim(), match[1]);
-  }
+  const imafiaIds = parseClubMemberIds(clubHtml);
   if (imafiaIds.size === 0) throw new Error(`iMafia: no club members found on /club/${IMAFIA_CLUB_ID}`);
   for (const player of roster) player.imafiaId = imafiaIds.get(player.nick) ?? null;
   return roster;
@@ -191,18 +151,6 @@ async function readImafia(period, roster) {
 }
 
 // ---------- MafGame ----------
-
-function readInertiaProps(html) {
-  const encoded = html.match(/data-page="([^"]+)"/)?.[1];
-  if (!encoded) throw new Error("MafGame page data not found");
-  const json = encoded
-    .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&");
-  return JSON.parse(json).props;
-}
 
 async function listMafgame(schedule, keep) {
   const found = [];

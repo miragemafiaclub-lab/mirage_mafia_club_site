@@ -2,6 +2,7 @@ import type { Translations } from "./lang";
 
 export const footer: Translations<{
   tagline: string;
+  tournaments: string;
   addressTitle: string;
   floor: string;
   city: string;
@@ -17,6 +18,7 @@ export const footer: Translations<{
 }> = {
   ru: {
     tagline: "Клуб спортивной мафии в Варшаве",
+    tournaments: "Турниры членов клуба",
     addressTitle: "Адрес",
     floor: "5 этаж",
     city: "Варшава",
@@ -32,6 +34,7 @@ export const footer: Translations<{
   },
   en: {
     tagline: "Sports mafia club in Warsaw",
+    tournaments: "Club members' tournaments",
     addressTitle: "Address",
     floor: "5th floor",
     city: "Warsaw",

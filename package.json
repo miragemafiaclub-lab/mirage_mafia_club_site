@@ -13,6 +13,7 @@
     "thumbs": "node scripts/make-thumbs.mjs",
     "images": "node scripts/optimize-images.mjs",
     "sync-podium": "node scripts/sync-podium.mjs",
+    "sync-tournaments": "node scripts/sync-tournaments.mjs",
     "test": "vitest run"
   },
   "dependencies": {

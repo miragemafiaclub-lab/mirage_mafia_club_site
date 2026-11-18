@@ -1,0 +1,329 @@
+{
+  "updated": "2026-11-18",
+  "tournaments": [
+    {
+      "id": "mafgame-1048",
+      "source": "MafGame",
+      "title": "Финал годового сезона ИСМG-26",
+      "url": "https://mafgame.org/tournaments/1048/view",
+      "start": "2026-11-16",
+      "end": "2026-11-18",
+      "city": "Warsaw",
+      "country": "Poland",
+      "kind": "europe",
+      "players": [
+        {
+          "nick": "aptah",
+          "imafiaId": "3265",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Lюц",
+          "imafiaId": "2991",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "imafia-1982",
+      "source": "iMafia",
+      "title": "IMafia Pro League Online 2026 5th Semi-final",
+      "url": "https://imafia.org/tournament/1982",
+      "start": "2026-11-17",
+      "end": "2026-11-18",
+      "city": "",
+      "country": null,
+      "kind": "online",
+      "players": [
+        {
+          "nick": "Космічна",
+          "imafiaId": "1233",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "imafia-2010",
+      "source": "iMafia",
+      "title": "LEVIATHAN Серія 10",
+      "url": "https://imafia.org/tournament/2010",
+      "start": "2026-11-18",
+      "end": "2026-11-18",
+      "city": "",
+      "country": null,
+      "kind": "online",
+      "players": [
+        {
+          "nick": "Kamille",
+          "imafiaId": "908",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "imafia-1465",
+      "source": "iMafia",
+      "title": "High Level Games 2026",
+      "url": "https://imafia.org/tournament/1465",
+      "start": "2026-11-21",
+      "end": "2026-11-22",
+      "city": "Warsaw",
+      "country": "Poland",
+      "kind": "europe",
+      "players": [
+        {
+          "nick": "Космічна",
+          "imafiaId": "1233",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "imafia-1960",
+      "source": "iMafia",
+      "title": "LEVIATHAN",
+      "url": "https://imafia.org/tournament/1960",
+      "start": "2026-11-23",
+      "end": "2026-11-24",
+      "city": "",
+      "country": null,
+      "kind": "online",
+      "players": [
+        {
+          "nick": "Kamille",
+          "imafiaId": "908",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "imafia-1779",
+      "source": "iMafia",
+      "title": "The Draft Online USA",
+      "url": "https://imafia.org/tournament/1779",
+      "start": "2026-11-24",
+      "end": "2026-11-25",
+      "city": "",
+      "country": null,
+      "kind": "online",
+      "players": [
+        {
+          "nick": "filister",
+          "imafiaId": "2330",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "imafia-1457",
+      "source": "iMafia",
+      "title": "IMafia Pro League EU 2026",
+      "url": "https://imafia.org/tournament/1457",
+      "start": "2026-11-28",
+      "end": "2026-11-29",
+      "city": "Краков",
+      "country": "Poland",
+      "kind": "europe",
+      "players": [
+        {
+          "nick": "Комар",
+          "imafiaId": "90",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Космічна",
+          "imafiaId": "1233",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Кукла",
+          "imafiaId": "1407",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Мёд",
+          "imafiaId": "911",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Mixxx",
+          "imafiaId": "2500",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Sashko",
+          "imafiaId": "124",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "mafgame-801",
+      "source": "MafGame",
+      "title": "Four Seasons: Dutch Open 2026",
+      "url": "https://mafgame.org/tournaments/801/view",
+      "start": "2026-11-28",
+      "end": "2026-11-29",
+      "city": "Amsterdam",
+      "country": "Netherlands",
+      "kind": "europe",
+      "players": [
+        {
+          "nick": "Сью⚡️",
+          "imafiaId": "3620",
+          "status": "confirmed"
+        },
+        {
+          "nick": "aptah",
+          "imafiaId": "3265",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "imafia-1458",
+      "source": "iMafia",
+      "title": "IMafia Pro League Online 2026",
+      "url": "https://imafia.org/tournament/1458",
+      "start": "2026-12-01",
+      "end": "2026-12-03",
+      "city": "",
+      "country": null,
+      "kind": "online",
+      "players": [
+        {
+          "nick": "filister",
+          "imafiaId": "2330",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "imafia-1894",
+      "source": "iMafia",
+      "title": "St. Nicholas Cup",
+      "url": "https://imafia.org/tournament/1894",
+      "start": "2026-12-05",
+      "end": "2026-12-06",
+      "city": "Chicago",
+      "country": null,
+      "kind": "other",
+      "players": [
+        {
+          "nick": "filister",
+          "imafiaId": "2330",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "mafgame-726",
+      "source": "MafGame",
+      "title": "Prague Cup",
+      "url": "https://mafgame.org/tournaments/726/view",
+      "start": "2026-12-05",
+      "end": "2026-12-06",
+      "city": "Prague",
+      "country": "Czech Republic",
+      "kind": "europe",
+      "players": [
+        {
+          "nick": "Сью⚡️",
+          "imafiaId": "3620",
+          "status": "confirmed"
+        },
+        {
+          "nick": "aptah",
+          "imafiaId": "3265",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Lюц",
+          "imafiaId": "2991",
+          "status": "confirmed"
+        }
+      ]
+    },
+    {
+      "id": "mafgame-671",
+      "source": "MafGame",
+      "title": "Four Seasons. Cyprus Open 26: Winter",
+      "url": "https://mafgame.org/tournaments/671/view",
+      "start": "2026-12-12",
+      "end": "2026-12-13",
+      "city": "Limassol",
+      "country": "Cyprus",
+      "kind": "europe",
+      "players": [
+        {
+          "nick": "Сью⚡️",
+          "imafiaId": "3620",
+          "status": "applied"
+        },
+        {
+          "nick": "aptah",
+          "imafiaId": "3265",
+          "status": "applied"
+        }
+      ]
+    },
+    {
+      "id": "imafia-1907",
+      "source": "iMafia",
+      "title": "Poland Mafia Cup 2026",
+      "url": "https://imafia.org/tournament/1907",
+      "start": "2026-12-19",
+      "end": "2026-12-20",
+      "city": "Górski Raj",
+      "country": "Poland",
+      "kind": "europe",
+      "players": [
+        {
+          "nick": "Комар",
+          "imafiaId": "90",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Космічна",
+          "imafiaId": "1233",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Кукла",
+          "imafiaId": "1407",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Марта",
+          "imafiaId": "1269",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Соло",
+          "imafiaId": "1048",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Сью⚡️",
+          "imafiaId": "3620",
+          "status": "confirmed"
+        },
+        {
+          "nick": "aptah",
+          "imafiaId": "3265",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Sashko",
+          "imafiaId": "124",
+          "status": "confirmed"
+        },
+        {
+          "nick": "Sirius ✨",
+          "imafiaId": "1142",
+          "status": "confirmed"
+        }
+      ]
+    }
+  ]
+}

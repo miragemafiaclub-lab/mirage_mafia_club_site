@@ -21,8 +21,9 @@ describe("page meta", () => {
     expect(m.image.startsWith(SITE_URL)).toBe(true);
   });
 
-  it("keeps placeholder and guest pages out of search results, but not real ones", () => {
-    expect(metaFor("/tournaments").noindex).toBe(true);
+  it("keeps guest pages out of search results, but not real ones", () => {
+    expect(metaFor("/tournaments").noindex).toBe(false);
+    expect(metaFor("/en/tournaments").noindex).toBe(false);
     expect(metaFor("/players/grib-958").noindex).toBe(true);
     expect(metaFor("/").noindex).toBe(false);
     expect(metaFor("/rating").noindex).toBe(false);
@@ -47,7 +48,8 @@ describe("page meta", () => {
 
   it("adds robots noindex only when asked", () => {
     const has = (path: string) => headTags(metaFor(path)).some((t) => t.tag === "meta" && t.attrs.name === "robots");
-    expect(has("/tournaments")).toBe(true);
+    expect(has("/compare")).toBe(true);
+    expect(has("/tournaments")).toBe(false);
     expect(has("/")).toBe(false);
   });
 });

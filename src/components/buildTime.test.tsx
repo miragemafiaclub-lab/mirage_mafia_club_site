@@ -18,7 +18,13 @@ async function renderIn(zone: string, load: () => Promise<{ default: () => React
   vi.stubEnv("TZ", zone);
   vi.resetModules();
   const { default: Component } = await load();
-  return renderToString(<Component />);
+  // Imported after the reset too, so the component and the router share one copy of react-router.
+  const { MemoryRouter } = await import("react-router");
+  return renderToString(
+    <MemoryRouter>
+      <Component />
+    </MemoryRouter>,
+  );
 }
 
 afterEach(() => {

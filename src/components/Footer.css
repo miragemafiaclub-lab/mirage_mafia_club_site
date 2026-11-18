@@ -23,6 +23,10 @@
   color: var(--color-white);
 }
 
+.footer__brand .footer__link {
+  margin-top: var(--space-2);
+}
+
 .footer__tagline {
   margin-top: var(--space-3);
   font-size: var(--fs-body);

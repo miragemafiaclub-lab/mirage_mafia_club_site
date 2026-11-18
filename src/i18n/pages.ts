@@ -1,11 +1,7 @@
 import type { Translations } from "./lang";
 
-type StubCopy = { eyebrow: string; title: string; text: string };
-
 export const pages: Translations<{
-  soon: string;
   toHome: string;
-  tournaments: StubCopy;
   notFound: { eyebrow: string; title: string; text: string; schedule: string; photoAlt: string; caption: string };
   player: {
     back: string;
@@ -17,13 +13,7 @@ export const pages: Translations<{
   };
 }> = {
   ru: {
-    soon: "Скоро",
     toHome: "На главную",
-    tournaments: {
-      eyebrow: "Турниры",
-      title: "Турниры",
-      text: "Здесь будет календарь ближайших турниров и результаты игроков Mirage. Готовим.",
-    },
     notFound: {
       eyebrow: "404",
       title: "Этой страницы нет за столом",
@@ -42,13 +32,7 @@ export const pages: Translations<{
     },
   },
   en: {
-    soon: "Coming soon",
     toHome: "Home",
-    tournaments: {
-      eyebrow: "Tournaments",
-      title: "Tournaments",
-      text: "A calendar of upcoming tournaments and Mirage players' results is coming here.",
-    },
     notFound: {
       eyebrow: "404",
       title: "This page isn't at the table",

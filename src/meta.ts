@@ -7,8 +7,6 @@ import { absoluteUrl } from "./site";
 /** One <head> tag: <title>, <meta> or <link>. */
 export type HeadTag = { tag: "title"; text: string } | { tag: "meta" | "link"; attrs: Record<string, string> };
 
-/** Pages that are placeholders for now: kept out of search results until they get real content. */
-const NOT_READY = new Set<Route["page"]>(["tournaments"]);
 /** Pages whose content depends on the address (?a=…&b=…): nothing worth indexing on its own. */
 const NO_INDEX = new Set<Route["page"]>(["compare"]);
 
@@ -40,7 +38,7 @@ export function pageMeta(route: Route): PageMeta {
     type: "website" as const,
     locale: t.locale,
     altLocale: dict[other].locale,
-    noindex: NOT_READY.has(route.page) || NO_INDEX.has(route.page) || route.page === "notFound",
+    noindex: NO_INDEX.has(route.page) || route.page === "notFound",
   };
 
   switch (route.page) {

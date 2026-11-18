@@ -10,6 +10,7 @@ export const rating: Translations<{
   eyebrow: string;
   title: string;
   lead: string;
+  tournamentsLink: string;
   leagueLabel: string;
   seasonLabel: string;
   searchLabel: string;
@@ -53,6 +54,7 @@ export const rating: Translations<{
     eyebrow: "Рейтинг",
     title: "Рейтинг клуба",
     lead: "Места игроков Mirage по лигам и сезонам iMafia. Данные обновляются каждый день.",
+    tournamentsLink: "Ближайшие турниры членов клуба",
     leagueLabel: "Лига",
     seasonLabel: "Сезон",
     searchLabel: "Поиск по нику",
@@ -117,6 +119,7 @@ export const rating: Translations<{
     eyebrow: "Rating",
     title: "Club rating",
     lead: "Mirage players' places by iMafia league and season. Updated every day.",
+    tournamentsLink: "Upcoming tournaments of club members",
     leagueLabel: "League",
     seasonLabel: "Season",
     searchLabel: "Search by nick",
