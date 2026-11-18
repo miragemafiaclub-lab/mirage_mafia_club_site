@@ -1,0 +1,210 @@
+/* Shared motion: page transitions, one hover system for buttons and links, the logo.
+   Loaded after every component's styles (main.tsx), so these rules win ties with them.
+   Hover and :focus-visible always look the same; only colour, transform and
+   text-decoration change, so nothing moves the layout. */
+
+/* ---------- Page transitions (TransitionRouter.tsx) ----------
+   The header has its own snapshot and does not move; the page under it
+   fades down and out, the new one rises in. */
+
+.header {
+  view-transition-name: site-header;
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+}
+
+::view-transition-old(site-header) {
+  display: none;
+}
+
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: page-out 180ms cubic-bezier(0.4, 0, 1, 1) both;
+  }
+
+  ::view-transition-new(root) {
+    animation: page-in 340ms cubic-bezier(0.22, 1, 0.36, 1) 100ms both;
+  }
+
+  @keyframes page-out {
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ---------- Buttons ----------
+   Filled (primary): a lighter orange, a lift and a glow; the arrow inside nudges forward.
+   Outline (secondary): floods orange, the text turns dark. */
+
+:is(
+    .hero__btn--primary,
+    .about__btn--primary,
+    .header__cta,
+    .winners__cta,
+    a.schedule-next__cta,
+    .page__btn--primary
+  ):focus-visible {
+  background: var(--color-orange-hover);
+  border-color: var(--color-orange-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(242, 96, 12, 0.28);
+}
+
+.page__btn--primary:is(:hover, :focus-visible) {
+  box-shadow: 0 10px 24px rgba(242, 96, 12, 0.28);
+}
+
+.page__btn,
+.hero__btn--ghost,
+.protocol__more,
+.players__cta {
+  transition:
+    background var(--ease),
+    border-color var(--ease),
+    color var(--ease),
+    transform var(--ease),
+    box-shadow var(--ease);
+}
+
+:is(.page__btn:not(.page__btn--primary), .hero__btn--ghost, .protocol__more, .players__cta):is(
+    :hover,
+    :focus-visible
+  ) {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--btn-primary-fg);
+  transform: translateY(-1px);
+}
+
+/* Arrows inside buttons and back links. */
+:is(
+    .hero__btn,
+    .about__btn--primary,
+    .header__cta,
+    .winners__cta,
+    .schedule-next__cta,
+    .page__btn,
+    .players__cta,
+    .page__back,
+    .roster__back,
+    .rating__meta a
+  )
+  > span[aria-hidden="true"] {
+  display: inline-block;
+  transition: transform var(--ease);
+}
+
+:is(
+    .hero__btn,
+    .about__btn--primary,
+    .header__cta,
+    a.schedule-next__cta,
+    .winners__cta,
+    .page__btn,
+    .players__cta
+  ):is(:hover, :focus-visible)
+  > span[aria-hidden="true"] {
+  transform: translateX(4px);
+}
+
+:is(.page__back, .roster__back):is(:hover, :focus-visible) > span[aria-hidden="true"] {
+  transform: translateX(-4px);
+}
+
+.rating__meta a:is(:hover, :focus-visible) > span[aria-hidden="true"] {
+  transform: translate(2px, -2px);
+}
+
+/* ---------- Inline text links ----------
+   A thin, quiet underline that thickens and takes the full colour. */
+
+:is(
+    .player-page__link,
+    .first-time__link,
+    .rating__meta a,
+    .player-stats__tile dd a,
+    .player-stats__prize a,
+    .about__link
+  ) {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 4px;
+  transition:
+    color var(--ease),
+    text-decoration-color var(--ease),
+    text-decoration-thickness var(--ease);
+}
+
+:is(
+    .player-page__link,
+    .first-time__link,
+    .rating__meta a,
+    .player-stats__tile dd a,
+    .player-stats__prize a,
+    .about__link
+  ):is(:hover, :focus-visible) {
+  text-decoration-thickness: 2px;
+  text-decoration-color: currentColor;
+}
+
+/* The rank numbers on a profile ("№34") are big display type: a heavier line. */
+.player-stats__tile dd a {
+  text-underline-offset: 5px;
+}
+
+.player-stats__tile dd a:is(:hover, :focus-visible) {
+  color: var(--color-orange-hover);
+  text-decoration-thickness: 3px;
+}
+
+:is(.player-page__link, .first-time__link):focus-visible {
+  color: var(--color-orange-hover);
+}
+
+.player-stats__prize a:focus-visible,
+.rating__meta a:focus-visible {
+  color: var(--color-orange);
+}
+
+/* ---------- Logo ---------- */
+
+.header__brand .header__logo {
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow var(--ease);
+}
+
+.header__brand:is(:hover, :focus-visible) .header__logo {
+  transform: rotate(-12deg) scale(1.08);
+  box-shadow: 0 0 0 2px var(--color-orange);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header__brand:is(:hover, :focus-visible) .header__logo {
+    transform: none;
+  }
+}
