@@ -65,15 +65,19 @@ function PlayerName({ row, avatar = false }: { row: Pick<RatingRow, "id" | "nick
   const nick = (
     <>
       {avatar && <Avatar id={row.id} nick={row.nick} />}
-      <span lang={textLang(row.nick)}>{row.nick}</span>
+      <span className="rating-table__nick" lang={textLang(row.nick)}>
+        {row.nick}
+      </span>
     </>
   );
   return player ? (
-    <Link className="rating-table__player" to={localize(`/players/${player.slug}`, lang)}>
+    <Link className="rating-table__player" to={localize(`/players/${player.slug}`, lang)} title={row.nick}>
       {nick}
     </Link>
   ) : (
-    <span className="rating-table__player is-plain">{nick}</span>
+    <span className="rating-table__player is-plain" title={row.nick}>
+      {nick}
+    </span>
   );
 }
 
@@ -186,6 +190,22 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
         </a>
       </p>
 
+      {/* Above the table, open: the column abbreviations are read before the rows, not after a very long table. */}
+      {season.rows.length > 0 && (
+        <details className="rating__legend" open>
+          <summary>{t.legendTitle}</summary>
+          <dl>
+            {COLUMNS.map((c) => (
+              <div key={c.id} className={c.narrow ? "is-narrow" : undefined}>
+                <dt>{t.columns[c.id].short}</dt>
+                <dd>{t.columns[c.id].full}</dd>
+              </div>
+            ))}
+          </dl>
+          {season.hasHistory && <p>{t.legendArrows}</p>}
+        </details>
+      )}
+
       {season.rows.length === 0 ? (
         <p className="rating__empty">{t.empty}</p>
       ) : rows.length === 0 ? (
@@ -193,7 +213,7 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
           {t.nobody}
         </p>
       ) : (
-        <div className="rating-table__wrap">
+        <div className="rating-table__wrap rating-table__wrap--page">
           <table className="rating-table">
             <caption className="visually-hidden">
               {leagueLabel(league, lang)} · {seasonLabel(season, lang)}
@@ -262,18 +282,6 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
         </div>
       )}
 
-      <details className="rating__legend">
-        <summary>{t.legendTitle}</summary>
-        <dl>
-          {COLUMNS.map((c) => (
-            <div key={c.id}>
-              <dt>{t.columns[c.id].short}</dt>
-              <dd>{t.columns[c.id].full}</dd>
-            </div>
-          ))}
-        </dl>
-        <p>{t.legendArrows}</p>
-      </details>
     </>
   );
 }
