@@ -7,7 +7,8 @@ export const footer: Translations<{
   city: string;
   mapLabel: string;
   contactTitle: string;
-  telegram: string;
+  signup: string;
+  channel: string;
   instagram: string;
   imafia: string;
   newTab: string;
@@ -20,7 +21,8 @@ export const footer: Translations<{
     city: "Варшава",
     mapLabel: "Открыть на карте",
     contactTitle: "Связь",
-    telegram: "Telegram — запись на игры",
+    signup: "Запись на игры — бот в Telegram",
+    channel: "Telegram-канал — новости клуба",
     instagram: "Instagram",
     imafia: "Клуб на iMafia",
     newTab: "(откроется в новой вкладке)",
@@ -33,7 +35,8 @@ export const footer: Translations<{
     city: "Warsaw",
     mapLabel: "Open in maps",
     contactTitle: "Contact",
-    telegram: "Telegram — sign up for games",
+    signup: "Sign up for games — Telegram bot",
+    channel: "Telegram channel — club news",
     instagram: "Instagram",
     imafia: "Club on iMafia",
     newTab: "(opens in a new tab)",
