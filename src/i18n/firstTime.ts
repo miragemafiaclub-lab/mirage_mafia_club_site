@@ -12,6 +12,7 @@ export const firstTime: Translations<{
   signup: string;
   signupLabel: string;
   schedule: string;
+  photoAlt: { table: string; group: string };
   facts: { price: (zl: number) => string; priceSub: string; place: string; placeSub: string };
 
   eveningTitle: string;
@@ -62,6 +63,10 @@ export const firstTime: Translations<{
     signup: "Записаться через бот",
     signupLabel: "Записаться через бот клуба в Telegram (откроется в новой вкладке)",
     schedule: "Расписание",
+    photoAlt: {
+      table: "Вечер в Mirage: игроки за игровым столом клуба",
+      group: "Игроки Mirage с сертификатами после клубного вечера",
+    },
     facts: {
       price: (zl) => `от ${zl} zł`,
       priceSub: "за вечер, оплата в боте",
@@ -181,6 +186,10 @@ export const firstTime: Translations<{
     signup: "Sign up via the bot",
     signupLabel: "Sign up via the club bot on Telegram (opens in a new tab)",
     schedule: "Schedule",
+    photoAlt: {
+      table: "An evening at Mirage: players around the club's game table",
+      group: "Mirage players with their certificates after a club evening",
+    },
     facts: {
       price: (zl) => `from ${zl} zł`,
       priceSub: "per night, paid in the bot",

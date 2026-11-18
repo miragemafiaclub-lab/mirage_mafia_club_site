@@ -13,11 +13,17 @@
       href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Golos+Text:wght@400;600&display=swap"
       rel="stylesheet"
     />
+    <!-- Served by Vercel for unknown addresses. Self-contained: the site's styles and images are hashed. -->
     <style>
       :root {
         --bg: #0a0a0a;
+        --surface: #0f0d0c;
         --orange: #f2600c;
+        --orange-hover: #ff7a2e;
         --text-2: rgba(255, 255, 255, 0.72);
+        --text-3: rgba(255, 255, 255, 0.56);
+        --line: rgba(255, 255, 255, 0.14);
+        --line-strong: rgba(255, 255, 255, 0.28);
       }
       * {
         box-sizing: border-box;
@@ -27,68 +33,176 @@
         min-height: 100svh;
         display: grid;
         place-items: center;
-        padding: 24px 16px;
-        background: radial-gradient(circle at 70% 20%, rgba(242, 96, 12, 0.14), transparent 55%), var(--bg);
+        padding: 32px clamp(16px, 5vw, 90px);
+        background: radial-gradient(40% 60% at 100% 0%, rgba(242, 96, 12, 0.14), transparent 70%), var(--bg);
         color: #fff;
         font-family: "Golos Text", system-ui, sans-serif;
       }
       main {
-        max-width: 560px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: center;
+        gap: 40px;
+        width: 100%;
+        max-width: 1100px;
       }
-      .code {
-        margin: 0;
+      .logo {
+        display: inline-block;
+        margin-bottom: 24px;
         font-family: Oswald, Impact, sans-serif;
         font-weight: 600;
-        font-size: clamp(96px, 28vw, 200px);
-        line-height: 0.9;
+        font-size: 14px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--text-2);
+        text-decoration: none;
+      }
+      .logo:hover {
         color: var(--orange);
       }
       h1 {
-        margin: 16px 0 12px;
+        margin: 0 0 12px;
         font-family: Oswald, Impact, sans-serif;
         font-weight: 600;
-        font-size: clamp(28px, 7vw, 44px);
+        font-size: clamp(32px, 5vw, 56px);
         line-height: 1.05;
         text-transform: uppercase;
+        text-wrap: balance;
       }
       p {
+        max-width: 52ch;
         margin: 0 0 8px;
         color: var(--text-2);
         line-height: 1.6;
       }
-      a {
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+      }
+      .btn {
         display: inline-flex;
         align-items: center;
         gap: 8px;
         min-height: 48px;
-        margin-top: 24px;
-        padding: 0 28px;
+        padding: 0 26px;
+        border: 1px solid var(--line-strong);
         border-radius: 999px;
-        background: var(--orange);
-        color: #0a0a0a;
+        color: #fff;
         font-weight: 600;
-        font-size: 14px;
+        font-size: 13px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         text-decoration: none;
-        transition: background 0.2s;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
       }
-      a:hover {
-        background: #ff7a2e;
+      .btn:hover {
+        border-color: var(--orange);
       }
-      a:focus-visible {
+      .btn--primary {
+        border-color: var(--orange);
+        background: var(--orange);
+        color: #0a0a0a;
+      }
+      .btn--primary:hover {
+        border-color: var(--orange-hover);
+        background: var(--orange-hover);
+      }
+      .btn:focus-visible,
+      .logo:focus-visible {
         outline: 2px solid #fff;
         outline-offset: 3px;
+      }
+      .en {
+        margin-top: 40px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+      }
+      .en h2 {
+        margin: 0 0 8px;
+        font-family: Oswald, Impact, sans-serif;
+        font-weight: 600;
+        font-size: 22px;
+        text-transform: uppercase;
+      }
+      .visual {
+        position: relative;
+        display: grid;
+        place-items: end center;
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: radial-gradient(80% 60% at 50% 30%, rgba(242, 96, 12, 0.22), transparent 70%), var(--surface);
+      }
+      .visual svg {
+        width: 78%;
+        height: auto;
+      }
+      .code {
+        position: absolute;
+        top: 20px;
+        right: 24px;
+        margin: 0;
+        font-family: Oswald, Impact, sans-serif;
+        font-weight: 600;
+        font-size: clamp(72px, 9vw, 128px);
+        line-height: 0.9;
+        color: var(--orange);
+      }
+      @media (min-width: 900px) {
+        main {
+          grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+          gap: clamp(40px, 5vw, 96px);
+        }
+      }
+      @media (max-width: 899px) {
+        .visual {
+          max-width: 280px;
+          aspect-ratio: 1;
+        }
+        .visual svg {
+          width: 62%;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <p class="code" aria-hidden="true">404</p>
-      <h1>Этой страницы нет за столом</h1>
-      <p>Похоже, её выставили на голосовании. Вернитесь на главную — там расписание и ближайшая игра.</p>
-      <p lang="en">This page was voted out. Head back to the main page for the schedule and the next game.</p>
-      <a href="/">На главную <span aria-hidden="true">→</span></a>
+      <div>
+        <a class="logo" href="/">Mirage Mafia Club</a>
+        <h1>Этой страницы нет за столом</h1>
+        <p>Похоже, её выставили на голосовании. Вернитесь на главную или загляните в расписание ближайших игр.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="/">На главную <span aria-hidden="true">→</span></a>
+          <a class="btn" href="/#schedule">Расписание <span aria-hidden="true">→</span></a>
+        </div>
+        <section class="en" lang="en">
+          <h2>This page isn't at the table</h2>
+          <p>Looks like it got voted out. Head to the English home page or check the schedule.</p>
+          <div class="actions">
+            <a class="btn" href="/en">English site <span aria-hidden="true">→</span></a>
+            <a class="btn" href="/en#schedule">Schedule <span aria-hidden="true">→</span></a>
+          </div>
+        </section>
+      </div>
+      <div class="visual" aria-hidden="true">
+        <p class="code">404</p>
+        <svg viewBox="0 0 120 150">
+          <path fill="rgba(255,255,255,0.1)" d="M12 150c0-36 20-54 48-54s48 18 48 54Z" />
+          <path fill="none" stroke="#0f0d0c" stroke-width="3" d="M48 96l12 22 12-22" />
+          <ellipse fill="rgba(255,255,255,0.1)" cx="60" cy="68" rx="17" ry="20" />
+          <path fill="rgba(255,255,255,0.16)" d="M38 50c0-18 7-28 22-28 5 0 8 3 8 3s3-3 8-3c4 0 6 10 6 28Z" />
+          <rect fill="#f2600c" x="38" y="43" width="44" height="6" />
+          <ellipse fill="rgba(255,255,255,0.16)" cx="60" cy="51" rx="38" ry="6" />
+        </svg>
+      </div>
     </main>
   </body>
 </html>

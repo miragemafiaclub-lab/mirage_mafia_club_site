@@ -1,8 +1,12 @@
 import type { Route } from "./routes";
 
+/** The suggested pairs on the empty compare page (a few slugs, worked out from the rating at build time). */
+export const COMPARE_PAIRS_URL = "/data/compare-pairs.json";
+
 /** Where a page's data lives, or null for pages without any. */
 export function pageDataUrl(route: Route): string | null {
   if (route.page === "rating") return "/data/rating.json";
+  if (route.page === "compare") return COMPARE_PAIRS_URL;
   if (route.page === "player" && route.player.imafiaId) return `/data/players/${route.player.slug}.json`;
   return null;
 }

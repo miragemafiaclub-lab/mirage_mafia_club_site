@@ -15,6 +15,8 @@ import { useLang, useT } from "../i18n/lang";
 import { schedule } from "../i18n/schedule";
 import { useSectionHref } from "../RouteContext";
 import { STATIC_PAGES, localize } from "../routes";
+import groupPhoto from "../assets/web/about-main-640.webp";
+import { HERO_IMAGE as tableSrc } from "../components/heroImage";
 import "./first-time.css";
 
 function SignupLink({ className }: { className: string }) {
@@ -54,23 +56,47 @@ export default function FirstTimePage() {
   return (
     <article className="first-time">
       <header className="first-time__intro">
-        <p className="page__eyebrow">{t.eyebrow}</p>
-        <h1 className="page__title">{t.title}</h1>
-        <p className="page__lead">{t.lead}</p>
-        <div className="page__actions">
-          <SignupLink className="page__btn page__btn--primary" />
-          <Link className="page__btn" to={sectionHref("schedule")}>
-            {t.schedule} <span aria-hidden="true">→</span>
-          </Link>
+        <div className="first-time__intro-text">
+          <p className="page__eyebrow">{t.eyebrow}</p>
+          <h1 className="page__title">{t.title}</h1>
+          <p className="page__lead">{t.lead}</p>
+          <div className="page__actions">
+            <SignupLink className="page__btn page__btn--primary" />
+            <Link className="page__btn" to={sectionHref("schedule")}>
+              {t.schedule} <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+          <dl className="first-time__facts">
+            {facts.map((fact) => (
+              <div key={fact.value}>
+                <dt>{fact.value}</dt>
+                <dd>{fact.sub}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <dl className="first-time__facts">
-          {facts.map((fact) => (
-            <div key={fact.value}>
-              <dt>{fact.value}</dt>
-              <dd>{fact.sub}</dd>
-            </div>
-          ))}
-        </dl>
+        {/* Desktop: the club's table next to the text. Phones: one photo under the facts, the group shot hidden. */}
+        <div className="first-time__photos">
+          <img
+            className="first-time__photo first-time__photo--main"
+            src={tableSrc.src}
+            srcSet={tableSrc.srcSet}
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            width={tableSrc.width}
+            height={tableSrc.height}
+            alt={t.photoAlt.table}
+            decoding="async"
+          />
+          <img
+            className="first-time__photo first-time__photo--accent"
+            src={groupPhoto}
+            width={640}
+            height={434}
+            alt={t.photoAlt.group}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
       </header>
 
       <section className="first-time__section" aria-labelledby="ft-evening">
