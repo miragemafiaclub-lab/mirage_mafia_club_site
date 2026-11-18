@@ -40,12 +40,17 @@ export const isPlaceholderGuest = (nick: string) => /^(гость|guest)\s*\d*$/
  */
 export function buildDirectory(players: Source[]): ClubPlayer[] {
   const taken = new Map<string, number>();
+  const used = new Set<string>();
   return players.map((player) => {
     const base = slugify(player.nick) || "player";
     const count = (taken.get(base) ?? 0) + 1;
     taken.set(base, count);
-    const slug =
+    const wanted =
       count === 1 ? base : player.group === "guest" && player.imafiaId ? `${base}-${player.imafiaId}` : `${base}-${count}`;
+    // A nick like "Mir 2" can land on a slug already numbered for someone else ("mir-2").
+    let slug = wanted;
+    for (let n = 2; used.has(slug); n++) slug = `${wanted}-${n}`;
+    used.add(slug);
     return { ...player, slug };
   });
 }
