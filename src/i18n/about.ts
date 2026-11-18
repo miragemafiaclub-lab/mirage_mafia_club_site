@@ -12,6 +12,7 @@ type AboutStrings = {
   cta: string;
   imafiaLink: string;
   imafiaLinkLabel: string;
+  schoolLinkLabel: string;
   stats: {
     players: { label: string; sub: string };
     perWeek: { label: string; sub: string };
@@ -44,6 +45,7 @@ export const about: Translations<AboutStrings> = {
     cta: "Стать частью клуба",
     imafiaLink: "Клуб на iMafia",
     imafiaLinkLabel: "Клуб на iMafia (откроется в новой вкладке)",
+    schoolLinkLabel: "Mafia School, школа мафии (откроется в новой вкладке)",
     stats: {
       players: { label: "Игроки", sub: "в составе клуба" },
       perWeek: { label: "В неделю", sub: "игровых вечеров" },
@@ -74,6 +76,7 @@ export const about: Translations<AboutStrings> = {
     cta: "Join the club",
     imafiaLink: "Club on iMafia",
     imafiaLinkLabel: "Club on iMafia (opens in a new tab)",
+    schoolLinkLabel: "Mafia School (opens in a new tab)",
     stats: {
       players: { label: "Players", sub: "in the club" },
       perWeek: { label: "A week", sub: "game nights" },

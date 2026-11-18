@@ -1,0 +1,325 @@
+/* /first-time: everything for a first visit. Builds on the shared .page__* styles in pages.css. */
+
+.first-time__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-line);
+}
+
+.first-time__facts dt {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-stat);
+  line-height: 1.05;
+  color: var(--color-orange);
+}
+
+.first-time__facts dd {
+  margin-top: var(--space-2);
+  font-size: var(--fs-body);
+  color: var(--text-2);
+}
+
+.first-time__section,
+.first-time__cta {
+  margin-top: var(--section-y);
+}
+
+.first-time__h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.first-time__lead {
+  max-width: 60ch;
+  margin-top: var(--space-3);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-2);
+}
+
+.first-time__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 44px;
+  color: var(--color-orange);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--ease);
+}
+
+.first-time__link:hover {
+  color: var(--color-orange-hover);
+}
+
+/* ---------- How an evening goes ---------- */
+
+.first-time__steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+  list-style: none;
+}
+
+.first-time__steps li {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.first-time__step-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  color: var(--color-orange);
+}
+
+.first-time__steps h3 {
+  margin-top: var(--space-2);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+
+.first-time__steps p {
+  margin-top: var(--space-2);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-2);
+}
+
+/* ---------- Evenings and prices ---------- */
+
+.first-time__evenings {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  list-style: none;
+}
+
+.first-time__evening {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.first-time__evening.is-recommended {
+  border-color: var(--color-orange);
+  background: linear-gradient(160deg, var(--color-orange-soft), var(--color-surface) 70%);
+}
+
+.first-time__badge {
+  align-self: flex-start;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-orange);
+  color: var(--btn-primary-fg);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+
+.first-time__evening h3 {
+  font-size: var(--fs-body);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+
+.first-time__when {
+  font-size: var(--fs-body);
+  color: var(--text-2);
+}
+
+.first-time__note {
+  font-size: var(--fs-ui);
+  line-height: var(--lh-body);
+  color: var(--text-3);
+}
+
+.first-time__price {
+  margin-top: auto;
+  padding-top: var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+}
+
+.first-time__payment {
+  margin-top: var(--space-4);
+  font-size: var(--fs-body);
+  color: var(--text-2);
+}
+
+/* ---------- How to find us ---------- */
+
+.first-time__split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: start;
+}
+
+.first-time__address {
+  margin-top: var(--space-4);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+}
+
+.first-time__map {
+  margin-top: var(--space-5);
+}
+
+.first-time__route {
+  counter-reset: route;
+  list-style: none;
+}
+
+.first-time__route li {
+  counter-increment: route;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: baseline;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-line);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+}
+
+.first-time__route li::before {
+  content: counter(route);
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-orange);
+}
+
+/* ---------- Rules ---------- */
+
+.first-time__rules {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: 0 var(--space-7);
+  margin-top: var(--space-5);
+  list-style: none;
+}
+
+.first-time__rules li {
+  position: relative;
+  padding: var(--space-4) 0 var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-line);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-2);
+}
+
+.first-time__rules li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(var(--space-4) + 0.6em);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-orange);
+}
+
+/* ---------- FAQ ---------- */
+
+.first-time__faq {
+  max-width: 820px;
+  margin-top: var(--space-5);
+  border-top: 1px solid var(--color-line);
+}
+
+.first-time__faq details {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.first-time__faq summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 56px;
+  padding: var(--space-3) 0;
+  font-size: var(--fs-lead);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--ease);
+}
+
+.first-time__faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.first-time__faq summary::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--color-orange);
+  transition: transform var(--ease);
+}
+
+.first-time__faq details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.first-time__faq summary:hover {
+  color: var(--color-orange);
+}
+
+.first-time__faq summary:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 4px;
+}
+
+.first-time__faq details p {
+  max-width: 68ch;
+  padding-bottom: var(--space-4);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-2);
+}
+
+/* ---------- Final call ---------- */
+
+.first-time__cta {
+  padding: var(--space-7) var(--space-6);
+  border: 1px solid var(--color-orange);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-orange-soft), transparent 70%);
+}
+
+@media (max-width: 760px) {
+  .first-time__facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .first-time__split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  .first-time__cta {
+    padding: var(--space-6) var(--space-5);
+  }
+}

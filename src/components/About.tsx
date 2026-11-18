@@ -6,6 +6,7 @@ import aboutPodium from "../assets/about-podium.jpeg";
 import aboutSmall from "../assets/about-small.jpeg";
 import aboutTrophies from "../assets/about-trophies.jpeg";
 import { CLUB_STATS } from "../data/clubStats";
+import { MAFIA_SCHOOL_URL } from "../data/visit";
 import { about } from "../i18n/about";
 import { useT } from "../i18n/lang";
 import "./About.css";
@@ -35,7 +36,7 @@ export default function About() {
     { key: "perWeek", value: CLUB_STATS.gamesPerWeek, ...t.stats.perWeek },
     { key: "wins", value: CLUB_STATS.tournamentWins, ...t.stats.wins },
     { key: "venue", value: CLUB_STATS.venue, ...t.stats.venue },
-    { key: "school", ...t.stats.school },
+    { key: "school", ...t.stats.school, href: MAFIA_SCHOOL_URL },
   ];
 
   return (
@@ -123,7 +124,15 @@ export default function About() {
       <dl className="about__stats">
         {stats.map((stat) => (
           <div className="about__stat" key={stat.key}>
-            <dt>{stat.value}</dt>
+            <dt>
+              {"href" in stat ? (
+                <a className="about__stat-link" href={stat.href} target="_blank" rel="noopener noreferrer" aria-label={t.schoolLinkLabel}>
+                  {stat.value} <span aria-hidden="true">↗</span>
+                </a>
+              ) : (
+                stat.value
+              )}
+            </dt>
             <dd className="about__stat-label">{stat.label}</dd>
             <dd className="about__stat-sub">{stat.sub}</dd>
           </div>

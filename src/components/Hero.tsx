@@ -1,8 +1,10 @@
+import { Link } from "react-router";
 import heroTable from "../assets/hero-table.jpeg";
 import { CLUB_PLACE, nextGame, weekIndex } from "../data/schedule";
 import { useClubNow, useHydrated } from "../hooks/useHydrated";
 import { hero } from "../i18n/hero";
-import { useT } from "../i18n/lang";
+import { useLang, useT } from "../i18n/lang";
+import { STATIC_PAGES, localize } from "../routes";
 import "./Hero.css";
 
 function isoDate(date: Date) {
@@ -12,6 +14,7 @@ function isoDate(date: Date) {
 
 export default function Hero() {
   const t = useT(hero);
+  const { lang } = useLang();
   // In the club's time zone. "Today/tomorrow" depends on the visitor's clock, so it appears once the page is live.
   const now = useClubNow();
   const hydrated = useHydrated();
@@ -57,9 +60,9 @@ export default function Hero() {
           <a className="hero__btn hero__btn--primary" href="#schedule">
             {t.play} <span aria-hidden="true">→</span>
           </a>
-          <a className="hero__btn hero__btn--ghost" href="#about">
-            {t.about}
-          </a>
+          <Link className="hero__btn hero__btn--ghost" to={localize(STATIC_PAGES.firstTime, lang)}>
+            {t.firstTime}
+          </Link>
         </div>
       </div>
 

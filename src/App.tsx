@@ -4,6 +4,7 @@ import LangProvider from "./i18n/LangProvider";
 import { savedLang } from "./i18n/lang";
 import { applyHead, headTags, pageMeta } from "./meta";
 import ComparePage from "./pages/ComparePage";
+import FirstTimePage from "./pages/FirstTimePage";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PageLayout from "./pages/PageLayout";
@@ -33,6 +34,12 @@ function Page({ route }: { route: Route }) {
       return (
         <PageLayout>
           <ComparePage />
+        </PageLayout>
+      );
+    case "firstTime":
+      return (
+        <PageLayout>
+          <FirstTimePage />
         </PageLayout>
       );
     case "notFound":

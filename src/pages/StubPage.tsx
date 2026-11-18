@@ -1,11 +1,10 @@
 import { Link } from "react-router";
-import { SIGNUP_URL } from "../data/schedule";
 import { useLang, useT } from "../i18n/lang";
 import { pages } from "../i18n/pages";
 import { localize, type StaticPageId } from "../routes";
 
 /** Placeholder for a page that gets its content in a later slice. Kept out of search results (see meta.ts). */
-export default function StubPage({ page }: { page: Exclude<StaticPageId, "rating" | "compare"> }) {
+export default function StubPage({ page }: { page: Exclude<StaticPageId, "rating" | "compare" | "firstTime"> }) {
   const t = useT(pages);
   const { lang } = useLang();
   const copy = t[page];
@@ -19,11 +18,6 @@ export default function StubPage({ page }: { page: Exclude<StaticPageId, "rating
         <Link className="page__btn page__btn--primary" to={localize("/", lang)}>
           {t.toHome} <span aria-hidden="true">→</span>
         </Link>
-        {page === "firstTime" && (
-          <a className="page__btn" href={SIGNUP_URL} target="_blank" rel="noopener noreferrer">
-            Telegram <span aria-hidden="true">↗</span>
-          </a>
-        )}
       </div>
     </section>
   );

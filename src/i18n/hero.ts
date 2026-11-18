@@ -13,7 +13,7 @@ export const hero: Translations<{
   days: string[];
   timeTbd: string;
   play: string;
-  about: string;
+  firstTime: string;
   sideWords: string[];
   scroll: string;
 }> = {
@@ -29,7 +29,7 @@ export const hero: Translations<{
     days: ["пн", "вт", "ср", "чт", "пт", "сб", "вс"],
     timeTbd: "время в Telegram",
     play: "Играть с нами",
-    about: "О клубе",
+    firstTime: "Первый раз?",
     sideWords: ["Люди", "Игра", "Эмоции", "Варшава"],
     scroll: "Листайте",
   },
@@ -45,7 +45,7 @@ export const hero: Translations<{
     days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     timeTbd: "time in Telegram",
     play: "Play with us",
-    about: "About the club",
+    firstTime: "First time?",
     sideWords: ["People", "Game", "Emotions", "Warsaw"],
     scroll: "Scroll",
   },
