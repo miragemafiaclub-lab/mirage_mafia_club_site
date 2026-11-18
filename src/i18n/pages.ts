@@ -6,7 +6,6 @@ export const pages: Translations<{
   soon: string;
   toHome: string;
   tournaments: StubCopy;
-  firstTime: StubCopy;
   notFound: { eyebrow: string; title: string; text: string };
   player: {
     back: string;
@@ -24,11 +23,6 @@ export const pages: Translations<{
       eyebrow: "Турниры",
       title: "Турниры",
       text: "Здесь будет календарь ближайших турниров и результаты игроков Mirage. Готовим.",
-    },
-    firstTime: {
-      eyebrow: "Первый раз?",
-      title: "Первый раз на мафии",
-      text: "Здесь будет всё для первого визита: как проходит вечер, сколько стоит, как нас найти и записаться. Пока пишите нам в Telegram.",
     },
     notFound: {
       eyebrow: "404",
@@ -51,11 +45,6 @@ export const pages: Translations<{
       eyebrow: "Tournaments",
       title: "Tournaments",
       text: "A calendar of upcoming tournaments and Mirage players' results is coming here.",
-    },
-    firstTime: {
-      eyebrow: "First time?",
-      title: "Your first game of mafia",
-      text: "Everything for your first visit is coming here: how a game night goes, the price, how to find us and sign up. Meanwhile, message us on Telegram.",
     },
     notFound: {
       eyebrow: "404",

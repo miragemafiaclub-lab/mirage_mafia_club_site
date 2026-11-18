@@ -5,15 +5,17 @@ import { SIGNUP_URL } from "../data/schedule";
 import { header, type NavId } from "../i18n/header";
 import { LANGS, useLang, useT } from "../i18n/lang";
 import { useRoute, useSectionHref } from "../RouteContext";
-import { localize } from "../routes";
+import { STATIC_PAGES, localize } from "../routes";
 import "./Header.css";
 
 const INSTAGRAM_URL = "https://instagram.com/mirage_mafia_club";
 const NAV_IDS: NavId[] = ["about", "schedule", "players", "winners", "podium", "contact"];
+/** Separate pages in the menu, each placed right after a home-page section. */
+const PAGE_AFTER: Partial<Record<NavId, "firstTime" | "rating">> = { schedule: "firstTime", players: "rating" };
 /** Sections watched by the scrollspy, in page order. "home" has no nav item: it just clears the highlight. */
 const SPY_IDS = ["home", ...NAV_IDS];
 /** Must match the burger breakpoint in Header.css. */
-const DESKTOP_QUERY = "(min-width: 1101px)";
+const DESKTOP_QUERY = "(min-width: 1361px)";
 const MENU_ID = "header-menu";
 
 /** A link to a home-page section: a plain anchor on the home page, a router link from other pages. */
@@ -188,16 +190,17 @@ export default function Header() {
           </SectionLink>
         </li>
       );
-      if (id !== "players") return [item];
+      const page = PAGE_AFTER[id];
+      if (!page) return [item];
       return [
         item,
-        <li key="rating">
+        <li key={page}>
           <Link
-            to={localize("/rating", route.lang)}
-            aria-current={route.page === "rating" ? "page" : undefined}
+            to={localize(STATIC_PAGES[page], route.lang)}
+            aria-current={route.page === page ? "page" : undefined}
             onClick={onClick}
           >
-            {t.rating}
+            {t.pages[page]}
           </Link>
         </li>,
       ];
