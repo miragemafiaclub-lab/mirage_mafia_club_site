@@ -6,7 +6,7 @@ import type { PlayerStats } from "./playerStats";
 
 const stats = (annualPlace: number, games: number, winRate: number | null): PlayerStats => ({
   id: "x",
-  places: [{ leagueId: "140", leagueName: "Годовой рейтинг IMafia 2026", seasonId: "536", seasonName: "", month: null, year: null, place: annualPlace, of: 100, counted: true, points: 0, avg: 0, games, wins: 1, extraSum: 0 }],
+  places: [{ leagueId: "140", leagueName: "Годовой рейтинг IMafia 2026", seasonId: "536", seasonName: "", month: null, year: null, place: annualPlace, of: 100, counted: true, points: 0, avg: 0, games, wins: 1, extraSum: 0, donWins: 0, sheriffWins: 0 }],
   monthly: [],
   mvpMonths: 0,
   profile: winRate === null ? null : ({ winRate, roles: { don: { wins: 1, games: 2 }, mafia: { wins: 0, games: 0 }, civilian: { wins: 0, games: 0 }, sheriff: { wins: 0, games: 0 } }, prizes: [], cups: 0 } as unknown as PlayerStats["profile"]),

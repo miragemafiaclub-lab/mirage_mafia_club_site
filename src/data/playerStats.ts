@@ -33,6 +33,8 @@ export type PlayerPlace = {
   games: number;
   wins: number;
   extraSum: number;
+  donWins: number;
+  sheriffWins: number;
 };
 
 /** Everything a profile page shows about a player, computed at build time and shipped with that page only. */
@@ -49,6 +51,13 @@ export type PlayerStats = {
 };
 
 export const MONTH_LEAGUE = "Month Rating";
+
+/** The player's line in the newest monthly rating they played in (counted or not; `counted` says which). */
+export function latestMonthPlace(stats: PlayerStats | undefined, { countedOnly = false } = {}): PlayerPlace | undefined {
+  return stats?.places.find(
+    (p) => p.leagueName === MONTH_LEAGUE && p.month !== null && p.year !== null && (!countedOnly || p.counted),
+  );
+}
 
 export function buildPlayerStats(rating: StoredRating, profiles: Record<string, ProfileRecord>, id: string): PlayerStats {
   const places: PlayerPlace[] = [];
@@ -76,6 +85,8 @@ export function buildPlayerStats(rating: StoredRating, profiles: Record<string, 
         games: row.games,
         wins: row.wins,
         extraSum: row.extraSum,
+        donWins: row.donWins,
+        sheriffWins: row.sheriffWins,
       });
       if (league.name === MONTH_LEAGUE && season.month !== null && season.year !== null) {
         monthly.push({ year: season.year, month: season.month, points: row.points, place: row.place, games: row.games, counted: row.counted });

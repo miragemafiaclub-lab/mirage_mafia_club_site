@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import MonthlyChart, { type MonthBar } from "../components/MonthlyChart";
-import type { PlayerPlace, PlayerStats } from "../data/playerStats";
+import type { ClubPlayer } from "../data/playerDirectory";
+import { latestMonthPlace, type PlayerPlace, type PlayerStats } from "../data/playerStats";
 import { DEFAULT_LEAGUE_NAME, formatDate, formatNumber } from "../data/ratingView";
 import { awardName } from "../i18n/awards";
 import { useLang, useT, type Lang } from "../i18n/lang";
 import { profile as dict } from "../i18n/profile";
 import { rating as ratingDict } from "../i18n/rating";
 import { localize } from "../routes";
+import MonthCard from "./MonthCard";
 
 const ROLE_ORDER = ["don", "mafia", "civilian", "sheriff"] as const;
 /** Prize places shown before "show all". */
@@ -34,7 +36,8 @@ function ratingHref(place: PlayerPlace, lang: Lang) {
 }
 
 /** The numbers part of a profile: club places, roles, monthly chart, every rating, prize places, awards. */
-export default function PlayerStatsView({ stats }: { stats: PlayerStats }) {
+export default function PlayerStatsView({ stats, player }: { stats: PlayerStats; player: ClubPlayer }) {
+  const monthPlace = latestMonthPlace(stats);
   const t = useT(dict);
   const { lang } = useLang();
   const months = ratingDict[lang].months;
@@ -146,6 +149,8 @@ export default function PlayerStatsView({ stats }: { stats: PlayerStats }) {
           <h2 className="player-page__about" id="places-title">
             {t.placesTitle}
           </h2>
+          <div className={`player-stats__places-grid${monthPlace ? " has-card" : ""}`}>
+          {monthPlace && <MonthCard player={player} place={monthPlace} />}
           {/* Phones: each row becomes a small card (player-stats.css), so nothing hides past the right edge. */}
           <div className="rating-table__wrap player-stats__places-wrap">
             <table className="rating-table player-stats__places">
@@ -190,6 +195,7 @@ export default function PlayerStatsView({ stats }: { stats: PlayerStats }) {
                 ))}
               </tbody>
             </table>
+          </div>
           </div>
         </section>
       )}

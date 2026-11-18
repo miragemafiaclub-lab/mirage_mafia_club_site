@@ -2,6 +2,8 @@
 @import "./rating.css";
 
 .player-stats {
+  /* The card of the month sits beside the ratings list when this column is wide enough (see below). */
+  container-type: inline-size;
   margin-top: var(--space-6);
 }
 
@@ -341,4 +343,185 @@
   .player-stats__place-link {
     margin-block: 0;
   }
+}
+
+/* ---------- Card of the month, next to the list of every rating ---------- */
+
+.player-stats__places-grid {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.player-stats__places-grid .player-stats__places-wrap {
+  margin-top: 0;
+}
+
+@container (min-width: 800px) {
+  .player-stats__places-grid.has-card {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .player-stats__places-grid.has-card .month-card {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+  }
+}
+
+.month-card {
+  --medal: var(--color-white);
+  position: relative;
+  display: grid;
+  width: 100%;
+  max-width: 340px;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #1a1612, #110e0c);
+  color: var(--color-white);
+  transition:
+    transform var(--ease),
+    border-color var(--ease),
+    box-shadow var(--ease);
+}
+
+.month-card.is-top-1 {
+  --medal: var(--medal-1);
+}
+
+.month-card.is-top-2 {
+  --medal: var(--medal-2);
+}
+
+.month-card.is-top-3 {
+  --medal: var(--medal-3);
+}
+
+.month-card:is(.is-top-1, .is-top-2, .is-top-3) {
+  border-color: color-mix(in srgb, var(--medal) 70%, transparent);
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--medal) 22%, transparent), transparent 55%),
+    linear-gradient(180deg, #1a1612, #110e0c);
+}
+
+.month-card:is(:hover, :focus-visible) {
+  transform: translateY(-4px);
+  border-color: var(--color-orange);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.45);
+}
+
+.month-card__photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: radial-gradient(80% 80% at 50% 30%, #2a221c, #120f0d);
+}
+
+.month-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.month-card__photo::after {
+  content: "";
+  position: absolute;
+  inset: 40% 0 0;
+  background: linear-gradient(transparent, rgba(16, 13, 11, 0.96));
+}
+
+.month-card__rank {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--medal);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+
+.month-card__avg {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  justify-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 10px;
+  background: rgba(10, 10, 10, 0.78);
+}
+
+.month-card__avg b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--color-orange);
+}
+
+.month-card__avg span {
+  font-size: 10px;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.month-card__body {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  margin-top: -34px;
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.month-card__label {
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.month-card__nick {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.month-card__attrs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.month-card__attr {
+  display: grid;
+  justify-items: center;
+  padding: 6px 4px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.month-card__attr b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.month-card__attr span {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
 }

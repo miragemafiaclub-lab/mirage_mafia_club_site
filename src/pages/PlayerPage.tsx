@@ -92,7 +92,7 @@ export default function PlayerPage({ player }: { player: ClubPlayer }) {
 
           {player.imafiaId &&
             (stats ? (
-              <PlayerStatsView stats={stats} />
+              <PlayerStatsView stats={stats} player={player} />
             ) : (
               <p className="player-stats__note" role="status">
                 {failed ? statsText.loadFailed : statsText.loading}
