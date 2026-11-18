@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { YOUTUBE_UPLOADS_ID, buildFeed, durationSeconds, type ApiVideo } from "./youtube";
+import { UPLOADS_ID, buildFeed, durationSeconds, type ApiVideo } from "../../api/youtube";
+import { YOUTUBE_CHANNEL_ID } from "./youtube";
 
 const video = (id: string, kind: string, extra: Partial<ApiVideo> = {}): ApiVideo => ({
   id,
@@ -17,7 +18,8 @@ describe("youtube feed", () => {
   });
 
   it("uses the channel's uploads playlist", () => {
-    expect(YOUTUBE_UPLOADS_ID).toBe("UUXjQuqOmjqRRv7g7X3_jtUw");
+    expect(UPLOADS_ID).toBe("UUXjQuqOmjqRRv7g7X3_jtUw");
+    expect(UPLOADS_ID.slice(2)).toBe(YOUTUBE_CHANNEL_ID.slice(2));
   });
 
   it("splits the stream on air, the next scheduled one and the latest videos", () => {
