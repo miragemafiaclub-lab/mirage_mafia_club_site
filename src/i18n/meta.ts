@@ -10,7 +10,7 @@ export const meta: Translations<{
   notFound: { title: string; description: string };
   player: {
     title: (nick: string) => string;
-    description: (parts: { name: string; title: string | null; joinedAt: string }) => string;
+    description: (parts: { name?: string; title: string | null; joinedAt?: string }) => string;
     imageAlt: (nick: string) => string;
   };
   defaultImageAlt: string;
@@ -42,7 +42,9 @@ export const meta: Translations<{
     player: {
       title: (nick) => `${nick} — игрок Mirage Mafia Club`,
       description: ({ name, title, joinedAt }) =>
-        [name, title, `в клубе с ${joinedAt}`].filter(Boolean).join(" · ") + ". Игрок Mirage Mafia Club, Варшава.",
+        joinedAt
+          ? [name, title, `в клубе с ${joinedAt}`].filter(Boolean).join(" · ") + ". Игрок Mirage Mafia Club, Варшава."
+          : "Игрок рейтинга Mirage Mafia Club, Варшава: места и результаты в лигах iMafia.",
       imageAlt: (nick) => `${nick}, игрок Mirage Mafia Club`,
     },
     defaultImageAlt: "Игроки Mirage Mafia Club",
@@ -74,7 +76,9 @@ export const meta: Translations<{
     player: {
       title: (nick) => `${nick} — Mirage Mafia Club player`,
       description: ({ name, title, joinedAt }) =>
-        [name, title, `member since ${joinedAt}`].filter(Boolean).join(" · ") + ". Mirage Mafia Club player, Warsaw.",
+        joinedAt
+          ? [name, title, `member since ${joinedAt}`].filter(Boolean).join(" · ") + ". Mirage Mafia Club player, Warsaw."
+          : "A player in the Mirage Mafia Club rating, Warsaw: places and results in iMafia leagues.",
       imageAlt: (nick) => `${nick}, Mirage Mafia Club player`,
     },
     defaultImageAlt: "Mirage Mafia Club players",

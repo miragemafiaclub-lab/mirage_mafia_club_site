@@ -244,3 +244,14 @@
     max-width: 360px;
   }
 }
+
+.player-page__link {
+  color: var(--color-orange);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--ease);
+}
+
+.player-page__link:hover {
+  color: var(--color-orange-hover);
+}

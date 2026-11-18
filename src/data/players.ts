@@ -77,8 +77,8 @@ export type RosterPlayer = {
 };
 
 // The letter ranks (S, A, B, C) are not shown on the site; the named titles are.
-export function playerTitle(player: RosterPlayer) {
-  return player.rank.length > 1 ? player.rank : null;
+export function playerTitle(player: { rank?: string }) {
+  return player.rank && player.rank.length > 1 ? player.rank : null;
 }
 
 // Pulled from the club's official roster on iMafia: https://imafia.org/club/35#club-members

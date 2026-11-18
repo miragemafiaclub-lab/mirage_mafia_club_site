@@ -8,7 +8,7 @@ import { absoluteUrl } from "./site";
 export type HeadTag = { tag: "title"; text: string } | { tag: "meta" | "link"; attrs: Record<string, string> };
 
 /** Pages that are placeholders for now: kept out of search results until they get real content. */
-const NOT_READY = new Set<Route["page"]>(["rating", "tournaments", "firstTime"]);
+const NOT_READY = new Set<Route["page"]>(["tournaments", "firstTime"]);
 
 const DEFAULT_IMAGE = { url: "/og-image.jpg", width: "1200", height: "630" };
 
@@ -48,11 +48,13 @@ export function pageMeta(route: Route): PageMeta {
         ...base,
         title: t.player.title(player.nick),
         description: t.player.description({
-          name: displayName(player.name, route.lang),
+          name: player.name && displayName(player.name, route.lang),
           title: playerTitle(player),
           joinedAt: player.joinedAt,
         }),
         type: "profile",
+        // Guests' pages are thin until profiles get stats (slice 3): keep them out of search for now.
+        noindex: player.group === "guest",
         ...(player.photo && { image: absoluteUrl(player.photo), imageSize: undefined }),
         imageAlt: t.player.imageAlt(player.nick),
       };
