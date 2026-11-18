@@ -4,6 +4,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { build } from "vite";
+import { fillTemplate } from "./lib/template.mjs";
 
 // One "now" for the whole build, so the bundle and the HTML agree (see vite.config.ts).
 process.env.BUILD_TIME ||= String(Date.now());
@@ -36,18 +37,7 @@ for (const path of paths) {
   const page = render(path);
   // A page without a heading means something rendered empty: stop the deploy rather than publish it.
   if (!page.html.includes("<h1")) throw new Error(`${path}: rendered without an <h1>`);
-  const html = template
-    .replace('<html lang="ru">', `<html lang="${page.lang}">`)
-    .replace(/<!--head-start-->[\s\S]*?<!--head-end-->/, page.head)
-    .replace("<!--app-html-->", page.html)
-    // The page's own data (rating, player stats), so the browser does not fetch it again. "<" is escaped
-    // so the JSON can never close the <script> early.
-    .replace(
-      "</body>",
-      page.pageData
-        ? `<script type="application/json" id="page-data">${JSON.stringify(page.pageData).replace(/</g, "\\u003c")}</script>\n  </body>`
-        : "</body>",
-    );
+  const html = fillTemplate(template, page);
   if (page.pageData) dataFiles.set(page.pageData.url, page.pageData.data);
   // "/rating" → rating.html: served at the clean address by Vercel (cleanUrls) and by `vite preview`.
   const file = path === "/" ? join(dist, "index.html") : join(dist, `${path.slice(1)}.html`);
