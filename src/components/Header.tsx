@@ -2,8 +2,11 @@ import { useEffect, useRef, useState, type ComponentProps, type FocusEvent, type
 import { Link } from "react-router";
 import logo from "../assets/web/logo-128.webp";
 import { TELEGRAM_URL } from "../data/schedule";
+import { YOUTUBE_URL, videoUrl } from "../data/youtube";
+import { useYoutube } from "../hooks/useYoutube";
 import { header, type NavId } from "../i18n/header";
 import { LANGS, useLang, useT } from "../i18n/lang";
+import { videos } from "../i18n/videos";
 import { useRoute, useSectionHref } from "../RouteContext";
 import { STATIC_PAGES, localize } from "../routes";
 import "./Header.css";
@@ -49,6 +52,15 @@ function TelegramIcon() {
   );
 }
 
+function YoutubeIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="2" y="5" width="20" height="14" rx="4" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M10 9.2v5.6l4.8-2.8L10 9.2Z" fill="currentColor" />
+    </svg>
+  );
+}
+
 function LangSwitch({ className }: { className: string }) {
   const { lang, setLang } = useLang();
   const t = useT(header);
@@ -73,6 +85,8 @@ function LangSwitch({ className }: { className: string }) {
 
 function SocialLinks({ className }: { className: string }) {
   const t = useT(header);
+  const v = useT(videos);
+  const live = useYoutube()?.live ?? null;
   return (
     <>
       <a className={className} href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label={t.instagram}>
@@ -80,6 +94,16 @@ function SocialLinks({ className }: { className: string }) {
       </a>
       <a className={className} href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label={t.telegram}>
         <TelegramIcon />
+      </a>
+      {/* While a stream is on air the icon links straight to it, with a red dot. */}
+      <a
+        className={`${className}${live ? " is-live" : ""}`}
+        href={live ? videoUrl(live.id) : YOUTUBE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={live ? v.liveBadge : t.youtube}
+      >
+        <YoutubeIcon />
       </a>
     </>
   );

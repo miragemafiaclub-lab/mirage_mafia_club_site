@@ -1,5 +1,6 @@
 import { CLUB_PLACE, SIGNUP_URL, TELEGRAM_URL, warsawNow } from "../data/schedule";
 import { footer } from "../i18n/footer";
+import { YOUTUBE_URL } from "../data/youtube";
 import { useT } from "../i18n/lang";
 import { BUILD_TIME } from "../site";
 import "./Footer.css";
@@ -17,6 +18,7 @@ export default function Footer() {
     { href: SIGNUP_URL, label: t.signup },
     { href: TELEGRAM_URL, label: t.channel },
     { href: INSTAGRAM_URL, label: t.instagram },
+    { href: YOUTUBE_URL, label: t.youtube },
     { href: IMAFIA_URL, label: t.imafia },
   ];
 
