@@ -78,15 +78,20 @@ export default function App() {
 
   // After moving to another page: start at the top, or at the section in the #hash.
   const first = useRef(true);
+  const shown = useRef(route);
   useLayoutEffect(() => {
+    const prev = shown.current;
+    shown.current = route;
     if (first.current) {
       first.current = false;
       return;
     }
+    // The language switch opens the same page in the other language: stay where the reader was.
+    if (route.lang !== prev.lang && route.path === prev.path) return;
     const target = hash && document.getElementById(decodeURIComponent(hash.slice(1)));
     if (target) target.scrollIntoView();
     else window.scrollTo({ top: 0, behavior: "instant" });
-  }, [pathname, hash]);
+  }, [route, hash]);
 
   return (
     <RouteContext.Provider value={route}>

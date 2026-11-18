@@ -1,4 +1,4 @@
-import { CLUB_PLACE, TELEGRAM_URL } from "../data/schedule";
+import { CLUB_PLACE, TELEGRAM_URL, warsawNow } from "../data/schedule";
 import { footer } from "../i18n/footer";
 import { useT } from "../i18n/lang";
 import { BUILD_TIME } from "../site";
@@ -56,7 +56,7 @@ export default function Footer() {
       </div>
 
       <p className="footer__copy">
-        © {new Date(BUILD_TIME).getFullYear()} Mirage Mafia Club. {t.rights}
+        © {warsawNow(new Date(BUILD_TIME)).getFullYear()} Mirage Mafia Club. {t.rights}
       </p>
     </footer>
   );
