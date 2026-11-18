@@ -15,6 +15,9 @@ type ScheduleStrings = {
   timeTba: string;
   place: string;
   timeTbaShort: string;
+  usually: (time: string) => string;
+  exactTime: string;
+  inviteOnly: string;
   noGame: string;
   selectedGame: string;
   weekGroup: string;
@@ -83,6 +86,9 @@ export const schedule: Translations<ScheduleStrings> = {
     timeTba: "Время в анонсе",
     place: "Ludna 2, 5 этаж, Варшава",
     timeTbaShort: "анонс",
+    usually: (time) => `Обычно ${time}`,
+    exactTime: "Точное время в Telegram",
+    inviteOnly: "По приглашению",
     noGame: "Нет игры",
     selectedGame: "Выбранная игра",
     weekGroup: "Расписание на неделю",
@@ -114,6 +120,9 @@ export const schedule: Translations<ScheduleStrings> = {
     timeTba: "Time in the announcement",
     place: "Ludna 2, 5th floor, Warsaw",
     timeTbaShort: "TBA",
+    usually: (time) => `Usually ${time}`,
+    exactTime: "Exact time on Telegram",
+    inviteOnly: "By invitation",
     noGame: "No game",
     selectedGame: "Selected game",
     weekGroup: "Weekly schedule",

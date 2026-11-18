@@ -9,6 +9,10 @@ export type ScheduleEvent = {
   title: string;
   // Start time, or null when it is announced separately in Telegram.
   time: string | null;
+  // The usual start when `time` is null: shown as "usually 18:30", the exact time is in Telegram.
+  usualTime?: string;
+  // Closed evening: shown in the week, but no sign-up and never offered as the next game.
+  inviteOnly?: boolean;
 };
 
 export const CLUB_PLACE = { address: "Ludna 2, 5 этаж", city: "Warsaw" };
@@ -19,11 +23,11 @@ export const SIGNUP_URL = "https://t.me/mirage_mafia_club";
 export const WEEK: { day: string; name: string; event: ScheduleEvent | null }[] = [
   { day: "Mon", name: "Понедельник", event: null },
   { day: "Tue", name: "Вторник", event: { kind: "open", title: "Открытый игровой вечер", time: "18:30" } },
-  { day: "Wed", name: "Среда", event: { kind: "captains", title: "Капитанский стол", time: "18:30" } },
+  { day: "Wed", name: "Среда", event: { kind: "captains", title: "Капитанский стол", time: "18:30", inviteOnly: true } },
   { day: "Thu", name: "Четверг", event: null },
   { day: "Fri", name: "Пятница", event: { kind: "open", title: "Открытый игровой вечер", time: "18:30" } },
   { day: "Sat", name: "Суббота", event: null },
-  { day: "Sun", name: "Воскресенье", event: { kind: "newcomers", title: "День новичка", time: null } },
+  { day: "Sun", name: "Воскресенье", event: { kind: "newcomers", title: "День новичка", time: null, usualTime: "18:30" } },
 ];
 
 // 0 = Monday … 6 = Sunday.
@@ -45,11 +49,11 @@ export function gameOn(date: Date, now: Date) {
   return { date, name: entry.name, event: entry.event };
 }
 
-// The nearest game open for sign-up, looking up to a week ahead.
+// The nearest game open for sign-up, looking up to a week ahead. Invite-only evenings are skipped.
 export function nextGame(now: Date) {
   for (let offset = 0; offset <= 7; offset++) {
     const game = gameOn(new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset), now);
-    if (game) return game;
+    if (game && !game.event.inviteOnly) return game;
   }
   return null;
 }

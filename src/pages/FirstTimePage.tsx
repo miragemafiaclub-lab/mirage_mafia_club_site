@@ -26,7 +26,7 @@ function useWhen(): (kind: EveningKind) => string | null {
     if (!slots.length) return t.evenings[kind].when;
     return t.slots(
       slots.map((slot) => days[slot.dayIndex]),
-      slots[0].time ?? t.timeInTelegram,
+      slots[0].time ?? (slots[0].usualTime ? t.usually(slots[0].usualTime) : t.timeInTelegram),
     );
   };
 }

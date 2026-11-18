@@ -26,8 +26,10 @@ export const MAP_URL = "https://www.google.com/maps/search/?api=1&query=Ludna+2%
 export const IMAFIA_URL = "https://imafia.org";
 
 /** Weekdays (0 = Monday) and start time of a weekly evening; empty for evenings outside the weekly schedule. */
-export function weeklySlots(kind: EveningKind): { dayIndex: number; time: string | null }[] {
+export function weeklySlots(kind: EveningKind): { dayIndex: number; time: string | null; usualTime?: string }[] {
   return WEEK.flatMap((entry, dayIndex) =>
-    entry.event?.kind === kind ? [{ dayIndex, time: entry.event.time }] : [],
+    entry.event?.kind === kind
+      ? [{ dayIndex, time: entry.event.time, ...(entry.event.usualTime && { usualTime: entry.event.usualTime }) }]
+      : [],
   );
 }
