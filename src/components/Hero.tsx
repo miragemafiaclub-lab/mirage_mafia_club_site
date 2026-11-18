@@ -1,11 +1,11 @@
 import { Link } from "react-router";
-import heroTable from "../assets/hero-table.jpeg";
 import { CLUB_PLACE, nextGame, weekIndex } from "../data/schedule";
 import { useClubNow, useHydrated } from "../hooks/useHydrated";
 import { hero } from "../i18n/hero";
 import { useLang, useT } from "../i18n/lang";
 import { STATIC_PAGES, localize } from "../routes";
 import "./Hero.css";
+import { HERO_IMAGE } from "./heroImage";
 
 function isoDate(date: Date) {
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -32,7 +32,16 @@ export default function Hero() {
 
   return (
     <section className="hero" id="home">
-      <img className="hero__bg" src={heroTable} alt={t.bgAlt} fetchPriority="high" />
+      <img
+        className="hero__bg"
+        src={HERO_IMAGE.src}
+        srcSet={HERO_IMAGE.srcSet}
+        sizes={HERO_IMAGE.sizes}
+        width={HERO_IMAGE.width}
+        height={HERO_IMAGE.height}
+        alt={t.bgAlt}
+        fetchPriority="high"
+      />
       <div className="hero__overlay" />
 
       <div className="hero__content">

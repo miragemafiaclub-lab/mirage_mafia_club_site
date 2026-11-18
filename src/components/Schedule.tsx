@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import tablePhoto from "../assets/about-small.jpeg";
+import tablePhoto from "../assets/web/about-small-589.webp";
 import { SIGNUP_URL, gameOn, nextGame, weekDates, weekIndex } from "../data/schedule";
 import { useClubNow, useHydrated } from "../hooks/useHydrated";
 import { schedule } from "../i18n/schedule";
@@ -211,7 +211,7 @@ function ScheduleView({ now }: { now: Date }) {
         </div>
 
         <figure className="schedule-photo">
-          <img src={tablePhoto} alt={t.photoAlt} loading="lazy" decoding="async" />
+          <img src={tablePhoto} alt={t.photoAlt} width={589} height={690} loading="lazy" decoding="async" />
           <figcaption className="schedule-photo__caption">
             {t.caption[0]}
             <br />

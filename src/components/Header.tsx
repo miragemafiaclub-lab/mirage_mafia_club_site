@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ComponentProps, type FocusEvent } from "react";
 import { Link } from "react-router";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/web/logo-128.webp";
 import { TELEGRAM_URL } from "../data/schedule";
 import { header, type NavId } from "../i18n/header";
 import { LANGS, useLang, useT } from "../i18n/lang";
@@ -220,7 +220,7 @@ export default function Header() {
       </a>
 
       <SectionLink className="header__brand" section="home" aria-label={t.homeLabel} onClick={closeMenu}>
-        <img className="header__logo" src={logo} alt={t.logoAlt} />
+        <img className="header__logo" src={logo} alt={t.logoAlt} width={44} height={44} />
       </SectionLink>
 
       <nav className="header__nav" aria-label={t.navLabel}>

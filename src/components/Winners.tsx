@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef, type CSSProperties, type PointerEvent } from "react";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/web/logo-480.webp";
 import { CLUB_STATS } from "../data/clubStats";
 import { warsawNow } from "../data/schedule";
 import { buildMonths, buildYearTabs, type WinnerMonth } from "../data/winners";
@@ -211,7 +211,7 @@ export default function Winners() {
     <div className="winners-page">
       <section className="winners" id="winners">
         <div className="winners__bg" aria-hidden="true">
-          <img className="winners__watermark-logo" src={logo} alt="" />
+          <img className="winners__watermark-logo" src={logo} alt="" loading="lazy" decoding="async" />
           <span className="winners__ring" />
         </div>
 
@@ -359,9 +359,14 @@ export default function Winners() {
             >
               <div className="archive-card__photo">
                 {month.winner?.photo ? (
-                  <img src={month.winner.photo} alt={t.archivePhotoAlt(month.winner.nick, t.months[month.month])} />
+                  <img
+                    src={month.winner.photo}
+                    alt={t.archivePhotoAlt(month.winner.nick, t.months[month.month])}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 ) : (
-                  <img className="archive-card__logo" src={logo} alt="" />
+                  <img className="archive-card__logo" src={logo} alt="" width={480} height={480} loading="lazy" decoding="async" />
                 )}
                 <p className="archive-card__month">{t.months[month.month]}</p>
                 <div className="archive-card__foot">

@@ -1,10 +1,11 @@
-import aboutAccent from "../assets/about-accent.jpeg";
-import aboutAwards from "../assets/about-awards.jpeg";
-import aboutGroup from "../assets/about-group.jpeg";
-import aboutMain from "../assets/about-main.jpeg";
-import aboutPodium from "../assets/about-podium.jpeg";
-import aboutSmall from "../assets/about-small.jpeg";
-import aboutTrophies from "../assets/about-trophies.jpeg";
+// Web copies made by scripts/optimize-images.mjs (`npm run images`); the originals stay in src/assets.
+import aboutAccent from "../assets/web/about-accent-640.webp";
+import aboutAwards from "../assets/web/about-awards-640.webp";
+import aboutGroup from "../assets/web/about-group-640.webp";
+import aboutMain from "../assets/web/about-main-640.webp";
+import aboutPodium from "../assets/web/about-podium-640.webp";
+import aboutSmall from "../assets/web/about-small-589.webp";
+import aboutTrophies from "../assets/web/about-trophies-640.webp";
 import { CLUB_STATS } from "../data/clubStats";
 import { MAFIA_SCHOOL_URL } from "../data/visit";
 import { about } from "../i18n/about";
@@ -15,17 +16,17 @@ const IMAFIA_URL = "https://imafia.org/club/35";
 
 const PHOTO_COLUMNS = [
   [
-    { src: aboutAwards, ratio: 960 / 1280, alt: "awards" },
-    { src: aboutSmall, ratio: 589 / 690, alt: "small" },
+    { src: aboutAwards, width: 640, height: 853, ratio: 960 / 1280, alt: "awards" },
+    { src: aboutSmall, width: 589, height: 690, ratio: 589 / 690, alt: "small" },
   ],
   [
-    { src: aboutTrophies, ratio: 1280 / 853, alt: "trophies" },
-    { src: aboutMain, ratio: 1206 / 817, alt: "main", accent: true },
-    { src: aboutAccent, ratio: 1280 / 853, alt: "accent" },
+    { src: aboutTrophies, width: 640, height: 427, ratio: 1280 / 853, alt: "trophies" },
+    { src: aboutMain, width: 640, height: 434, ratio: 1206 / 817, alt: "main", accent: true },
+    { src: aboutAccent, width: 640, height: 427, ratio: 1280 / 853, alt: "accent" },
   ],
   [
-    { src: aboutPodium, ratio: 914 / 1280, alt: "podium" },
-    { src: aboutGroup, ratio: 1.15, alt: "group" },
+    { src: aboutPodium, width: 640, height: 896, ratio: 914 / 1280, alt: "podium" },
+    { src: aboutGroup, width: 640, height: 853, ratio: 1.15, alt: "group" },
   ],
 ] as const;
 
@@ -109,6 +110,8 @@ export default function About() {
                     <img
                       src={photo.src}
                       alt={t.alts[photo.alt]}
+                      width={photo.width}
+                      height={photo.height}
                       style={{ aspectRatio: photo.ratio }}
                       loading="lazy"
                       decoding="async"
