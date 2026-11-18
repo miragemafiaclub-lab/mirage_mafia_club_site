@@ -18,7 +18,7 @@ describe("first-visit facts", () => {
   });
 
   it("knows the club's prices", () => {
-    expect(PRICES_ZL).toEqual({ newcomers: 50, open: 50, fun: 50, captains: 60, mps: 80 });
+    expect(PRICES_ZL).toEqual({ newcomers: 50, open: 50, fun: 50, captains: 70, mps: 80 });
     expect(MIN_PRICE_ZL).toBe(50);
   });
 
