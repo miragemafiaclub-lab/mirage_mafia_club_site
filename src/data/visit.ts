@@ -11,7 +11,7 @@ export const PRICES_ZL: Record<EveningKind, number> = {
   newcomers: 50,
   open: 50,
   fun: 50,
-  captains: 60,
+  captains: 70,
   mps: 80,
 };
 

@@ -27,7 +27,7 @@ describe("prerender", () => {
     const ru = render("/first-time");
     expect(ru.noindex).toBe(false);
     expect(ru.html).toContain("Ludna 2");
-    expect(ru.html).toContain("60 zł");
+    expect(ru.html).toContain("70 zł");
     expect(ru.html).toContain("https://learnmafia.com");
     expect(ru.html).toContain("https://t.me/mirage_mafia_club_bot");
     expect(ru.html).toContain("https://t.me/+0o-Bcqa-NkFhNzcy");
