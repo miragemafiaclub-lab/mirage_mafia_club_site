@@ -40,6 +40,10 @@ export const firstTime: Translations<{
   rulesTitle: string;
   rulesLead: string;
   rules: string[];
+  /** Links to the mafia school (learnmafia.com, in Russian) under the rules. */
+  prepTitle: string;
+  prep: { rules: string; terms: string; gestures: string };
+  prepLabel: (name: string) => string;
 
   faqTitle: string;
   faq: Question[];
@@ -53,8 +57,8 @@ export const firstTime: Translations<{
     eyebrow: "Первый раз?",
     title: "Первый раз на мафии",
     lead: "Опыт не нужен. Для первого раза есть День новичка: без регистрации на сайтах и без подготовки. Ниже всё, что стоит знать до прихода.",
-    signup: "Записаться в Telegram",
-    signupLabel: "Записаться в Telegram (откроется в новой вкладке)",
+    signup: "Записаться через бот",
+    signupLabel: "Записаться через бот клуба в Telegram (откроется в новой вкладке)",
     schedule: "Расписание",
     facts: {
       price: (zl) => `от ${zl} zł`,
@@ -66,8 +70,12 @@ export const firstTime: Translations<{
     eveningTitle: "Как проходит вечер",
     steps: [
       {
-        title: "Запишитесь",
-        text: "Напишите нашему боту в Telegram: там запись, точная цена и оплата. В первый раз можно написать и в Instagram.",
+        title: "Зарегистрируйтесь в боте",
+        text: "Напишите боту клуба @mirage_mafia_club_bot в Telegram и укажите свой ник. Без этого записаться на игру нельзя. Если есть вопросы до первого визита, можно написать и в Instagram.",
+      },
+      {
+        title: "Запишитесь на вечер",
+        text: "Запись идёт через опрос в группе клуба в Telegram: голосовать могут только те, кто зарегистрирован в боте. Оплата в боте.",
       },
       {
         title: "Приходите",
@@ -112,7 +120,7 @@ export const firstTime: Translations<{
     address: "Ludna 2, Варшава",
     building: "Офис Wisla Plaza, 5 этаж",
     route: [
-      "Заходите в Wisla Plaza и сразу в лифт.",
+      "Заходите в Wisla Plaza и сразу в лифт. Дверь обычно открыта, если нет, напишите нам в Telegram.",
       "Поднимайтесь на 5 этаж.",
       "Дважды поверните налево, до двери.",
       "Проходите прямо, нам нужна первая дверь.",
@@ -132,6 +140,9 @@ export const firstTime: Translations<{
       "Не курим, еда только на кухне.",
       "На стульях не качаемся.",
     ],
+    prepTitle: "Подготовиться к первой игре",
+    prep: { rules: "Правила игры", terms: "Словарь терминов", gestures: "Жесты за столом" },
+    prepLabel: (name) => `${name} в школе мафии LearnMafia (откроется в новой вкладке)`,
 
     faqTitle: "Частые вопросы",
     faq: [
@@ -142,7 +153,7 @@ export const firstTime: Translations<{
       },
       {
         q: "Нужна ли регистрация?",
-        a: "На День новичка нет. Для рейтинговых вечеров нужны аккаунты на iMafia и Emotion Games: через них игры попадают в рейтинг.",
+        a: "В боте клуба да: там вы указываете ник, и только после этого можно записаться на игру. На iMafia для Дня новичка регистрироваться не нужно. Для рейтинговых вечеров нужны аккаунты на iMafia и Emotion Games: через них игры попадают в рейтинг.",
       },
       {
         q: "Я приду один и никого не знаю",
@@ -157,14 +168,14 @@ export const firstTime: Translations<{
     schoolLabel: "Mafia School, школа мафии (откроется в новой вкладке)",
 
     ctaTitle: "Ждём за столом",
-    ctaText: "Напишите в Telegram, и мы подскажем ближайший вечер.",
+    ctaText: "Зарегистрируйтесь в боте и записывайтесь на ближайший вечер.",
   },
   en: {
     eyebrow: "First time?",
     title: "Your first game of mafia",
     lead: "No experience needed. Newcomers' day is made for a first visit: no sign-up on rating sites, nothing to prepare. Here is everything worth knowing before you come.",
-    signup: "Sign up on Telegram",
-    signupLabel: "Sign up on Telegram (opens in a new tab)",
+    signup: "Sign up via the bot",
+    signupLabel: "Sign up via the club bot on Telegram (opens in a new tab)",
     schedule: "Schedule",
     facts: {
       price: (zl) => `from ${zl} zł`,
@@ -176,8 +187,12 @@ export const firstTime: Translations<{
     eveningTitle: "How a game night goes",
     steps: [
       {
-        title: "Sign up",
-        text: "Message our Telegram bot: that is where you sign up, see the exact price and pay. For your first visit, Instagram works too.",
+        title: "Register in the bot",
+        text: "Message the club bot @mirage_mafia_club_bot on Telegram and give your nickname. You can't sign up for a game without it. Questions before your first visit? Instagram works too.",
+      },
+      {
+        title: "Sign up for a night",
+        text: "Sign-up runs through polls in the club's Telegram group, and only people registered in the bot can vote. You pay in the bot.",
       },
       {
         title: "Come over",
@@ -222,7 +237,7 @@ export const firstTime: Translations<{
     address: "Ludna 2, Warsaw",
     building: "Wisla Plaza office building, 5th floor",
     route: [
-      "Enter Wisla Plaza and go straight to the lift.",
+      "Enter Wisla Plaza and go straight to the lift. The door is usually open; if not, message us on Telegram.",
       "Go up to the 5th floor.",
       "Turn left twice, up to the door.",
       "Go straight ahead: it's the first door.",
@@ -242,6 +257,9 @@ export const firstTime: Translations<{
       "No smoking, and food stays in the kitchen.",
       "No rocking on the chairs.",
     ],
+    prepTitle: "Get ready for your first game (in Russian)",
+    prep: { rules: "Game rules", terms: "Glossary", gestures: "Table gestures" },
+    prepLabel: (name) => `${name} at the LearnMafia school, in Russian (opens in a new tab)`,
 
     faqTitle: "Questions",
     faq: [
@@ -252,7 +270,7 @@ export const firstTime: Translations<{
       },
       {
         q: "Do I need to register anywhere?",
-        a: "Not for Newcomers' day. Rating nights need accounts on iMafia and Emotion Games: that is how games get into the rating.",
+        a: "In the club bot, yes: you give your nickname there, and only then can you sign up for a game. Newcomers' day needs no iMafia account. Rating nights need accounts on iMafia and Emotion Games: that is how games get into the rating.",
       },
       {
         q: "I'm coming alone and don't know anyone",
@@ -267,6 +285,6 @@ export const firstTime: Translations<{
     schoolLabel: "Mafia School (opens in a new tab)",
 
     ctaTitle: "See you at the table",
-    ctaText: "Message us on Telegram and we will tell you about the nearest night.",
+    ctaText: "Register in the bot and sign up for the nearest night.",
   },
 };

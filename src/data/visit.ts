@@ -22,6 +22,12 @@ export const EVENING_ORDER: EveningKind[] = ["newcomers", "open", "captains", "f
 export const MIN_PRICE_ZL = Math.min(...Object.values(PRICES_ZL));
 
 export const MAFIA_SCHOOL_URL = "https://learnmafia.com";
+/** Pages of the club's mafia school for a first game (in Russian). */
+export const SCHOOL_PAGES = {
+  rules: "https://learnmafia.com/rules",
+  terms: "https://learnmafia.com/knowledge/terminology",
+  gestures: "https://learnmafia.com/knowledge/gestures",
+} as const;
 export const MAP_URL = "https://www.google.com/maps/search/?api=1&query=Ludna+2%2C+00-406+Warszawa";
 export const IMAFIA_URL = "https://imafia.org";
 

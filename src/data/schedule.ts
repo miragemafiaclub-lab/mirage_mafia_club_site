@@ -16,7 +16,12 @@ export type ScheduleEvent = {
 };
 
 export const CLUB_PLACE = { address: "Ludna 2, 5 этаж", city: "Warsaw" };
-export const SIGNUP_URL = "https://t.me/mirage_mafia_club";
+// Sign-up starts in the club bot: you register there with your nick, then sign up for evenings
+// through polls in the club's Telegram group (only people registered in the bot can).
+export const SIGNUP_URL = "https://t.me/mirage_mafia_club_bot";
+export const BOT_HANDLE = "@mirage_mafia_club_bot";
+/** The club's Telegram channel: news and announcements. */
+export const TELEGRAM_URL = "https://t.me/mirage_mafia_club";
 
 // Monday first, as the week is shown on the site. `day` and `name` are stable keys / Russian names;
 // the visible labels come from src/i18n/schedule.ts by weekday index (weekIndex()).

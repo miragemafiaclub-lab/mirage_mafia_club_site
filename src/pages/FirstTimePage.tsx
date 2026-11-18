@@ -1,6 +1,15 @@
 import { Link } from "react-router";
 import { SIGNUP_URL } from "../data/schedule";
-import { EVENING_ORDER, MAFIA_SCHOOL_URL, MAP_URL, MIN_PRICE_ZL, PRICES_ZL, weeklySlots, type EveningKind } from "../data/visit";
+import {
+  EVENING_ORDER,
+  MAFIA_SCHOOL_URL,
+  MAP_URL,
+  MIN_PRICE_ZL,
+  PRICES_ZL,
+  SCHOOL_PAGES,
+  weeklySlots,
+  type EveningKind,
+} from "../data/visit";
 import { firstTime } from "../i18n/firstTime";
 import { useLang, useT } from "../i18n/lang";
 import { schedule } from "../i18n/schedule";
@@ -134,6 +143,22 @@ export default function FirstTimePage() {
         <ul className="first-time__rules">
           {t.rules.map((rule) => (
             <li key={rule}>{rule}</li>
+          ))}
+        </ul>
+        <h3 className="first-time__prep-title">{t.prepTitle}</h3>
+        <ul className="first-time__prep">
+          {(Object.keys(SCHOOL_PAGES) as (keyof typeof SCHOOL_PAGES)[]).map((page) => (
+            <li key={page}>
+              <a
+                className="first-time__link"
+                href={SCHOOL_PAGES[page]}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t.prepLabel(t.prep[page])}
+              >
+                {t.prep[page]} <span aria-hidden="true">↗</span>
+              </a>
+            </li>
           ))}
         </ul>
       </section>
