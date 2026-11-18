@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import heroTable from "../assets/hero-table.jpeg";
 import { CLUB_PLACE, nextGame, weekIndex } from "../data/schedule";
+import { MIN_PRICE_ZL } from "../data/visit";
 import { useClubNow, useHydrated } from "../hooks/useHydrated";
 import { hero } from "../i18n/hero";
 import { useLang, useT } from "../i18n/lang";
@@ -52,7 +53,11 @@ export default function Hero() {
         {game && gameLine && (
           <p className="hero__next">
             <span className="hero__next-dot" aria-hidden="true" />
-            {t.nextLabel}: <time dateTime={isoDate(game.date)}>{gameLine}</time>
+            {t.nextLabel}:{" "}
+            {/* One flex item, so the price wraps together with the game rather than on its own. */}
+            <span className="hero__next-value">
+              <time dateTime={isoDate(game.date)}>{gameLine}</time> · {t.fromPrice(MIN_PRICE_ZL)}
+            </span>
           </p>
         )}
 
