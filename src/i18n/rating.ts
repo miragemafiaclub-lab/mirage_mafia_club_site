@@ -79,7 +79,9 @@ export const rating: Translations<{
       ci: { short: "Ci", full: "Компенсационные баллы за отстрелы" },
     },
     extraParts: { plus: "плюс", minus: "штрафы", discipline: "дисциплинарные", bestMoves: "лучший ход" },
-    cutoff: (games, percent) => `Ниже — меньше ${games} игр (${percent}% игр сезона): вне зачёта`,
+    // Genitive after "меньше": 1, 21, 31… игры; everything else игр.
+    cutoff: (games, percent) =>
+      `Ниже — меньше ${games} ${games % 10 === 1 && games % 100 !== 11 ? "игры" : "игр"} (${percent}% игр сезона): вне зачёта`,
     nobody: "Никого не нашли",
     empty: "В этом сезоне пока нет игр",
     newEntry: "Новый в таблице",
@@ -140,7 +142,7 @@ export const rating: Translations<{
       ci: { short: "Ci", full: "Compensation points for being shot" },
     },
     extraParts: { plus: "bonus", minus: "fines", discipline: "discipline", bestMoves: "best move" },
-    cutoff: (games, percent) => `Below: fewer than ${games} games (${percent}% of the season's games), not counted`,
+    cutoff: (games, percent) => `Below: fewer than ${games} ${games === 1 ? "game" : "games"} (${percent}% of the season's games), not counted`,
     nobody: "No one found",
     empty: "No games in this season yet",
     newEntry: "New in the table",
