@@ -33,4 +33,10 @@ describe("build-time dates do not depend on the visitor's time zone", () => {
     // The club's (Warsaw) calendar: already 2027 there.
     expect(html[0]).toContain("2027");
   });
+
+  it("winners month list", async () => {
+    const html: string[] = [];
+    for (const zone of ZONES) html.push(await renderIn(zone, () => import("./Winners")));
+    for (const h of html) expect(h).toBe(html[0]);
+  });
 });
