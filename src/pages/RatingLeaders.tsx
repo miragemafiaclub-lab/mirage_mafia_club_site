@@ -51,7 +51,7 @@ export default function RatingLeaders({ leagues }: { leagues: League[] }) {
               <span className="leaders__nick" lang={textLang(row.nick)}>
                 {row.nick}
               </span>
-              <span className="leaders__points">{t.points(formatNumber(row.points))}</span>
+              <span className="leaders__points">{t.points(formatNumber(row.avg), formatNumber(row.points))}</span>
             </>
           );
           return (
