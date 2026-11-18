@@ -21,6 +21,7 @@ import { rating as dict, type ColumnId } from "../i18n/rating";
 import { textLang } from "../i18n/translit";
 import { usePageData } from "../pageDataCache";
 import { localize } from "../routes";
+import RatingLeaders from "./RatingLeaders";
 import "./rating.css";
 
 /** Numeric columns in table order; the narrow ones are hidden on phones (see rating.css). */
@@ -90,9 +91,14 @@ export default function RatingPage() {
 
   return (
     <section className="rating">
-      <p className="page__eyebrow">{t.eyebrow}</p>
-      <h1 className="page__title">{t.title}</h1>
-      <p className="page__lead">{t.lead}</p>
+      <header className="rating__intro">
+        <div>
+          <p className="page__eyebrow">{t.eyebrow}</p>
+          <h1 className="page__title">{t.title}</h1>
+          <p className="page__lead">{t.lead}</p>
+        </div>
+        {leagues && <RatingLeaders leagues={leagues} />}
+      </header>
       {leagues && data ? (
         <>
           <RatingTables leagues={leagues} updatedAt={data.updatedAt} />

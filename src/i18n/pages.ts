@@ -6,7 +6,7 @@ export const pages: Translations<{
   soon: string;
   toHome: string;
   tournaments: StubCopy;
-  notFound: { eyebrow: string; title: string; text: string };
+  notFound: { eyebrow: string; title: string; text: string; schedule: string; photoAlt: string; caption: string };
   player: {
     back: string;
     joined: string;
@@ -27,7 +27,10 @@ export const pages: Translations<{
     notFound: {
       eyebrow: "404",
       title: "Этой страницы нет за столом",
-      text: "Похоже, её выставили на голосовании. Вернитесь на главную.",
+      text: "Похоже, её выставили на голосовании. Вернитесь на главную или загляните в расписание.",
+      schedule: "Расписание",
+      photoAlt: "Игрок в маске за столом Mirage: в мафии ночью город спит",
+      caption: "Город засыпает…",
     },
     player: {
       back: "Все игроки",
@@ -49,7 +52,10 @@ export const pages: Translations<{
     notFound: {
       eyebrow: "404",
       title: "This page isn't at the table",
-      text: "Looks like it got voted out. Head back to the home page.",
+      text: "Looks like it got voted out. Head back to the home page or check the schedule.",
+      schedule: "Schedule",
+      photoAlt: "A masked player at a Mirage table: in mafia, the town sleeps at night",
+      caption: "The town falls asleep…",
     },
     player: {
       back: "All players",

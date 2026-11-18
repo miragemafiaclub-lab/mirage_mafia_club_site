@@ -1,5 +1,7 @@
+import { playerByImafiaId } from "./playerDirectory";
 import type { PlayerStats } from "./playerStats";
-import { DEFAULT_LEAGUE_NAME } from "./ratingView";
+import type { League, Season } from "./rating";
+import { DEFAULT_LEAGUE_NAME, pickSelection } from "./ratingView";
 
 export type CompareRowId =
   | "annual" | "month" | "games" | "wins" | "winRate" | "mvp" | "prizes" | "cups"
@@ -34,4 +36,52 @@ export function betterSide(row: RowSpec, a: PlayerStats, b: PlayerStats): "a" | 
   const vb = row.value(b);
   if (va === null || vb === null || va === vb) return null;
   return (row.lowerIsBetter ? va < vb : va > vb) ? "a" : "b";
+}
+
+/** A ready-made pair for the empty compare page; `a` and `b` are player slugs (the page's ?a=…&b=…). */
+export type ComparePair = { kind: "annual" | "month" | "leaders" | "winners"; a: string; b: string };
+
+type MonthWinner = { profileUrl: string };
+
+const idFromProfile = (url: string) => url.match(/\/u\/(\d+)/)?.[1];
+
+/**
+ * Up to four interesting pairs, from the rating and the monthly winners: the year's top two, last month's
+ * top two, the leaders of the year and of the month, and the last two players of the month. Players without
+ * a page are skipped, and so is a pair already suggested (in either order).
+ */
+export function suggestedPairs(leagues: League[], winners: Record<string, MonthWinner | undefined>): ComparePair[] {
+  const slug = (id: string | undefined) => (id ? playerByImafiaId(id)?.slug : undefined);
+  const top = (season: Season | undefined) =>
+    (season?.rows ?? []).filter((row) => row.counted).sort((x, y) => x.place - y.place).map((row) => row.id);
+
+  const annual = top(pickSelection(leagues, {}).season);
+  const month = top(leagues.find((l) => l.name === "Month Rating")?.seasons[0]);
+  const lastWinners = [
+    ...new Set(
+      Object.keys(winners)
+        .sort()
+        .reverse()
+        .map((key) => winners[key] && idFromProfile(winners[key].profileUrl))
+        .filter((id): id is string => Boolean(id)),
+    ),
+  ];
+
+  const candidates: [ComparePair["kind"], string | undefined, string | undefined][] = [
+    ["annual", annual[0], annual[1]],
+    ["month", month[0], month[1]],
+    ["leaders", annual[0], month[0]],
+    ["winners", lastWinners[0], lastWinners[1]],
+  ];
+  const pairs: ComparePair[] = [];
+  const seen = new Set<string>();
+  for (const [kind, idA, idB] of candidates) {
+    const a = slug(idA);
+    const b = slug(idB);
+    const key = [a, b].sort().join("|");
+    if (!a || !b || a === b || seen.has(key)) continue;
+    seen.add(key);
+    pairs.push({ kind, a, b });
+  }
+  return pairs;
 }
