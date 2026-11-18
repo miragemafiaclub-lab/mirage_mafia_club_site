@@ -18,6 +18,11 @@ describe("prerender", () => {
     expect(html).toContain("players-card");
   });
 
+  it("shows the club records under the rating, in both languages", () => {
+    expect(render("/rating").html).toContain("Рекорды клуба");
+    expect(render("/en/rating").html).toContain("Club records");
+  });
+
   it("renders a player's profile with their nick", () => {
     expect(render("/players/walle").html).toContain(">Walle<");
   });

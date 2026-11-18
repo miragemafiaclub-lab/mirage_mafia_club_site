@@ -13,9 +13,14 @@ export function leagueLabel(league: League, lang: Lang): string {
   return t.leagueNames[league.name] ?? league.name;
 }
 
+/** "Март 2026" (month 0 = January). */
+export function monthLabel(month: number, year: number, lang: Lang): string {
+  return `${dict[lang].months[month]} ${year}`;
+}
+
 export function seasonLabel(season: Season, lang: Lang): string {
   const t = dict[lang];
-  if (season.month !== null && season.year !== null) return `${t.months[season.month]} ${season.year}`;
+  if (season.month !== null && season.year !== null) return monthLabel(season.month, season.year, lang);
   if (!season.name) return t.allTime;
   const year = season.name.match(/^Годовой рейтинг IMafia (\d{4})$/)?.[1];
   return year ? t.annual(year) : t.season(season.name);

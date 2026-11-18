@@ -394,3 +394,79 @@
     min-width: 0;
   }
 }
+
+/* ---------- Club records ---------- */
+
+.records {
+  margin-top: var(--section-y);
+}
+
+.records__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+}
+
+.records__lead {
+  max-width: 60ch;
+  margin-top: var(--space-3);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-2);
+}
+
+.records__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  list-style: none;
+}
+
+.records__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.records__label {
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.records__value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-stat);
+  line-height: 1.05;
+  color: var(--color-orange);
+}
+
+.records__holders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: auto;
+  list-style: none;
+}
+
+.records__holders li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+}
+
+.records__when {
+  font-size: var(--fs-ui);
+  color: var(--text-3);
+}
