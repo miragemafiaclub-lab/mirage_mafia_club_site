@@ -14,4 +14,11 @@ describe("next game", () => {
   it("still shows the captains' table as a game on its day", () => {
     expect(gameOn(new Date(2026, 10, 18), at(18, 10))?.event).toMatchObject({ kind: "captains", inviteOnly: true });
   });
+
+  it("finds the next evening of a given kind", () => {
+    // Tuesday: the next Newcomers' day is Sunday the 22nd.
+    expect(nextGame(at(17, 10), "newcomers")?.date.getDate()).toBe(22);
+    // Sunday night, once the day is over, it is the Sunday after.
+    expect(nextGame(new Date(2026, 10, 22, 23, 59, 30), "newcomers")?.date.getDate()).toBe(29);
+  });
 });

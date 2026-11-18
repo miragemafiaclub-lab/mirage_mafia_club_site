@@ -57,10 +57,11 @@ export function gameOn(date: Date, now: Date) {
 }
 
 // The nearest game open for sign-up, looking up to a week ahead. Invite-only evenings are skipped.
-export function nextGame(now: Date) {
+// With `kind`, the nearest evening of that kind (e.g. the next Newcomers' day).
+export function nextGame(now: Date, kind?: EventKind) {
   for (let offset = 0; offset <= 7; offset++) {
     const game = gameOn(new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset), now);
-    if (game && !game.event.inviteOnly) return game;
+    if (game && !game.event.inviteOnly && (!kind || game.event.kind === kind)) return game;
   }
   return null;
 }
