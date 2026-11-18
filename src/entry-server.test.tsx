@@ -30,6 +30,7 @@ describe("prerender", () => {
     expect(ru.html).toContain("60 zł");
     expect(ru.html).toContain("https://learnmafia.com");
     expect(ru.html).toContain("https://t.me/mirage_mafia_club_bot");
+    expect(ru.html).toContain("https://t.me/+0o-Bcqa-NkFhNzcy");
     expect(ru.html).toContain("https://learnmafia.com/knowledge/terminology");
     expect(ru.html).toContain("Вторник и пятница, 18:30");
     expect(render("/en/first-time").html).toContain("Tuesday and Friday, 18:30");

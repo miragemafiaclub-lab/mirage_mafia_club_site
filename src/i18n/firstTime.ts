@@ -17,6 +17,8 @@ export const firstTime: Translations<{
   eveningTitle: string;
   steps: Step[];
   ratingLink: string;
+  groupLink: string;
+  groupLabel: string;
 
   pricesTitle: string;
   pricesLead: string;
@@ -95,6 +97,8 @@ export const firstTime: Translations<{
       },
     ],
     ratingLink: "Рейтинг клуба",
+    groupLink: "Группа клуба",
+    groupLabel: "Группа клуба в Telegram (откроется в новой вкладке)",
 
     pricesTitle: "Какой вечер выбрать",
     pricesLead: "Для первого раза лучше всего День новичка. Потом можно на любой вечер.",
@@ -212,6 +216,8 @@ export const firstTime: Translations<{
       },
     ],
     ratingLink: "Club rating",
+    groupLink: "Club group",
+    groupLabel: "The club group on Telegram (opens in a new tab)",
 
     pricesTitle: "Which night to pick",
     pricesLead: "Newcomers' day is the best start. After that, any night is open to you.",

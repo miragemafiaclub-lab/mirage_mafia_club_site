@@ -20,6 +20,8 @@ export const CLUB_PLACE = { address: "Ludna 2, 5 этаж", city: "Warsaw" };
 // through polls in the club's Telegram group (only people registered in the bot can).
 export const SIGNUP_URL = "https://t.me/mirage_mafia_club_bot";
 export const BOT_HANDLE = "@mirage_mafia_club_bot";
+/** The club's Telegram group, where evenings are signed up for by poll. */
+export const GROUP_URL = "https://t.me/+0o-Bcqa-NkFhNzcy";
 /** The club's Telegram channel: news and announcements. */
 export const TELEGRAM_URL = "https://t.me/mirage_mafia_club";
 

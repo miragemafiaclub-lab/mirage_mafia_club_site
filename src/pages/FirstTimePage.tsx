@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { SIGNUP_URL } from "../data/schedule";
+import { GROUP_URL, SIGNUP_URL } from "../data/schedule";
 import {
   EVENING_ORDER,
   MAFIA_SCHOOL_URL,
@@ -85,6 +85,11 @@ export default function FirstTimePage() {
               </span>
               <h3>{step.title}</h3>
               <p>{step.text}</p>
+              {i === 1 && (
+                <a className="first-time__link" href={GROUP_URL} target="_blank" rel="noopener noreferrer" aria-label={t.groupLabel}>
+                  {t.groupLink} <span aria-hidden="true">↗</span>
+                </a>
+              )}
               {i === t.steps.length - 1 && (
                 <Link className="first-time__link" to={localize(STATIC_PAGES.rating, lang)}>
                   {t.ratingLink} <span aria-hidden="true">→</span>
