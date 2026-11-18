@@ -21,15 +21,17 @@ function latestWithWinner(months: WinnerMonth[]) {
 
 const MONTHLY_WINNERS = MONTHS.filter((month) => month.winner).length;
 
-// Oswald (uppercase) renders at roughly this many em per character; size each word so it
-// always peeks out from behind the phone by about the same amount. Cyrillic capitals run
-// wider (measured over the month names: ~0.52em vs ~0.49em for Latin), hence the two ratios.
-const MONTH_WORD_WIDTH_TO_PHONE = 1.6;
+// The month name stands on its side next to the phone (Winners.css). Oswald (uppercase) renders at
+// roughly this many em per character; a long name is sized to run no longer than the phone is tall,
+// a short one stops at the common size, so every name has the same weight. Cyrillic capitals
+// run wider (measured over the month names: ~0.52em vs ~0.49em for Latin), hence the two ratios.
+const MONTH_WORD_LENGTH_TO_PHONE = 0.9;
+const MONTH_WORD_MAX_TO_PHONE_WIDTH = 0.5;
 const MONTH_WORD_CHAR_RATIO: Record<Lang, number> = { en: 0.46, ru: 0.49 };
 
 function monthWordFontSize(word: string, lang: Lang) {
-  const scale = MONTH_WORD_WIDTH_TO_PHONE / (word.length * MONTH_WORD_CHAR_RATIO[lang]);
-  return `calc(var(--phone-w) * ${scale.toFixed(3)})`;
+  const scale = MONTH_WORD_LENGTH_TO_PHONE / (word.length * MONTH_WORD_CHAR_RATIO[lang]);
+  return `min(calc(var(--phone-h) * ${scale.toFixed(3)}), calc(var(--phone-w) * ${MONTH_WORD_MAX_TO_PHONE_WIDTH}))`;
 }
 
 // 1: a later month comes in from the right; -1: an earlier one from the left.
