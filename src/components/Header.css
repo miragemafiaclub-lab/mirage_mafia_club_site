@@ -141,6 +141,23 @@
   color: var(--color-orange);
 }
 
+/* A stream is on air: a pulsing red dot on the YouTube icon. */
+.header__social.is-live {
+  position: relative;
+}
+
+.header__social.is-live::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--color-bg);
+  border-radius: 50%;
+  background: #e5322d;
+}
+
 .lang-switch {
   display: inline-flex;
   align-items: center;

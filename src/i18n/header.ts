@@ -19,6 +19,7 @@ export const header: Translations<{
   langNames: { ru: string; en: string };
   instagram: string;
   telegram: string;
+  youtube: string;
 }> = {
   ru: {
     skip: "К содержанию",
@@ -43,6 +44,7 @@ export const header: Translations<{
     langNames: { ru: "Русский", en: "English" },
     instagram: "Instagram клуба (откроется в новой вкладке)",
     telegram: "Telegram клуба (откроется в новой вкладке)",
+    youtube: "YouTube клуба (откроется в новой вкладке)",
   },
   en: {
     skip: "Skip to content",
@@ -67,5 +69,6 @@ export const header: Translations<{
     langNames: { ru: "Русский", en: "English" },
     instagram: "Club Instagram (opens in a new tab)",
     telegram: "Club Telegram (opens in a new tab)",
+    youtube: "Club YouTube (opens in a new tab)",
   },
 };

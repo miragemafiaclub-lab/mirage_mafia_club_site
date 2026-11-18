@@ -8,6 +8,7 @@ import PlayerRoster from "../components/PlayerRoster";
 import Players from "../components/Players";
 import Podium from "../components/Podium";
 import Schedule from "../components/Schedule";
+import Videos from "../components/Videos";
 import Winners from "../components/Winners";
 
 export default function HomePage() {
@@ -44,6 +45,7 @@ export default function HomePage() {
         <Players onOpenRoster={openRoster} />
         <Winners />
         <Podium />
+        <Videos />
         <ClosingCta />
       </main>
       <Footer />

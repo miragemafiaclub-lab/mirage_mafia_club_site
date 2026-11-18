@@ -10,6 +10,7 @@ export const footer: Translations<{
   signup: string;
   channel: string;
   instagram: string;
+  youtube: string;
   imafia: string;
   newTab: string;
   rights: string;
@@ -24,6 +25,7 @@ export const footer: Translations<{
     signup: "Запись на игры — бот в Telegram",
     channel: "Telegram-канал — новости клуба",
     instagram: "Instagram",
+    youtube: "YouTube — игры и трансляции",
     imafia: "Клуб на iMafia",
     newTab: "(откроется в новой вкладке)",
     rights: "Все права защищены.",
@@ -38,6 +40,7 @@ export const footer: Translations<{
     signup: "Sign up for games — Telegram bot",
     channel: "Telegram channel — club news",
     instagram: "Instagram",
+    youtube: "YouTube — games and streams",
     imafia: "Club on iMafia",
     newTab: "(opens in a new tab)",
     rights: "All rights reserved.",

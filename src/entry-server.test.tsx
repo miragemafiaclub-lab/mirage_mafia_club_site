@@ -74,6 +74,14 @@ describe("prerender", () => {
     expect(render("/en/first-time").html).toContain('aria-label="Open the map (Google Maps, in a new tab)"');
   });
 
+  it("links the club's YouTube from the home page, in both languages", () => {
+    const ru = render("/").html;
+    expect(ru).toContain('id="videos"');
+    expect(ru).toContain("Смотрите наши игры");
+    expect(ru).toContain("https://www.youtube.com/@mirage_mafia_club");
+    expect(render("/en").html).toContain("Watch our games");
+  });
+
   it("renders a player's profile with their nick", () => {
     expect(render("/players/walle").html).toContain(">Walle<");
   });
