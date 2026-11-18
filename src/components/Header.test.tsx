@@ -12,19 +12,23 @@ class FakeObserver {
   static live = new Set<FakeObserver>();
   targets: Element[] = [];
   callback: IntersectionObserverCallback;
-  constructor(callback: IntersectionObserverCallback) {
+  options?: IntersectionObserverInit;
+  constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
     this.callback = callback;
+    this.options = options;
   }
   observe(el: Element) {
     this.targets.push(el);
     FakeObserver.live.add(this);
   }
   disconnect() {
+    this.targets = [];
     FakeObserver.live.delete(this);
   }
-  static show(id: string) {
-    for (const observer of FakeObserver.live) {
-      const entries = observer.targets.map((target) => ({ target, isIntersecting: target.id === id }));
+  /** Like the browser, a node no longer in the document never intersects. */
+  static show(...ids: string[]) {
+    for (const observer of [...FakeObserver.live]) {
+      const entries = observer.targets.map((target) => ({ target, isIntersecting: target.isConnected && ids.includes(target.id) }));
       observer.callback(entries as unknown as IntersectionObserverEntry[], observer as unknown as IntersectionObserver);
     }
   }
@@ -110,5 +114,55 @@ describe("header scrollspy", () => {
 
     act(() => go("/"));
     expect(current()).toEqual([]);
+  });
+
+  it("watches a band from under the header to 40% of the screen", () => {
+    mount("/");
+    const [observer] = FakeObserver.live;
+    expect(observer.options?.rootMargin).toMatch(/^-\d+px 0px -60% 0px$/);
+  });
+
+  it("with two sections in the band, the lower one (whose top has passed the band's edge) is current", () => {
+    mount("/");
+    act(() => FakeObserver.show("about", "schedule"));
+    expect(current()).toEqual(["Расписание:true"]);
+  });
+
+  it("follows a section rendered anew after it started watching (Schedule's build-time markup swapped for the live one)", () => {
+    mount("/");
+    const old = container.querySelector("#schedule")!;
+    old.replaceWith(old.cloneNode(true));
+    // The first report comes from the detached node: the spy re-points the observer at the new one.
+    act(() => FakeObserver.show("about", "schedule"));
+    act(() => FakeObserver.show("about", "schedule"));
+    expect(current()).toEqual(["Расписание:true"]);
+  });
+});
+
+describe("header after a page change", () => {
+  it("holds hover styles until the pointer moves, so the item under a resting pointer is not underlined", () => {
+    mount("/first-time");
+    const header = () => container.querySelector(".header")!;
+    act(() => window.dispatchEvent(new Event("pointermove")));
+    expect(header().classList.contains("is-pointer-idle")).toBe(false);
+
+    act(() => go("/"));
+    expect(header().classList.contains("is-pointer-idle")).toBe(true);
+    expect(current()).toEqual([]);
+
+    act(() => window.dispatchEvent(new Event("pointermove")));
+    expect(header().classList.contains("is-pointer-idle")).toBe(false);
+  });
+});
+
+describe("skip link", () => {
+  it.each(["/", "/rating", "/first-time", "/players/ace", "/no-such-page"])("moves focus to #main on %s", (path) => {
+    mount(path);
+    const main = container.querySelector<HTMLElement>("#main");
+    expect(main).not.toBeNull();
+    const skip = container.querySelector<HTMLAnchorElement>(".header__skip")!;
+    expect(skip.getAttribute("href")).toBe("#main");
+    act(() => skip.click());
+    expect(document.activeElement).toBe(main);
   });
 });

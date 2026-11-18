@@ -18,10 +18,12 @@
   background: var(--color-bg);
 }
 
-/* ---------- Skip link: hidden until focused ---------- */
+/* ---------- Skip link: hidden until focused ----------
+   Parked above the top of the screen while unfocused (not transparent, so it is never invisible text
+   or a dead spot over the page); focused, it drops into the header bar, which is above the page. */
 .header__skip {
   position: absolute;
-  top: calc(100% + var(--space-2));
+  top: calc((var(--header-h) - 44px) / 2);
   left: var(--space-3);
   z-index: 60;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
@@ -36,13 +38,13 @@
   font-weight: 700;
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
-  opacity: 0;
-  pointer-events: none;
+  white-space: nowrap;
+  outline: 2px solid var(--color-white);
+  outline-offset: 3px;
 }
 
-.header__skip:focus {
-  opacity: 1;
-  pointer-events: auto;
+.header__skip:not(:focus) {
+  transform: translateY(calc(-100% - var(--header-h)));
 }
 
 .header__brand {
@@ -96,13 +98,16 @@
   transition: transform var(--ease);
 }
 
-.header__nav a:hover,
+/* Hover waits for the pointer to move after a page change (.is-pointer-idle, Header.tsx). */
+.header:not(.is-pointer-idle) .header__nav a:hover,
+.header__nav a:focus-visible,
 .header__nav a[aria-current="true"],
 .header__nav a[aria-current="page"] {
   color: var(--color-white);
 }
 
-.header__nav a:hover::after {
+.header:not(.is-pointer-idle) .header__nav a:hover::after,
+.header__nav a:focus-visible::after {
   transform: scaleX(0.5);
 }
 

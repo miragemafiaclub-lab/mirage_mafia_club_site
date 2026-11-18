@@ -127,7 +127,7 @@ export default function Players({ onOpenRoster }: { onOpenRoster: (groupId: Grou
                   to={profileHref(player)}
                 >
                   <div className="players-card__photo" aria-hidden="true">
-                    {player.photo ? <img src={player.photo} alt="" loading="lazy" decoding="async" /> : <span>{player.nick.charAt(0)}</span>}
+                    {player.photo ? <img src={player.photo} alt="" width={300} height={400} loading="lazy" decoding="async" /> : <span>{player.nick.charAt(0)}</span>}
                   </div>
 
                   <div className="players-card__body">

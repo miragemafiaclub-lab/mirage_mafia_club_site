@@ -4,8 +4,10 @@
    text-decoration change, so nothing moves the layout. */
 
 /* ---------- Page transitions (TransitionRouter.tsx) ----------
-   The header has its own snapshot and does not move; the page under it
-   fades down and out, the new one rises in. */
+   An orange curtain wipes across, left to right, under the header (its own snapshot,
+   never moves): the old page is cut away from the left, the new page follows a beat
+   behind, and the gap between the two edges is the orange of the transition overlay.
+   About 500 ms in all. */
 
 .header {
   view-transition-name: site-header;
@@ -24,25 +26,39 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* What shows between the two edges: the curtain. */
+  ::view-transition-group(root) {
+    background: var(--color-orange);
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+
   ::view-transition-old(root) {
-    animation: page-out 180ms cubic-bezier(0.4, 0, 1, 1) both;
+    animation: curtain-out 360ms cubic-bezier(0.65, 0, 0.35, 1) both;
   }
 
   ::view-transition-new(root) {
-    animation: page-in 340ms cubic-bezier(0.22, 1, 0.36, 1) 100ms both;
+    animation: curtain-in 380ms cubic-bezier(0.65, 0, 0.35, 1) 130ms both;
   }
 
-  @keyframes page-out {
+  @keyframes curtain-out {
+    from {
+      clip-path: inset(0 0 0 0);
+    }
     to {
-      opacity: 0;
-      transform: translateY(-10px);
+      clip-path: inset(0 0 0 100%);
     }
   }
 
-  @keyframes page-in {
+  @keyframes curtain-in {
     from {
-      opacity: 0;
-      transform: translateY(16px);
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
     }
   }
 }
@@ -110,7 +126,10 @@
     .players__cta,
     .page__back,
     .roster__back,
-    .rating__meta a
+    .rating__meta a,
+    .player-page__link,
+    .first-time__link,
+    .about__link
   )
   > span[aria-hidden="true"] {
   display: inline-block;
@@ -134,12 +153,35 @@
   transform: translateX(-4px);
 }
 
-.rating__meta a:is(:hover, :focus-visible) > span[aria-hidden="true"] {
+/* Arrows inside text links (↗) nudge up and out. */
+:is(.rating__meta a, .player-page__link, .first-time__link, .about__link):is(:hover, :focus-visible)
+  > span[aria-hidden="true"] {
   transform: translate(2px, -2px);
 }
 
 /* ---------- Inline text links ----------
-   A thin, quiet underline that thickens and takes the full colour. */
+   The header menu's line, in text: a thin, quiet rest line, and on hover or focus an
+   orange line that grows from the left over it. Both are background layers, so nothing
+   in the layout moves. Most of these links are flex boxes taller than their text (44 px
+   targets): the line sits just under the text there; on plain inline links it sits at
+   the bottom of the text box. The line's settings sit in a zero-specificity rule, so
+   the per-link tweaks below can override them with a plain class. */
+
+:where(
+    .player-page__link,
+    .first-time__link,
+    .rating__meta a,
+    .player-stats__tile dd a,
+    .player-stats__prize a,
+    .player-stats__place-link,
+    .about__link,
+    .rating-table__name a .rating-table__nick
+  ) {
+  --line-w: 2px;
+  --line-y: calc(50% + 0.75em);
+  --line-color: var(--color-orange);
+  --line-rest: color-mix(in srgb, currentColor 40%, transparent);
+}
 
 :is(
     .player-page__link,
@@ -147,16 +189,24 @@
     .rating__meta a,
     .player-stats__tile dd a,
     .player-stats__prize a,
-    .about__link
+    .player-stats__place-link,
+    .about__link,
+    .rating-table__name a .rating-table__nick
   ) {
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
-  text-underline-offset: 4px;
+  text-decoration: none;
+  background-image:
+    linear-gradient(var(--line-color), var(--line-color)),
+    linear-gradient(var(--line-rest), var(--line-rest));
+  background-repeat: no-repeat;
+  background-position:
+    0 var(--line-y),
+    0 var(--line-y);
+  background-size:
+    0% var(--line-w),
+    100% 1px;
   transition:
     color var(--ease),
-    text-decoration-color var(--ease),
-    text-decoration-thickness var(--ease);
+    background-size 0.32s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 :is(
@@ -165,20 +215,45 @@
     .rating__meta a,
     .player-stats__tile dd a,
     .player-stats__prize a,
+    .player-stats__place-link,
     .about__link
-  ):is(:hover, :focus-visible) {
-  text-decoration-thickness: 2px;
-  text-decoration-color: currentColor;
+  ):is(:hover, :focus-visible),
+.rating-table__name a:is(:hover, :focus-visible) .rating-table__nick {
+  background-size:
+    100% var(--line-w),
+    100% 1px;
 }
 
-/* The rank numbers on a profile ("№34") are big display type: a heavier line. */
+/* Inline (not flex) links: the line at the bottom of the text box. */
+:is(.player-stats__tile dd a, .player-stats__prize a) {
+  --line-y: 100%;
+}
+
+/* The table nicks keep a clean column at rest: only the hover line. */
+.rating-table__name a .rating-table__nick {
+  --line-rest: transparent;
+}
+
+/* A prize name fills its grid cell: the line runs under the text, not the whole cell. */
+.player-stats__prize a {
+  justify-self: start;
+}
+
+/* On the orange "About" block the line is the text's own colour. */
+.about__link {
+  --line-color: currentColor;
+}
+
+/* The rank numbers on a profile ("№34") are big display type: a heavier line. As an
+   inline block its box is the line (not the font's taller content area), so the line
+   lands under the digits instead of on the text below. Same line height: no shift. */
 .player-stats__tile dd a {
-  text-underline-offset: 5px;
+  --line-w: 3px;
+  display: inline-block;
 }
 
 .player-stats__tile dd a:is(:hover, :focus-visible) {
   color: var(--color-orange-hover);
-  text-decoration-thickness: 3px;
 }
 
 :is(.player-page__link, .first-time__link):focus-visible {

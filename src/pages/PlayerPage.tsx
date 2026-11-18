@@ -41,9 +41,9 @@ export default function PlayerPage({ player }: { player: ClubPlayer }) {
       <div className="player-page__layout">
         <div className="player-page__photo">
           {player.photo ? (
-            <img src={player.photo} alt={t.photoAlt(player.nick)} />
+            <img src={player.photo} alt={t.photoAlt(player.nick)} width={480} height={640} />
           ) : (
-            <img className="player-page__logo" src={logo} alt="" />
+            <img className="player-page__logo" src={logo} alt="" width={640} height={640} />
           )}
         </div>
 

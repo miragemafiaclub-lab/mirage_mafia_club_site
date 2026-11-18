@@ -66,7 +66,7 @@ function Head({ player }: { player: ClubPlayer }) {
   return (
     <Link className="compare__head" to={localize(`/players/${player.slug}`, lang)}>
       <span className="compare__photo">
-        <img src={player.photo ?? logo} alt="" />
+        <img src={player.photo ?? logo} alt="" width={56} height={56} />
       </span>
       <span className="compare__nick" lang={textLang(player.nick)}>
         {player.nick}
