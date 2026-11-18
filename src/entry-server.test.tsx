@@ -18,6 +18,21 @@ describe("prerender", () => {
     expect(html).toContain("players-card");
   });
 
+  it("puts the whole first-visit guide into the HTML, in both languages", () => {
+    const ru = render("/first-time");
+    expect(ru.noindex).toBe(false);
+    expect(ru.html).toContain("Ludna 2");
+    expect(ru.html).toContain("60 zł");
+    expect(ru.html).toContain("https://learnmafia.com");
+    expect(ru.html).toContain("Вторник и пятница, 18:30");
+    expect(render("/en/first-time").html).toContain("Tuesday and Friday, 18:30");
+  });
+
+  it("links the home page to the first-visit guide", () => {
+    expect(render("/").html).toContain('href="/first-time"');
+    expect(render("/en").html).toContain('href="/en/first-time"');
+  });
+
   it("renders a player's profile with their nick", () => {
     expect(render("/players/walle").html).toContain(">Walle<");
   });

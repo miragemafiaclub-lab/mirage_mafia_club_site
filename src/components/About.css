@@ -323,3 +323,15 @@
     display: none;
   }
 }
+
+.about__stat-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  transition: color var(--ease);
+}
+
+.about__stat-link:hover {
+  color: var(--color-orange);
+}

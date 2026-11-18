@@ -23,10 +23,10 @@ describe("page meta", () => {
 
   it("keeps placeholder and guest pages out of search results, but not real ones", () => {
     expect(metaFor("/tournaments").noindex).toBe(true);
-    expect(metaFor("/en/first-time").noindex).toBe(true);
     expect(metaFor("/players/grib-958").noindex).toBe(true);
     expect(metaFor("/").noindex).toBe(false);
     expect(metaFor("/rating").noindex).toBe(false);
+    expect(metaFor("/en/first-time").noindex).toBe(false);
     expect(metaFor("/players/logika").noindex).toBe(false);
   });
 

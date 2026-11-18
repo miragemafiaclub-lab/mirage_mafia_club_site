@@ -8,7 +8,7 @@ import { absoluteUrl } from "./site";
 export type HeadTag = { tag: "title"; text: string } | { tag: "meta" | "link"; attrs: Record<string, string> };
 
 /** Pages that are placeholders for now: kept out of search results until they get real content. */
-const NOT_READY = new Set<Route["page"]>(["tournaments", "firstTime"]);
+const NOT_READY = new Set<Route["page"]>(["tournaments"]);
 /** Pages whose content depends on the address (?a=…&b=…): nothing worth indexing on its own. */
 const NO_INDEX = new Set<Route["page"]>(["compare"]);
 
