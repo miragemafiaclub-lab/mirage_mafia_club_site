@@ -1,11 +1,12 @@
 import { Link } from "react-router";
-import heroTable from "../assets/hero-table.jpeg";
 import { CLUB_PLACE, nextGame, weekIndex } from "../data/schedule";
+import { MIN_PRICE_ZL } from "../data/visit";
 import { useClubNow, useHydrated } from "../hooks/useHydrated";
 import { hero } from "../i18n/hero";
 import { useLang, useT } from "../i18n/lang";
 import { STATIC_PAGES, localize } from "../routes";
 import "./Hero.css";
+import { HERO_IMAGE } from "./heroImage";
 
 function isoDate(date: Date) {
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -32,7 +33,16 @@ export default function Hero() {
 
   return (
     <section className="hero" id="home">
-      <img className="hero__bg" src={heroTable} alt={t.bgAlt} fetchPriority="high" />
+      <img
+        className="hero__bg"
+        src={HERO_IMAGE.src}
+        srcSet={HERO_IMAGE.srcSet}
+        sizes={HERO_IMAGE.sizes}
+        width={HERO_IMAGE.width}
+        height={HERO_IMAGE.height}
+        alt={t.bgAlt}
+        fetchPriority="high"
+      />
       <div className="hero__overlay" />
 
       <div className="hero__content">
@@ -49,10 +59,26 @@ export default function Hero() {
           {t.leadText}
         </p>
 
+        {/* Until the page is live the next game is unknown: an invisible line of the same shape holds its place,
+            so the hero text does not jump up when it appears (the hero is bottom-aligned). */}
+        {!hydrated && (
+          <p className="hero__next is-pending" aria-hidden="true">
+            <span className="hero__next-dot" />
+            {t.nextLabel}:{" "}
+            <span className="hero__next-value">
+              {[t.tomorrow, "~18:30", CLUB_PLACE.address.split(",")[0]].join(", ")} · {t.fromPrice(MIN_PRICE_ZL)}
+            </span>
+          </p>
+        )}
+
         {game && gameLine && (
           <p className="hero__next">
             <span className="hero__next-dot" aria-hidden="true" />
-            {t.nextLabel}: <time dateTime={isoDate(game.date)}>{gameLine}</time>
+            {t.nextLabel}:{" "}
+            {/* One flex item, so the price wraps together with the game rather than on its own. */}
+            <span className="hero__next-value">
+              <time dateTime={isoDate(game.date)}>{gameLine}</time> · {t.fromPrice(MIN_PRICE_ZL)}
+            </span>
           </p>
         )}
 

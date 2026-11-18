@@ -130,7 +130,7 @@ export default function PlayerRoster({
             replace
           >
             <div className="roster-card__photo" aria-hidden="true">
-              {player.photo ? <img src={player.photo} alt="" loading="lazy" decoding="async" /> : <span>{player.nick.charAt(0)}</span>}
+              {player.photo ? <img src={player.photo} alt="" width={300} height={400} loading="lazy" decoding="async" /> : <span>{player.nick.charAt(0)}</span>}
             </div>
 
             <div className="roster-card__body">

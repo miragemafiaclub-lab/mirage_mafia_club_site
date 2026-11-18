@@ -1,19 +1,21 @@
 import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router'
 import './index.css'
 import App from './App.tsx'
+// After every component's styles, so the shared hover and page-transition rules win ties.
+import './motion.css'
 import { PageDataProvider } from './pageData.tsx'
 import { readEmbeddedPageData } from './pageDataUrl.ts'
+import TransitionRouter from './TransitionRouter.tsx'
 
 const root = document.getElementById('root')!
 const app = (
   <StrictMode>
-    <BrowserRouter>
+    <TransitionRouter>
       <PageDataProvider cache={readEmbeddedPageData()}>
         <App />
       </PageDataProvider>
-    </BrowserRouter>
+    </TransitionRouter>
   </StrictMode>
 )
 

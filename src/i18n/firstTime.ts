@@ -12,6 +12,7 @@ export const firstTime: Translations<{
   signup: string;
   signupLabel: string;
   schedule: string;
+  photoAlt: { table: string; group: string };
   facts: { price: (zl: number) => string; priceSub: string; place: string; placeSub: string };
 
   eveningTitle: string;
@@ -58,10 +59,14 @@ export const firstTime: Translations<{
   ru: {
     eyebrow: "Первый раз?",
     title: "Первый раз на мафии",
-    lead: "Опыт не нужен. Для первого раза есть День новичка: без регистрации на сайтах и без подготовки. Ниже всё, что стоит знать до прихода.",
+    lead: "Опыт не нужен. Для первого раза есть День новичка: без регистрации на iMafia и без подготовки. Ниже всё, что стоит знать до прихода.",
     signup: "Записаться через бот",
     signupLabel: "Записаться через бот клуба в Telegram (откроется в новой вкладке)",
     schedule: "Расписание",
+    photoAlt: {
+      table: "Вечер в Mirage: игроки за игровым столом клуба",
+      group: "Игроки Mirage с сертификатами после клубного вечера",
+    },
     facts: {
       price: (zl) => `от ${zl} zł`,
       priceSub: "за вечер, оплата в боте",
@@ -130,7 +135,7 @@ export const firstTime: Translations<{
       "Проходите прямо, нам нужна первая дверь.",
     ],
     map: "Открыть на карте",
-    mapLabel: "Открыть адрес на Google Maps (в новой вкладке)",
+    mapLabel: "Открыть на карте (Google Maps, в новой вкладке)",
 
     rulesTitle: "Правила клуба коротко",
     rulesLead: "Главное из регламента клуба и правил площадки. Остальное подскажет судья.",
@@ -177,10 +182,14 @@ export const firstTime: Translations<{
   en: {
     eyebrow: "First time?",
     title: "Your first game of mafia",
-    lead: "No experience needed. Newcomers' day is made for a first visit: no sign-up on rating sites, nothing to prepare. Here is everything worth knowing before you come.",
+    lead: "No experience needed. Newcomers' day is made for a first visit: no iMafia account needed, nothing to prepare. Here is everything worth knowing before you come.",
     signup: "Sign up via the bot",
     signupLabel: "Sign up via the club bot on Telegram (opens in a new tab)",
     schedule: "Schedule",
+    photoAlt: {
+      table: "An evening at Mirage: players around the club's game table",
+      group: "Mirage players with their certificates after a club evening",
+    },
     facts: {
       price: (zl) => `from ${zl} zł`,
       priceSub: "per night, paid in the bot",
@@ -249,7 +258,7 @@ export const firstTime: Translations<{
       "Go straight ahead: it's the first door.",
     ],
     map: "Open the map",
-    mapLabel: "Open the address on Google Maps (in a new tab)",
+    mapLabel: "Open the map (Google Maps, in a new tab)",
 
     rulesTitle: "Club rules in brief",
     rulesLead: "The essentials from the club regulation and the venue rules. The judge will help with the rest.",

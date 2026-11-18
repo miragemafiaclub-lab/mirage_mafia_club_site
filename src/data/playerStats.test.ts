@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildPlayerStats, type ProfileRecord } from "./playerStats";
+import { buildPlayerStats, uniqueAwards, type ProfileRecord } from "./playerStats";
+import profiles from "./profiles.json";
 import type { StoredRating } from "./rating";
 
 const row = (place: number, id: string, points: number, games: number) => [place, id, points, points / games, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, games];
@@ -49,7 +50,30 @@ describe("buildPlayerStats", () => {
 
   it("attaches the iMafia profile when there is one", () => {
     expect(stats.profile).toBe(null);
-    const profile = { winRate: 50 } as ProfileRecord;
-    expect(buildPlayerStats(rating, { 63: profile }, "63").profile).toBe(profile);
+    const profile = { winRate: 50, awards: [] } as unknown as ProfileRecord;
+    expect(buildPlayerStats(rating, { 63: profile }, "63").profile).toEqual(profile);
+  });
+
+  it("drops awards iMafia lists twice (same year and name), keeping their order", () => {
+    const awards = [
+      { year: 2025, name: "Чемпіон iMafia" },
+      { year: 2024, name: "Кращий дон" },
+      { year: 2025, name: "Чемпіон iMafia" },
+      { year: 2024, name: "Чемпіон iMafia" },
+    ];
+    const profile = { winRate: 50, awards } as unknown as ProfileRecord;
+    expect(buildPlayerStats(rating, { 63: profile }, "63").profile?.awards).toEqual([
+      { year: 2025, name: "Чемпіон iMafia" },
+      { year: 2024, name: "Кращий дон" },
+      { year: 2024, name: "Чемпіон iMafia" },
+    ]);
+    expect(uniqueAwards([])).toEqual([]);
+  });
+
+  it("keeps every real profile's awards unique", () => {
+    for (const profile of Object.values(profiles as unknown as Record<string, ProfileRecord>)) {
+      const shaped = uniqueAwards(profile.awards).map((a) => `${a.year}|${a.name}`);
+      expect(new Set(shaped).size).toBe(shaped.length);
+    }
   });
 });

@@ -55,7 +55,7 @@ function formatRange(start: string, end: string, months: string[]) {
 function Photo({ nick, photo, className }: { nick: string; photo?: string; className: string }) {
   return (
     <span className={className} aria-hidden="true">
-      {photo ? <img src={photo} alt="" loading="lazy" /> : <span>{nick.charAt(0)}</span>}
+      {photo ? <img src={photo} alt="" width={96} height={96} loading="lazy" decoding="async" /> : <span>{nick.charAt(0)}</span>}
     </span>
   );
 }

@@ -412,6 +412,11 @@
   .players__grid {
     --gap: var(--space-3);
   }
+
+  /* Same dark background as the schedule above it: one section gap between the two, not two stacked. */
+  .schedule + .players {
+    padding-top: 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -426,16 +431,20 @@
   }
 }
 
-/* ---------- Entrance: cards arrive in a wave, 60ms apart ---------- */
+/* ---------- Entrance: cards arrive in a wave, 60ms apart ----------
+   Wider screens only: on a phone the row is passed by in a quick scroll (or captured in one
+   full-page shot) before the observer fires, and hidden cards there read as an empty band. */
 
-.js .players__grid:not(.is-in) .players-card {
-  opacity: 0;
-}
+@media (min-width: 721px) {
+  .js .players__grid:not(.is-in) .players-card {
+    opacity: 0;
+  }
 
-.players__grid.is-in .players-card {
-  animation: players-card-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  /* Only the first rows wait their turn; later cards are below the fold anyway. */
-  animation-delay: calc(min(var(--i, 0), 12) * 60ms);
+  .players__grid.is-in .players-card {
+    animation: players-card-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    /* Only the first rows wait their turn; later cards are below the fold anyway. */
+    animation-delay: calc(min(var(--i, 0), 12) * 60ms);
+  }
 }
 
 @keyframes players-card-in {

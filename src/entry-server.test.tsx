@@ -41,6 +41,39 @@ describe("prerender", () => {
     expect(render("/en").html).toContain('href="/en/first-time"');
   });
 
+  it("leads every sign-up to the club bot and keeps the channel as news", () => {
+    const ru = render("/").html;
+    expect(ru).toContain("Запись на игры — бот в Telegram");
+    expect(ru).toContain("Telegram-канал — новости клуба");
+    expect(ru).toContain('href="https://t.me/mirage_mafia_club"');
+    expect(ru).not.toContain("Telegram — запись на игры");
+    const en = render("/en").html;
+    expect(en).toContain("Sign up for games — Telegram bot");
+    expect(en).toContain("Telegram channel — club news");
+  });
+
+  it("closes the home page with the next game, the price and a sign-up through the bot", () => {
+    const ru = render("/").html;
+    expect(ru).toContain('class="closing-cta"');
+    expect(ru).toContain("Записаться через бот");
+    expect(ru).toContain("от 50 zł");
+    expect(ru).toContain("Записаться в Telegram");
+    expect(ru).toContain("оплата в боте");
+    expect(ru).toContain("Впервые? Приходите в воскресенье на День новичка");
+    expect(ru).toContain("Командная игра на логику и блеф");
+    expect(render("/en").html).toContain("from 50 zł");
+    // Home only: the guide page has its own call to action.
+    expect(render("/first-time").html).not.toContain('class="closing-cta"');
+  });
+
+  it("does not promise a sign-up-free first visit, and names the map link by its text", () => {
+    const ru = render("/first-time").html;
+    expect(ru).toContain("без регистрации на iMafia");
+    expect(ru).not.toContain("без регистрации на сайтах");
+    expect(ru).toContain('aria-label="Открыть на карте (Google Maps, в новой вкладке)"');
+    expect(render("/en/first-time").html).toContain('aria-label="Open the map (Google Maps, in a new tab)"');
+  });
+
   it("renders a player's profile with their nick", () => {
     expect(render("/players/walle").html).toContain(">Walle<");
   });

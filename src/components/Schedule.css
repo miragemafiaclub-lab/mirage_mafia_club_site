@@ -148,15 +148,67 @@
     box-shadow var(--ease);
 }
 
-.schedule-next__cta--closed {
-  justify-content: center;
-  border: 1px solid var(--color-line-strong);
-  background: transparent;
+.schedule-next__note {
+  color: var(--text-3);
+}
+
+/* Small text links on the card and under the week. */
+.schedule-next__more,
+.schedule-next__alt,
+.schedule-week__hint {
+  /* Plain text flow, so the arrow follows the last word when the line wraps. */
+  display: block;
+  min-height: 44px;
+  padding: var(--space-2) 0;
+  line-height: 1.4;
+  background: none;
+  color: var(--color-orange);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.schedule-next__more {
+  margin: calc(-1 * var(--space-3)) 0 var(--space-5);
+}
+
+.schedule-next__more:hover,
+.schedule-next__alt:hover,
+.schedule-week__hint:hover {
+  color: var(--color-orange-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Invite-only evening: no sign-up, a way on to the nearest open one. */
+.schedule-next__closed {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line);
+}
+
+.schedule-next__closed-text {
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
   color: var(--text-2);
 }
 
-.schedule-next__note {
-  color: var(--text-3);
+.schedule-next__alt {
+  margin-top: var(--space-1);
+}
+
+.schedule-week__hint {
+  width: 100%;
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-line);
+  font-size: var(--fs-ui);
+}
+
+.schedule-week__hint:focus-visible {
+  outline-offset: -3px;
 }
 
 a.schedule-next__cta:hover {

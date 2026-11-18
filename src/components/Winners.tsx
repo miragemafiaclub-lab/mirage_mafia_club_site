@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef, type CSSProperties, type PointerEvent } from "react";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/web/logo-480.webp";
 import { CLUB_STATS } from "../data/clubStats";
 import { warsawNow } from "../data/schedule";
 import { buildMonths, buildYearTabs, type WinnerMonth } from "../data/winners";
@@ -21,15 +21,17 @@ function latestWithWinner(months: WinnerMonth[]) {
 
 const MONTHLY_WINNERS = MONTHS.filter((month) => month.winner).length;
 
-// Oswald (uppercase) renders at roughly this many em per character; size each word so it
-// always peeks out from behind the phone by about the same amount. Cyrillic capitals run
-// wider (measured over the month names: ~0.52em vs ~0.49em for Latin), hence the two ratios.
-const MONTH_WORD_WIDTH_TO_PHONE = 1.6;
+// The month name stands on its side next to the phone (Winners.css). Oswald (uppercase) renders at
+// roughly this many em per character; a long name is sized to run no longer than the phone is tall,
+// a short one stops at the common size, so every name has the same weight. Cyrillic capitals
+// run wider (measured over the month names: ~0.52em vs ~0.49em for Latin), hence the two ratios.
+const MONTH_WORD_LENGTH_TO_PHONE = 0.9;
+const MONTH_WORD_MAX_TO_PHONE_WIDTH = 0.5;
 const MONTH_WORD_CHAR_RATIO: Record<Lang, number> = { en: 0.46, ru: 0.49 };
 
 function monthWordFontSize(word: string, lang: Lang) {
-  const scale = MONTH_WORD_WIDTH_TO_PHONE / (word.length * MONTH_WORD_CHAR_RATIO[lang]);
-  return `calc(var(--phone-w) * ${scale.toFixed(3)})`;
+  const scale = MONTH_WORD_LENGTH_TO_PHONE / (word.length * MONTH_WORD_CHAR_RATIO[lang]);
+  return `min(calc(var(--phone-h) * ${scale.toFixed(3)}), calc(var(--phone-w) * ${MONTH_WORD_MAX_TO_PHONE_WIDTH}))`;
 }
 
 // 1: a later month comes in from the right; -1: an earlier one from the left.
@@ -75,9 +77,9 @@ function Shot({ month, onGone }: { month: WinnerMonth; onGone?: () => void }) {
   return (
     <div className={`winners__shot${onGone ? " is-leaving" : ""}`} onAnimationEnd={onGone}>
       {winner?.photo ? (
-        <img src={winner.photo} alt={onGone ? "" : t.photoAlt(winner.nick)} draggable={false} />
+        <img src={winner.photo} alt={onGone ? "" : t.photoAlt(winner.nick)} width={360} height={480} draggable={false} />
       ) : (
-        <img className="winners__frame-logo" src={logo} alt="" draggable={false} />
+        <img className="winners__frame-logo" src={logo} alt="" width={480} height={480} draggable={false} />
       )}
     </div>
   );
@@ -211,7 +213,7 @@ export default function Winners() {
     <div className="winners-page">
       <section className="winners" id="winners">
         <div className="winners__bg" aria-hidden="true">
-          <img className="winners__watermark-logo" src={logo} alt="" />
+          <img className="winners__watermark-logo" src={logo} alt="" width={480} height={480} loading="lazy" decoding="async" />
           <span className="winners__ring" />
         </div>
 
@@ -359,9 +361,16 @@ export default function Winners() {
             >
               <div className="archive-card__photo">
                 {month.winner?.photo ? (
-                  <img src={month.winner.photo} alt={t.archivePhotoAlt(month.winner.nick, t.months[month.month])} />
+                  <img
+                    src={month.winner.photo}
+                    alt={t.archivePhotoAlt(month.winner.nick, t.months[month.month])}
+                    width={360}
+                    height={480}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 ) : (
-                  <img className="archive-card__logo" src={logo} alt="" />
+                  <img className="archive-card__logo" src={logo} alt="" width={480} height={480} loading="lazy" decoding="async" />
                 )}
                 <p className="archive-card__month">{t.months[month.month]}</p>
                 <div className="archive-card__foot">

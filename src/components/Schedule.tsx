@@ -1,9 +1,12 @@
 import { useRef, useState } from "react";
-import tablePhoto from "../assets/about-small.jpeg";
+import tablePhoto from "../assets/web/about-small-589.webp";
+import { Link } from "react-router";
 import { SIGNUP_URL, gameOn, nextGame, weekDates, weekIndex } from "../data/schedule";
+import { PRICES_ZL } from "../data/visit";
 import { useClubNow, useHydrated } from "../hooks/useHydrated";
 import { schedule } from "../i18n/schedule";
-import { useT } from "../i18n/lang";
+import { useLang, useT } from "../i18n/lang";
+import { STATIC_PAGES, localize } from "../routes";
 import "./Schedule.css";
 
 // How far ahead the week switcher goes.
@@ -24,6 +27,15 @@ function TagIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
       <rect x="4" y="4" width="16" height="16" rx="4" />
       <path d="M9 12.5 11 14.5 15 10" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function CoinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <circle cx="12" cy="12" r="8" />
+      <path d="M9.5 9.5h5l-5 5h5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -54,13 +66,17 @@ export default function Schedule() {
 
 function ScheduleView({ now }: { now: Date }) {
   const t = useT(schedule);
+  const { lang } = useLang();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const next = nextGame(now);
+  const nextNewcomers = nextGame(now, "newcomers");
+
+  // The week switcher position (0 = this week) that shows a date.
+  const weekOf = (date: Date) =>
+    Math.min(MAX_WEEKS_AHEAD, Math.floor((weekIndex(today) + daysBetween(today, date)) / 7));
 
   // Open on the week of the nearest game: late on Sunday that is already the next week.
-  const [weekOffset, setWeekOffset] = useState(() =>
-    next ? Math.floor((weekIndex(today) + daysBetween(today, next.date)) / 7) : 0,
-  );
+  const [weekOffset, setWeekOffset] = useState(() => (next ? weekOf(next.date) : 0));
   const [pickedTime, setPickedTime] = useState<number | null>(null);
   const cardRef = useRef<HTMLElement>(null);
 
@@ -77,6 +93,8 @@ function ScheduleView({ now }: { now: Date }) {
 
   function pickDay(date: Date) {
     setPickedTime(date.getTime());
+    // Picked from outside the week list (a button on the card or under it): show that day's week too.
+    setWeekOffset(weekOf(date));
     // On narrow screens the card sits above the week: bring it back when most of it is off screen.
     const card = cardRef.current;
     if (!card) return;
@@ -113,12 +131,31 @@ function ScheduleView({ now }: { now: Date }) {
                   <TagIcon />
                   {t.events[selected.event.kind]}
                 </li>
+                {!selected.event.inviteOnly && (
+                  <li>
+                    <CoinIcon />
+                    {t.price(PRICES_ZL[selected.event.kind])}
+                  </li>
+                )}
                 {!selected.event.time && selected.event.usualTime && <li className="schedule-next__note">{t.exactTime}</li>}
               </ul>
+
+              {selected.event.kind === "newcomers" && (
+                <Link className="schedule-next__more" to={localize(STATIC_PAGES.firstTime, lang)}>
+                  {t.firstTimeLink} <span aria-hidden="true">→</span>
+                </Link>
+              )}
             </div>
 
             {selected.event.inviteOnly ? (
-              <p className="schedule-next__cta schedule-next__cta--closed">{t.inviteOnly}</p>
+              <div className="schedule-next__closed">
+                <p className="schedule-next__closed-text">{t.inviteOnlyText}</p>
+                {next && (
+                  <button type="button" className="schedule-next__alt" onClick={() => pickDay(next.date)}>
+                    {t.nearestOpen(dayLabel(next.date), t.fullDate(next.date))} <span aria-hidden="true">→</span>
+                  </button>
+                )}
+              </div>
             ) : (
               <a
                 className="schedule-next__cta"
@@ -127,7 +164,7 @@ function ScheduleView({ now }: { now: Date }) {
                 rel="noopener noreferrer"
                 aria-label={t.signupLabel}
               >
-                {t.signup} <span aria-hidden="true">→</span>
+                {t.signup} <span aria-hidden="true">↗</span>
               </a>
             )}
           </article>
@@ -208,10 +245,16 @@ function ScheduleView({ now }: { now: Date }) {
               );
             })}
           </ul>
+
+          {nextNewcomers && (
+            <button type="button" className="schedule-week__hint" onClick={() => pickDay(nextNewcomers.date)}>
+              {t.newcomersHint} <span aria-hidden="true">→</span>
+            </button>
+          )}
         </div>
 
         <figure className="schedule-photo">
-          <img src={tablePhoto} alt={t.photoAlt} loading="lazy" decoding="async" />
+          <img src={tablePhoto} alt={t.photoAlt} width={589} height={690} loading="lazy" decoding="async" />
           <figcaption className="schedule-photo__caption">
             {t.caption[0]}
             <br />

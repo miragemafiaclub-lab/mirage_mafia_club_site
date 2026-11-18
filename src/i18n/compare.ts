@@ -25,6 +25,9 @@ export const compare: Translations<{
   better: string;
   compareWith: string;
   go: string;
+  suggest: string;
+  pairKinds: Record<"annual" | "month" | "leaders" | "winners", string>;
+  slotHint: string;
 }> = {
   ru: {
     eyebrow: "Сравнение",
@@ -51,6 +54,14 @@ export const compare: Translations<{
     better: "лучше",
     compareWith: "Сравнить с другим игроком",
     go: "Сравнить",
+    suggest: "Или начните с готовой пары",
+    pairKinds: {
+      annual: "Топ-2 года",
+      month: "Топ-2 месяца",
+      leaders: "Лидер года и лидер месяца",
+      winners: "Два последних игрока месяца",
+    },
+    slotHint: "Выберите игрока",
   },
   en: {
     eyebrow: "Compare",
@@ -77,5 +88,13 @@ export const compare: Translations<{
     better: "better",
     compareWith: "Compare with another player",
     go: "Compare",
+    suggest: "Or start with a ready-made pair",
+    pairKinds: {
+      annual: "Top 2 of the year",
+      month: "Top 2 of the month",
+      leaders: "Leader of the year vs. of the month",
+      winners: "Last two players of the month",
+    },
+    slotHint: "Pick a player",
   },
 };

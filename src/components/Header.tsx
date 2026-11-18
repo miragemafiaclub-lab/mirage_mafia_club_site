@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, type ComponentProps, type FocusEvent } from "react";
+import { useEffect, useRef, useState, type ComponentProps, type FocusEvent, type MouseEvent } from "react";
 import { Link } from "react-router";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/web/logo-128.webp";
 import { TELEGRAM_URL } from "../data/schedule";
 import { header, type NavId } from "../i18n/header";
 import { LANGS, useLang, useT } from "../i18n/lang";
@@ -85,18 +85,44 @@ function SocialLinks({ className }: { className: string }) {
   );
 }
 
-/** Id of the section currently in the middle of the viewport (null on the hero or before any section). */
-function useActiveSection() {
-  const [active, setActive] = useState<string | null>(null);
+/**
+ * The scrollspy's band: from the bottom of the fixed header down to 40% of the viewport. The last section reaching
+ * into it is the current one, so a section takes over once its top passes 40% of the screen, and until then the
+ * section under the header stays current.
+ */
+function spyRootMargin(headerHeight: number) {
+  return `-${Math.round(headerHeight)}px 0px -60% 0px`;
+}
+
+/**
+ * Id of the home-page section currently under the header (null on the hero or before any section).
+ * Only the home page has these sections: elsewhere the footer (#contact) would light up "Contacts" next to the
+ * current page's item, so the spy is off there and nothing is highlighted. `path` keys the result to one page view:
+ * a highlight left from an earlier visit is never shown after coming back.
+ */
+function useActiveSection(enabled: boolean, path: string) {
+  const [spied, setSpied] = useState<{ path: string; id: string } | null>(null);
 
   useEffect(() => {
+    if (!enabled) return;
+    const setActive = (id: string) => setSpied({ path, id });
     // Sections are siblings of the header, so they exist by the time this effect runs; missing ids are skipped.
-    const sections = SPY_IDS.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
+    const find = () => SPY_IDS.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
+    let sections = find();
     if (sections.length === 0 || typeof IntersectionObserver === "undefined") return;
 
     const visible = new Set<string>();
     const pick = () => {
-      // Near the very bottom the last (short) section may never reach the middle band.
+      // A section can be rendered anew after this effect ran (Schedule swaps its build-time markup for the live
+      // one): the observer would keep watching the detached node, so it is pointed at the new one.
+      if (sections.some((el) => !el.isConnected)) {
+        observer.disconnect();
+        visible.clear();
+        sections = find();
+        sections.forEach((el) => observer.observe(el));
+        return;
+      }
+      // Near the very bottom the last (short) section may never reach the band.
       const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
       if (atBottom) {
         setActive(sections[sections.length - 1].id);
@@ -106,7 +132,7 @@ function useActiveSection() {
       if (current) setActive(current.id);
     };
 
-    // A thin band around the middle of the screen: the section crossing it is the active one.
+    const headerHeight = document.querySelector(".header")?.getBoundingClientRect().height ?? 0;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -115,7 +141,7 @@ function useActiveSection() {
         }
         pick();
       },
-      { rootMargin: "-45% 0px -50% 0px" },
+      { rootMargin: spyRootMargin(headerHeight) },
     );
     sections.forEach((el) => observer.observe(el));
 
@@ -131,17 +157,17 @@ function useActiveSection() {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [enabled, path]);
 
-  return active;
+  return enabled && spied?.path === path ? spied.id : null;
 }
 
 export default function Header() {
   const t = useT(header);
   const [menuOpen, setMenuOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
-  const active = useActiveSection();
   const route = useRoute();
+  const active = useActiveSection(route.page === "home", route.path);
 
   // Another page shown without a menu click (browser Back/Forward): the menu must not stay open over it.
   const [menuPath, setMenuPath] = useState(route.path);
@@ -179,7 +205,27 @@ export default function Header() {
     };
   }, [menuOpen]);
 
+  // After a page change (a click or browser Back) the pointer still rests where it was, often on a menu item of the
+  // new page: its hover underline would look like a current-page mark. Hover styles wait for the pointer to move.
+  const headerRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    el.classList.add("is-pointer-idle");
+    const wake = () => el.classList.remove("is-pointer-idle");
+    window.addEventListener("pointermove", wake, { once: true, passive: true });
+    return () => window.removeEventListener("pointermove", wake);
+  }, [route.path]);
+
   const closeMenu = () => setMenuOpen(false);
+
+  // The skip link moves focus itself: a bare #main jump would also push a history entry and leave focus unset in some browsers.
+  const skipToMain = (e: MouseEvent<HTMLAnchorElement>) => {
+    const main = document.getElementById("main");
+    if (!main) return;
+    e.preventDefault();
+    main.focus();
+  };
 
   // Tabbing out of the header leaves the overlay behind: close it so it never covers the focused element.
   const onHeaderBlur = (e: FocusEvent<HTMLElement>) => {
@@ -214,13 +260,13 @@ export default function Header() {
     });
 
   return (
-    <header className={`header${menuOpen ? " is-menu-open" : ""}`} onBlur={onHeaderBlur}>
-      <a className="header__skip" href="#main">
+    <header ref={headerRef} className={`header${menuOpen ? " is-menu-open" : ""}`} onBlur={onHeaderBlur}>
+      <a className="header__skip" href="#main" onClick={skipToMain}>
         {t.skip}
       </a>
 
       <SectionLink className="header__brand" section="home" aria-label={t.homeLabel} onClick={closeMenu}>
-        <img className="header__logo" src={logo} alt={t.logoAlt} />
+        <img className="header__logo" src={logo} alt={t.logoAlt} width={44} height={44} />
       </SectionLink>
 
       <nav className="header__nav" aria-label={t.navLabel}>

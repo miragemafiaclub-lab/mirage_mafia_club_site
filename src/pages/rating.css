@@ -108,6 +108,10 @@
 }
 
 .rating__meta a {
+  /* A 44px tall hit area around one line of text; the negative margin keeps the line where it was. */
+  display: inline-block;
+  padding-block: 12px;
+  margin-block: -12px;
   color: var(--text-2);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -189,15 +193,26 @@
   width: 3em;
 }
 
+/* The name column takes the room the numbers leave (max-width: 0 lets it shrink below the nick's length);
+   a nick that does not fit ends in "…" instead of breaking mid-word, the full nick is in the title. */
 .rating-table__name {
   width: 100%;
+  max-width: 0;
   font-weight: 600;
-  white-space: normal !important;
-  overflow-wrap: anywhere;
+}
+
+.rating-table__nick {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .rating-table__player {
   display: inline-flex;
+  max-width: 100%;
+  /* A taller hit area than the nick (44px+ even without a photo), without making the row taller. */
+  padding-block: 12px;
+  margin-block: -12px;
   /* With a photo, the baseline would be the photo's bottom edge and the row would grow. */
   vertical-align: middle;
   align-items: center;
@@ -280,7 +295,17 @@
   color: var(--color-white);
 }
 
-.rating-table tr.is-uncounted {
+/* Below the cutoff: muted with a dimmer text colour, not opacity, so the text keeps 4.5:1 contrast. */
+.rating-table tr.is-uncounted > *,
+.rating-table tr.is-uncounted .rating-table__player {
+  color: var(--text-3);
+}
+
+.rating-table tr.is-uncounted .rating-table__player:hover {
+  color: var(--color-orange);
+}
+
+.rating-table tr.is-uncounted .rating-avatar {
   opacity: 0.6;
 }
 
@@ -316,10 +341,38 @@
   color: var(--color-orange);
 }
 
+/* Under a long table cut to its first rows (RatingPage.tsx). */
+.rating__more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  margin-top: var(--space-3);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: var(--color-white);
+  font: inherit;
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color var(--ease),
+    background var(--ease);
+}
+
+.rating__more:hover {
+  border-color: var(--color-orange);
+  background: var(--color-orange-soft);
+}
+
 /* ---------- Legend ---------- */
 
 .rating__legend {
-  margin-top: var(--space-6);
+  margin-top: var(--space-4);
   color: var(--text-2);
   font-size: var(--fs-ui);
 }
@@ -338,29 +391,51 @@
   color: var(--color-orange);
 }
 
+/* A compact run of "Abbr full name" pairs: a few lines above the table, not a block below it. */
 .rating__legend dl {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: var(--space-2) var(--space-5);
-  margin-top: var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
 }
 
 .rating__legend dl div {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .rating__legend dt {
-  min-width: 3em;
   font-weight: 700;
   color: var(--color-white);
 }
 
 .rating__legend p {
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
+  color: var(--text-3);
 }
 
-/* Phones: keep place, player, games, points, average and wins; the rest is in the legend and on iMafia. */
+/* Desktop: no scroll box around the table, so the column header sticks under the fixed site header. */
+@media (min-width: 761px) {
+  .rating-table__wrap--page {
+    overflow: visible;
+  }
+
+  .rating-table__wrap--page thead th {
+    top: var(--header-h);
+    z-index: 1;
+    /* Collapsed borders do not travel with a sticky cell: draw the bottom line as a shadow. */
+    box-shadow: inset 0 -1px 0 var(--color-line);
+  }
+
+  .rating-table__wrap--page thead th:first-child {
+    border-top-left-radius: var(--radius-lg);
+  }
+
+  .rating-table__wrap--page thead th:last-child {
+    border-top-right-radius: var(--radius-lg);
+  }
+}
+
+/* Phones: keep place, player, games, points, average and wins; the rest (and its legend lines) is on wider screens and iMafia. */
 @media (max-width: 760px) {
   /* One swipeable row of leagues instead of three lines of buttons. */
   .rating__leagues {
@@ -369,19 +444,38 @@
     padding-inline: var(--side-padding);
     overflow-x: auto;
     scrollbar-width: none;
+    /* More leagues off to the right: the row fades out there until it is scrolled to the end,
+       and on the left once it has moved (RatingPage.tsx sets the classes). */
+    --fade-l: 0px;
+    --fade-r: 48px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+  }
+
+  .rating__leagues::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rating__leagues.is-scrolled {
+    --fade-l: 32px;
+  }
+
+  .rating__leagues.is-end {
+    --fade-r: 0px;
   }
 
   .rating__league {
     flex: none;
   }
 
-  .rating-table .is-narrow {
+  .rating-table .is-narrow,
+  .rating__legend .is-narrow {
     display: none;
   }
 
   .rating-table th,
   .rating-table td {
-    padding: 12px 8px;
+    padding: 12px 6px;
   }
 
   .rating-table__place {
@@ -392,6 +486,37 @@
   .rating__field--search {
     flex: 1 1 100%;
     min-width: 0;
+  }
+}
+
+/* Small phones: a smaller photo and tighter number cells leave the nick more room. */
+@media (max-width: 400px) {
+  .rating-table .rating-avatar {
+    width: 24px;
+    height: 24px;
+  }
+
+  .rating-table__player {
+    gap: var(--space-2);
+  }
+
+  .rating-table__place {
+    width: 2em;
+    padding-left: var(--space-3) !important;
+    padding-right: 4px !important;
+  }
+
+  .rating-table__num {
+    padding-inline: 4px !important;
+  }
+
+  .rating-table__num:last-child {
+    padding-right: var(--space-3) !important;
+  }
+
+  .rating-table__change {
+    width: auto;
+    padding-inline: 2px !important;
   }
 }
 

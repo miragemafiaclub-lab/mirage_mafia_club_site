@@ -1,0 +1,285 @@
+/* Shared motion: page transitions, one hover system for buttons and links, the logo.
+   Loaded after every component's styles (main.tsx), so these rules win ties with them.
+   Hover and :focus-visible always look the same; only colour, transform and
+   text-decoration change, so nothing moves the layout. */
+
+/* ---------- Page transitions (TransitionRouter.tsx) ----------
+   An orange curtain wipes across, left to right, under the header (its own snapshot,
+   never moves): the old page is cut away from the left, the new page follows a beat
+   behind, and the gap between the two edges is the orange of the transition overlay.
+   About 500 ms in all. */
+
+.header {
+  view-transition-name: site-header;
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+}
+
+::view-transition-old(site-header) {
+  display: none;
+}
+
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* What shows between the two edges: the curtain. */
+  ::view-transition-group(root) {
+    background: var(--color-orange);
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-old(root) {
+    animation: curtain-out 360ms cubic-bezier(0.65, 0, 0.35, 1) both;
+  }
+
+  ::view-transition-new(root) {
+    animation: curtain-in 380ms cubic-bezier(0.65, 0, 0.35, 1) 130ms both;
+  }
+
+  @keyframes curtain-out {
+    from {
+      clip-path: inset(0 0 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 100%);
+    }
+  }
+
+  @keyframes curtain-in {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ---------- Buttons ----------
+   Filled (primary): a lighter orange, a lift and a glow; the arrow inside nudges forward.
+   Outline (secondary): floods orange, the text turns dark. */
+
+:is(
+    .hero__btn--primary,
+    .about__btn--primary,
+    .header__cta,
+    .winners__cta,
+    a.schedule-next__cta,
+    .page__btn--primary
+  ):focus-visible {
+  background: var(--color-orange-hover);
+  border-color: var(--color-orange-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(242, 96, 12, 0.28);
+}
+
+.page__btn--primary:is(:hover, :focus-visible) {
+  box-shadow: 0 10px 24px rgba(242, 96, 12, 0.28);
+}
+
+.page__btn,
+.hero__btn--ghost,
+.protocol__more,
+.players__cta {
+  transition:
+    background var(--ease),
+    border-color var(--ease),
+    color var(--ease),
+    transform var(--ease),
+    box-shadow var(--ease);
+}
+
+:is(.page__btn:not(.page__btn--primary), .hero__btn--ghost, .protocol__more, .players__cta):is(
+    :hover,
+    :focus-visible
+  ) {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--btn-primary-fg);
+  transform: translateY(-1px);
+}
+
+/* Arrows inside buttons and back links. */
+:is(
+    .hero__btn,
+    .about__btn--primary,
+    .header__cta,
+    .winners__cta,
+    .schedule-next__cta,
+    .page__btn,
+    .players__cta,
+    .page__back,
+    .roster__back,
+    .rating__meta a,
+    .player-page__link,
+    .first-time__link,
+    .about__link
+  )
+  > span[aria-hidden="true"] {
+  display: inline-block;
+  transition: transform var(--ease);
+}
+
+:is(
+    .hero__btn,
+    .about__btn--primary,
+    .header__cta,
+    a.schedule-next__cta,
+    .winners__cta,
+    .page__btn,
+    .players__cta
+  ):is(:hover, :focus-visible)
+  > span[aria-hidden="true"] {
+  transform: translateX(4px);
+}
+
+:is(.page__back, .roster__back):is(:hover, :focus-visible) > span[aria-hidden="true"] {
+  transform: translateX(-4px);
+}
+
+/* Arrows inside text links (↗) nudge up and out. */
+:is(.rating__meta a, .player-page__link, .first-time__link, .about__link):is(:hover, :focus-visible)
+  > span[aria-hidden="true"] {
+  transform: translate(2px, -2px);
+}
+
+/* ---------- Inline text links ----------
+   The header menu's line, in text: a thin, quiet rest line, and on hover or focus an
+   orange line that grows from the left over it. Both are background layers, so nothing
+   in the layout moves. Most of these links are flex boxes taller than their text (44 px
+   targets): the line sits just under the text there; on plain inline links it sits at
+   the bottom of the text box. The line's settings sit in a zero-specificity rule, so
+   the per-link tweaks below can override them with a plain class. */
+
+:where(
+    .player-page__link,
+    .first-time__link,
+    .rating__meta a,
+    .player-stats__tile dd a,
+    .player-stats__prize a,
+    .player-stats__place-link,
+    .about__link,
+    .rating-table__name a .rating-table__nick
+  ) {
+  --line-w: 2px;
+  --line-y: calc(50% + 0.75em);
+  --line-color: var(--color-orange);
+  --line-rest: color-mix(in srgb, currentColor 40%, transparent);
+}
+
+:is(
+    .player-page__link,
+    .first-time__link,
+    .rating__meta a,
+    .player-stats__tile dd a,
+    .player-stats__prize a,
+    .player-stats__place-link,
+    .about__link,
+    .rating-table__name a .rating-table__nick
+  ) {
+  text-decoration: none;
+  background-image:
+    linear-gradient(var(--line-color), var(--line-color)),
+    linear-gradient(var(--line-rest), var(--line-rest));
+  background-repeat: no-repeat;
+  background-position:
+    0 var(--line-y),
+    0 var(--line-y);
+  background-size:
+    0% var(--line-w),
+    100% 1px;
+  transition:
+    color var(--ease),
+    background-size 0.32s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:is(
+    .player-page__link,
+    .first-time__link,
+    .rating__meta a,
+    .player-stats__tile dd a,
+    .player-stats__prize a,
+    .player-stats__place-link,
+    .about__link
+  ):is(:hover, :focus-visible),
+.rating-table__name a:is(:hover, :focus-visible) .rating-table__nick {
+  background-size:
+    100% var(--line-w),
+    100% 1px;
+}
+
+/* Inline (not flex) links: the line at the bottom of the text box. */
+:is(.player-stats__tile dd a, .player-stats__prize a) {
+  --line-y: 100%;
+}
+
+/* The table nicks keep a clean column at rest: only the hover line. */
+.rating-table__name a .rating-table__nick {
+  --line-rest: transparent;
+}
+
+/* A prize name fills its grid cell: the line runs under the text, not the whole cell. */
+.player-stats__prize a {
+  justify-self: start;
+}
+
+/* On the orange "About" block the line is the text's own colour. */
+.about__link {
+  --line-color: currentColor;
+}
+
+/* The rank numbers on a profile ("№34") are big display type: a heavier line. As an
+   inline block its box is the line (not the font's taller content area), so the line
+   lands under the digits instead of on the text below. Same line height: no shift. */
+.player-stats__tile dd a {
+  --line-w: 3px;
+  display: inline-block;
+}
+
+.player-stats__tile dd a:is(:hover, :focus-visible) {
+  color: var(--color-orange-hover);
+}
+
+:is(.player-page__link, .first-time__link):focus-visible {
+  color: var(--color-orange-hover);
+}
+
+.player-stats__prize a:focus-visible,
+.rating__meta a:focus-visible {
+  color: var(--color-orange);
+}
+
+/* ---------- Logo ---------- */
+
+.header__brand .header__logo {
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow var(--ease);
+}
+
+.header__brand:is(:hover, :focus-visible) .header__logo {
+  transform: rotate(-12deg) scale(1.08);
+  box-shadow: 0 0 0 2px var(--color-orange);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header__brand:is(:hover, :focus-visible) .header__logo {
+    transform: none;
+  }
+}

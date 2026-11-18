@@ -17,7 +17,6 @@ type ScheduleStrings = {
   timeTbaShort: string;
   usually: (time: string) => string;
   exactTime: string;
-  inviteOnly: string;
   noGame: string;
   selectedGame: string;
   weekGroup: string;
@@ -25,6 +24,16 @@ type ScheduleStrings = {
   nextWeek: string;
   signup: string;
   signupLabel: string;
+  /** Price of the picked evening: "50 zł · оплата в боте". */
+  price: (zl: number) => string;
+  /** On a Newcomers' day: link to the first-visit guide. */
+  firstTimeLink: string;
+  /** Under the week: picks the next Newcomers' day. */
+  newcomersHint: string;
+  /** On an invite-only evening, instead of sign-up. */
+  inviteOnlyText: string;
+  /** Button that moves the card to the nearest open evening: (day label, date). */
+  nearestOpen: (day: string, date: string) => string;
   photoAlt: string;
   caption: [string, string, string];
   /** "12 ноября" / "November 12". */
@@ -88,14 +97,18 @@ export const schedule: Translations<ScheduleStrings> = {
     timeTbaShort: "анонс",
     usually: (time) => `Обычно ${time}`,
     exactTime: "Точное время в Telegram",
-    inviteOnly: "По приглашению",
     noGame: "Нет игры",
     selectedGame: "Выбранная игра",
     weekGroup: "Расписание на неделю",
     prevWeek: "Предыдущая неделя",
     nextWeek: "Следующая неделя",
-    signup: "Записаться",
-    signupLabel: "Записаться через бот клуба в Telegram (откроется в новой вкладке)",
+    signup: "Записаться в Telegram",
+    signupLabel: "Записаться в Telegram через бот клуба (откроется в новой вкладке)",
+    price: (zl) => `${zl} zł · оплата в боте`,
+    firstTimeLink: "Для первого раза — как это проходит",
+    newcomersHint: "Впервые? Приходите в воскресенье на День новичка",
+    inviteOnlyText: "Стол по приглашению",
+    nearestOpen: (day, date) => `Ближайший открытый вечер: ${day.toLowerCase()}, ${date}`,
     photoAlt: "Игрок в маске за столом Mirage во время ночной фазы",
     caption: ["Те же люди.", "Разные роли.", "Всегда в хорошем настроении."],
     fullDate: ruFullDate,
@@ -122,14 +135,18 @@ export const schedule: Translations<ScheduleStrings> = {
     timeTbaShort: "TBA",
     usually: (time) => `Usually ${time}`,
     exactTime: "Exact time on Telegram",
-    inviteOnly: "By invitation",
     noGame: "No game",
     selectedGame: "Selected game",
     weekGroup: "Weekly schedule",
     prevWeek: "Previous week",
     nextWeek: "Next week",
-    signup: "Sign up",
-    signupLabel: "Sign up via the club bot on Telegram (opens in a new tab)",
+    signup: "Sign up on Telegram",
+    signupLabel: "Sign up on Telegram via the club bot (opens in a new tab)",
+    price: (zl) => `${zl} zł · paid in the bot`,
+    firstTimeLink: "First time? How the evening goes",
+    newcomersHint: "First time? Come on Sunday for Newcomers' day",
+    inviteOnlyText: "Table by invitation",
+    nearestOpen: (day, date) => `Nearest open evening: ${day}, ${date}`,
     photoAlt: "A masked player at a Mirage table during the night phase",
     caption: ["Same people.", "Different roles.", "Always good vibes."],
     fullDate: enFullDate,

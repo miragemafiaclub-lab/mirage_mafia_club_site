@@ -5,7 +5,8 @@
 
 .winners {
   position: relative;
-  background: linear-gradient(112deg, #f7f6f3 0%, #f7f6f3 34%, #1c140d 58%, #0a0806 82%);
+  /* One light tone for the whole section: dark type, the dark phone and orange on top of it. */
+  background: var(--color-light);
   color: var(--color-bg);
   padding: 76px var(--side-padding) 20px;
   overflow: hidden;
@@ -158,22 +159,31 @@
 }
 
 .winners__showcase {
+  --word-gap: 20px;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
+  /* The phone stays in the middle; the month name stands up beside it, the arrows sit under it. */
+  display: grid;
+  grid-template-columns: 1fr calc(var(--phone-w) / 2) calc(var(--phone-w) / 2) 1fr;
+  grid-template-areas:
+    "word phone phone ."
+    ". prev next .";
+  align-content: center;
+  column-gap: 0;
+  row-gap: 20px;
   height: 100%;
   min-width: 0;
 }
 
-/* Holds the month name behind the phone; during a change the old and the new name share one cell. */
+/* The month name, read bottom to top along the phone's left edge, never under it.
+   During a change the old and the new name share one cell. */
 .winners__month-word {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
+  grid-area: word;
+  align-self: center;
+  justify-self: end;
+  margin-right: var(--word-gap);
   display: grid;
-  place-items: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
   pointer-events: none;
   user-select: none;
 }
@@ -182,9 +192,8 @@
   grid-area: 1 / 1;
   font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1;
+  line-height: 0.82;
   color: var(--color-orange);
-  opacity: 0.9;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -192,26 +201,53 @@
 .winners__nav {
   position: relative;
   z-index: 2;
-  flex-shrink: 0;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(10, 10, 10, 0.28);
   background: transparent;
-  color: var(--color-white);
+  color: var(--ink-1);
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
-.winners__nav:hover {
-  border-color: var(--color-orange);
-  color: var(--color-orange);
+.winners__nav--prev {
+  grid-area: prev;
+  justify-self: end;
+  margin-right: 8px;
+}
+
+.winners__nav--next {
+  grid-area: next;
+  justify-self: start;
+  margin-left: 8px;
+}
+
+.winners__nav:is(:hover, :focus-visible) {
+  background: var(--ink-1);
+  border-color: var(--ink-1);
+  color: var(--color-white);
+}
+
+.winners__nav--prev:is(:hover, :focus-visible) {
+  transform: translateX(-2px);
+}
+
+.winners__nav--next:is(:hover, :focus-visible) {
+  transform: translateX(2px);
 }
 
 .winners__phone {
+  grid-area: phone;
+  align-self: center;
+  justify-self: center;
   position: relative;
   z-index: 1;
   width: min(var(--phone-w), 100%);
@@ -418,9 +454,9 @@
 .winners__month {
   padding: 10px 16px;
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--color-white);
+  border: 1px solid rgba(10, 10, 10, 0.18);
+  background: transparent;
+  color: var(--ink-1);
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--fs-body);
@@ -437,9 +473,10 @@
   box-shadow: 0 14px 30px rgba(242, 96, 12, 0.3);
 }
 
-.winners__month:not(.is-active):hover {
-  border-color: var(--color-orange);
-  color: var(--color-orange);
+.winners__month:not(.is-active):is(:hover, :focus-visible) {
+  border-color: var(--ink-1);
+  background: var(--ink-1);
+  color: var(--color-white);
 }
 
 .winners__select-hint {
@@ -448,7 +485,7 @@
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--fs-body);
-  color: var(--color-white);
+  color: var(--ink-1);
   line-height: 1.3;
 }
 
@@ -460,35 +497,15 @@
   font-weight: 700;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--text-2);
+  color: var(--ink-3);
 }
-
-
 
 @media (max-width: 1100px) {
   .winners {
     padding-top: 90px;
-    background: linear-gradient(180deg, #1c140d 0%, #0a0806 100%);
   }
 
-  /* Light backdrop sized to the intro itself, so the stats never land on the dark part of the gradient. */
-  .winners__intro {
-    position: relative;
-  }
-
-  .winners__intro::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: -90px;
-    bottom: -72px;
-    left: 50%;
-    width: 100vw;
-    transform: translateX(-50%);
-    background: linear-gradient(180deg, var(--color-light) calc(100% - 72px), #1c140d 100%);
-    pointer-events: none;
-  }
-
+  /* The caption inside the phone names the month here. */
   .winners__month-word {
     display: none;
   }
@@ -550,7 +567,7 @@
   }
 
   .winners__showcase {
-    flex-direction: column;
+    grid-template-areas: ". phone phone .";
   }
 
   .winners__nav {
@@ -824,7 +841,7 @@
 
   .js .winners__showcase:not(.is-in) .winners__month-word {
     opacity: 0;
-    transform: translateX(-64px);
+    transform: rotate(180deg) translateX(64px);
   }
 
   /* Month change. --dir is set on the showcase: 1 brings a later month in
@@ -858,17 +875,18 @@
     animation: winners-name-out 0.3s ease-in both;
   }
 
+  /* The name stands on its side (rotated half a turn): a later month rises from below. */
   @keyframes winners-name-in {
     from {
       opacity: 0;
-      transform: translateX(calc(var(--dir) * 56px));
+      transform: translateY(calc(var(--dir) * -56px));
     }
   }
 
   @keyframes winners-name-out {
     to {
       opacity: 0;
-      transform: translateX(calc(var(--dir) * -56px));
+      transform: translateY(calc(var(--dir) * 56px));
     }
   }
 
@@ -901,9 +919,13 @@
     transition-delay: calc(var(--i, 0) * 45ms);
   }
 
-  .js .archive__grid:not(.is-in) .archive-card {
-    opacity: 0;
-    transform: translateY(8px);
+  /* Side-by-side layout only. Below 1100px the archive is a grid taller than the screen:
+     cards hidden until the observer fires read as an empty block on a quick scroll. */
+  @media (min-width: 1101px) {
+    .js .archive__grid:not(.is-in) .archive-card {
+      opacity: 0;
+      transform: translateY(8px);
+    }
   }
 }
 
