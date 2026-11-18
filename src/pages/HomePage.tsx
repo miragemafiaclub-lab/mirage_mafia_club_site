@@ -4,6 +4,7 @@ import ClosingCta from "../components/ClosingCta";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
+import MonthTop from "../components/MonthTop";
 import PlayerRoster from "../components/PlayerRoster";
 import Players from "../components/Players";
 import Podium from "../components/Podium";
@@ -43,6 +44,7 @@ export default function HomePage() {
         <About />
         <Schedule />
         <Players onOpenRoster={openRoster} />
+        <MonthTop />
         <Winners />
         <Podium />
         <Videos />

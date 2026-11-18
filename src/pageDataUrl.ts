@@ -4,7 +4,11 @@ import type { Route } from "./routes";
 export const COMPARE_PAIRS_URL = "/data/compare-pairs.json";
 
 /** Where a page's data lives, or null for pages without any. */
+/** The home page's "best players of the month" (five rows worked out from the rating at build time). */
+export const MONTH_TOP_URL = "/data/month-top.json";
+
 export function pageDataUrl(route: Route): string | null {
+  if (route.page === "home") return MONTH_TOP_URL;
   if (route.page === "rating") return "/data/rating.json";
   if (route.page === "compare") return COMPARE_PAIRS_URL;
   if (route.page === "player" && route.player.imafiaId) return `/data/players/${route.player.slug}.json`;
