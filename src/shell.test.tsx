@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
-import { act } from "react";
+import { act, useEffect } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { MemoryRouter, useLocation } from "react-router";
+import { MemoryRouter, useLocation, useNavigate, type NavigateFunction } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 
@@ -10,11 +10,16 @@ import App from "./App";
 let container: HTMLDivElement;
 let root: Root;
 let current = "";
+let go: NavigateFunction;
 
-/** Reports the router's address, like the browser's address bar. */
+/** Reports the router's address and hands out navigate(), like the browser's address bar and Back button. */
 function Spy() {
   const loc = useLocation();
-  current = loc.pathname + loc.search + loc.hash;
+  const navigate = useNavigate();
+  useEffect(() => {
+    current = loc.pathname + loc.search + loc.hash;
+    go = navigate;
+  });
   return null;
 }
 
@@ -58,5 +63,20 @@ describe("language switch", () => {
     click(container.querySelector('.header__lang button[lang="en"]'));
     expect(current).toBe("/en/tournaments");
     expect(window.scrollTo).not.toHaveBeenCalled();
+  });
+});
+
+describe("burger menu", () => {
+  it("closes and unlocks the page when the browser goes back to another page", () => {
+    mount(["/compare", "/tournaments"]);
+    const burger = () => container.querySelector(".header__burger")!;
+    click(burger());
+    expect(burger().getAttribute("aria-expanded")).toBe("true");
+    expect(document.body.style.overflow).toBe("hidden");
+
+    act(() => void go(-1));
+    expect(current).toBe("/compare");
+    expect(burger().getAttribute("aria-expanded")).toBe("false");
+    expect(document.body.style.overflow).toBe("");
   });
 });

@@ -143,6 +143,13 @@ export default function Header() {
   const active = useActiveSection();
   const route = useRoute();
 
+  // Another page shown without a menu click (browser Back/Forward): the menu must not stay open over it.
+  const [menuPath, setMenuPath] = useState(route.path);
+  if (menuPath !== route.path) {
+    setMenuPath(route.path);
+    setMenuOpen(false);
+  }
+
   // While the menu is open: lock page scroll, close on Esc and when the window grows past the breakpoint.
   useEffect(() => {
     if (!menuOpen) return;
