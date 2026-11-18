@@ -52,5 +52,11 @@ describe("language switch", () => {
     click(container.querySelector('.header__lang button[lang="en"]'));
     expect(current).toBe("/en/tournaments?league=chk&season=2026#top");
   });
-});
 
+  it("does not jump to the top: it is the same page in the other language", () => {
+    mount(["/tournaments"]);
+    click(container.querySelector('.header__lang button[lang="en"]'));
+    expect(current).toBe("/en/tournaments");
+    expect(window.scrollTo).not.toHaveBeenCalled();
+  });
+});
