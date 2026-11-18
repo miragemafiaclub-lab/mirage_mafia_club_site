@@ -1,17 +1,13 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
+import { Link } from "react-router";
 import { useInView } from "../hooks/useInView";
-import CalendarIcon from "./CalendarIcon";
 import "./Players.css";
 import { useLang, useT } from "../i18n/lang";
 import { displayName } from "../i18n/translit";
 import { players as playersDict } from "../i18n/players";
-import {
-  CHK_BASE,
-  KCHK_BASE,
-  PLACEHOLDER_BIO,
-  playerTitle,
-  type RosterPlayer,
-} from "../data/players";
+import { rosterPlayer } from "../data/playerDirectory";
+import { CHK_BASE, KCHK_BASE, playerTitle, type RosterPlayer } from "../data/players";
+import { localize } from "../routes";
 
 type GroupId = "chk" | "kchk";
 
@@ -19,8 +15,6 @@ const GROUPS: { id: GroupId; players: RosterPlayer[] }[] = [
   { id: "chk", players: CHK_BASE },
   { id: "kchk", players: KCHK_BASE },
 ];
-
-const PANEL_ID = "players-profile";
 
 // Which ends of the row the list has reached; the arrow that leads there is switched off.
 type Ends = { start: boolean; end: boolean };
@@ -35,30 +29,16 @@ function rowEnds(row: HTMLElement): Ends {
 export default function Players({ onOpenRoster }: { onOpenRoster: (groupId: GroupId) => void }) {
   const t = useT(playersDict);
   const { lang } = useLang();
+  const profileHref = (player: RosterPlayer) => localize(`/players/${rosterPlayer(player.nick)?.slug ?? ""}`, lang);
   const [active, setActive] = useState(0);
-  const [selected, setSelected] = useState<RosterPlayer | null>(null);
   const group = GROUPS[active];
   const copy = t.groups[group.id];
-  // The card that opened the profile gets focus back when the profile closes.
-  const openerRef = useRef<HTMLButtonElement | null>(null);
-  const panelRef = useRef<HTMLElement>(null);
   const [gridRef, gridInView] = useInView<HTMLDivElement>(0.1);
 
   const [ends, setEnds] = useState<Ends>({ start: true, end: true });
 
-  function openProfile(player: RosterPlayer, card: HTMLButtonElement) {
-    openerRef.current = card;
-    setSelected(player);
-  }
-
-  function closeProfile() {
-    setSelected(null);
-    openerRef.current?.focus();
-  }
-
   function selectGroup(index: number) {
     setActive(index);
-    setSelected(null);
   }
 
   // The arrows move the row by as many cards as fit on screen.
@@ -76,8 +56,8 @@ export default function Players({ onOpenRoster }: { onOpenRoster: (groupId: Grou
     });
   }
 
-  // Another group starts from its first card. The row gets narrower when the profile opens
-  // and wider when the window does, so the ends are measured again after every such change.
+  // Another group starts from its first card. The row gets wider or narrower with the window,
+  // so the ends are measured again after every such change.
   useEffect(() => {
     const grid = gridRef.current;
     if (!grid) return;
@@ -95,22 +75,6 @@ export default function Players({ onOpenRoster }: { onOpenRoster: (groupId: Grou
       watch.disconnect();
     };
   }, [active, gridRef]);
-
-  // The row gets narrower when the profile opens: keep the chosen card in view.
-  const selectedNick = selected?.nick;
-  useEffect(() => {
-    if (!selectedNick) return;
-    // Keyboard and screen reader users land on the profile they just opened.
-    panelRef.current?.focus();
-    const grid = gridRef.current;
-    const card = grid?.querySelector<HTMLElement>(".players-card.is-active");
-    if (!grid || !card) return;
-    const gridBox = grid.getBoundingClientRect();
-    const cardBox = card.getBoundingClientRect();
-    if (cardBox.left < gridBox.left || cardBox.right > gridBox.right) {
-      grid.scrollLeft += cardBox.left - gridBox.left - parseFloat(getComputedStyle(grid).paddingLeft);
-    }
-  }, [selectedNick, gridRef]);
 
   return (
     <section className="players" id="players">
@@ -156,14 +120,11 @@ export default function Players({ onOpenRoster }: { onOpenRoster: (groupId: Grou
           <div className="players__list">
             <div className={`players__grid${gridInView ? " is-in" : ""}`} ref={gridRef}>
               {group.players.map((player, index) => (
-                <button
-                  type="button"
-                  className={`players-card${selected?.nick === player.nick ? " is-active" : ""}`}
+                <Link
+                  className="players-card"
                   style={{ "--i": index } as CSSProperties}
                   key={player.nick}
-                  aria-expanded={selected?.nick === player.nick}
-                  aria-controls={PANEL_ID}
-                  onClick={(event) => openProfile(player, event.currentTarget)}
+                  to={profileHref(player)}
                 >
                   <div className="players-card__photo" aria-hidden="true">
                     {player.photo ? <img src={player.photo} alt="" loading="lazy" decoding="async" /> : <span>{player.nick.charAt(0)}</span>}
@@ -189,7 +150,7 @@ export default function Players({ onOpenRoster }: { onOpenRoster: (groupId: Grou
                       </span>
                     </div>
                   </div>
-                </button>
+                </Link>
               ))}
             </div>
 
@@ -217,53 +178,6 @@ export default function Players({ onOpenRoster }: { onOpenRoster: (groupId: Grou
             )}
           </div>
 
-          {selected && (
-            <aside
-              className="players__panel"
-              id={PANEL_ID}
-              ref={panelRef}
-              tabIndex={-1}
-              aria-labelledby={`${PANEL_ID}-nick`}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") closeProfile();
-              }}
-            >
-              <button
-                type="button"
-                className="players__panel-close"
-                onClick={closeProfile}
-                aria-label={t.closeProfile}
-              >
-                ×
-              </button>
-
-              <div className="players__panel-head">
-                <div className="players__panel-photo" aria-hidden="true">
-                  {selected.photo ? <img src={selected.photo} alt="" loading="lazy" decoding="async" /> : <span>{selected.nick.charAt(0)}</span>}
-                </div>
-
-                <div>
-                  <h3 id={`${PANEL_ID}-nick`}>{selected.nick}</h3>
-                  <p className="players__panel-name">{displayName(selected.name, lang) || " "}</p>
-                  {playerTitle(selected) && <span className="players__panel-badge">{playerTitle(selected)}</span>}
-                </div>
-              </div>
-
-              <p className="players__panel-joined">
-                <CalendarIcon />
-                <span>
-                  {t.joined} <strong>{selected.joinedAt}</strong>
-                </span>
-              </p>
-
-              <div className="players__panel-body">
-                <h4>{t.about}</h4>
-                {(selected.bio ?? [PLACEHOLDER_BIO[lang]]).map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-              </div>
-            </aside>
-          )}
         </div>
       </div>
     </section>

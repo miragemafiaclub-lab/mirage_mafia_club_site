@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { slugify } from "../i18n/translit";
-import { buildDirectory, CLUB_PLAYERS, findPlayer, isPlaceholderGuest, nickKey, playerByImafiaId } from "./playerDirectory";
+import { buildDirectory, CLUB_PLAYERS, findPlayer, INDEXED_PLAYERS, isPlaceholderGuest, nickKey, playerByImafiaId } from "./playerDirectory";
 import { CHK_BASE, KCHK_BASE } from "./players";
-import { ratingPlayers } from "./rating";
 
 describe("slugify", () => {
   it("turns nicks into Latin addresses", () => {
@@ -48,7 +47,7 @@ describe("the club's directory", () => {
     expect(guests.some((p) => isPlaceholderGuest(p.nick))).toBe(false);
     const ids = CLUB_PLAYERS.map((p) => p.imafiaId).filter(Boolean);
     expect(new Set(ids).size).toBe(ids.length);
-    for (const p of ratingPlayers()) {
+    for (const p of INDEXED_PLAYERS) {
       if (!isPlaceholderGuest(p.nick)) expect(playerByImafiaId(p.id), p.nick).toBeDefined();
     }
   });

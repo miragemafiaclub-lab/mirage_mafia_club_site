@@ -1,7 +1,7 @@
-import { Fragment, useId, useState } from "react";
+import { Fragment, useId, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { playerByImafiaId } from "../data/playerDirectory";
-import { IMAFIA_CLUB_URL, LEAGUES, RATING_UPDATED_AT, type RatingRow, type Season } from "../data/rating";
+import { IMAFIA_CLUB_URL, unpackRating, type League, type RatingRow, type Season, type StoredRating } from "../data/rating";
 import {
   filterRows,
   formatDate,
@@ -15,6 +15,7 @@ import { useHydrated } from "../hooks/useHydrated";
 import { useLang, useT } from "../i18n/lang";
 import { rating as dict, type ColumnId } from "../i18n/rating";
 import { textLang } from "../i18n/translit";
+import { usePageData } from "../pageDataCache";
 import { localize } from "../routes";
 import "./rating.css";
 
@@ -61,6 +62,27 @@ function PlayerName({ row }: { row: RatingRow }) {
 
 export default function RatingPage() {
   const t = useT(dict);
+  const { data, failed } = usePageData<StoredRating>("/data/rating.json");
+  const leagues = useMemo(() => (data ? unpackRating(data) : null), [data]);
+
+  return (
+    <section className="rating">
+      <p className="page__eyebrow">{t.eyebrow}</p>
+      <h1 className="page__title">{t.title}</h1>
+      <p className="page__lead">{t.lead}</p>
+      {leagues && data ? (
+        <RatingTables leagues={leagues} updatedAt={data.updatedAt} />
+      ) : (
+        <p className="rating__empty" role="status">
+          {failed ? t.loadFailed : t.loading}
+        </p>
+      )}
+    </section>
+  );
+}
+
+function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; updatedAt: string }) {
+  const t = useT(dict);
   const { lang } = useLang();
   const [params, setParams] = useSearchParams();
   // The prerendered page shows the default table; the address's choice applies once the page is live.
@@ -83,15 +105,11 @@ export default function RatingPage() {
 
   const rows = filterRows(season.rows, query);
   const firstUncounted = season.rows.find((row) => !row.counted);
-  const updated = formatDate(RATING_UPDATED_AT);
+  const updated = formatDate(updatedAt);
   const mvp = season.mvp[0] && season.rows.find((row) => row.id === season.mvp[0]);
 
   return (
-    <section className="rating">
-      <p className="page__eyebrow">{t.eyebrow}</p>
-      <h1 className="page__title">{t.title}</h1>
-      <p className="page__lead">{t.lead}</p>
-
+    <>
       <div className="rating__controls">
         <div className="rating__leagues" role="group" aria-label={t.leagueLabel}>
           {LEAGUES.map((l) => (
@@ -236,6 +254,6 @@ export default function RatingPage() {
         </dl>
         <p>{t.legendArrows}</p>
       </details>
-    </section>
+    </>
   );
 }

@@ -1,5 +1,3 @@
-import data from "./rating.json";
-
 /** One line of a rating table. Stored compactly in rating.json (see scripts/lib/rating.mjs ROW_FIELDS). */
 export type RatingRow = {
   place: number;
@@ -42,7 +40,7 @@ export type Season = {
 
 export type League = { id: string; name: string; seasons: Season[] };
 
-type StoredSeason = {
+export type StoredSeason = {
   id: string;
   name: string;
   month: number | null;
@@ -55,15 +53,14 @@ type StoredSeason = {
   prev: Record<string, number>;
 };
 
-type Stored = {
+/** rating.json as written by scripts/sync-rating.mjs. Loaded only by the pages that need it (see pageData.tsx). */
+export type StoredRating = {
   updatedAt: string;
   leagues: { id: string; name: string; seasons: StoredSeason[] }[];
   members: { id: string; nick: string }[];
 };
 
-const stored = data as Stored;
-
-function unpack(season: StoredSeason): Season {
+export function unpackSeason(season: StoredSeason): Season {
   const rows = season.rows.map((r, index): RatingRow => {
     const id = String(r[1]);
     return {
@@ -101,28 +98,13 @@ function unpack(season: StoredSeason): Season {
 }
 
 /** All leagues of the club with their seasons, newest season first. */
-export const LEAGUES: League[] = stored.leagues.map((league) => ({
-  id: league.id,
-  name: league.name,
-  seasons: league.seasons.map(unpack),
-}));
-
-/** When the rating data last changed (ISO date). */
-export const RATING_UPDATED_AT: string = stored.updatedAt;
-
-/** Club members as listed on iMafia. */
-export const IMAFIA_MEMBERS = stored.members;
+export function unpackRating(stored: StoredRating): League[] {
+  return stored.leagues.map((league) => ({
+    id: league.id,
+    name: league.name,
+    seasons: league.seasons.map(unpackSeason),
+  }));
+}
 
 export const IMAFIA_CLUB_URL = "https://imafia.org/club/35";
 export const imafiaProfileUrl = (id: string) => `https://imafia.org/u/${id}`;
-
-/** Every player who appears in any rating, with their most recent nick (newest season wins). */
-export function ratingPlayers(): { id: string; nick: string }[] {
-  const nicks = new Map<string, string>();
-  for (const league of stored.leagues) {
-    for (const season of league.seasons) {
-      for (const [id, nick] of Object.entries(season.nicks)) if (!nicks.has(id)) nicks.set(id, nick);
-    }
-  }
-  return [...nicks].map(([id, nick]) => ({ id, nick }));
-}

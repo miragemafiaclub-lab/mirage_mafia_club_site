@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { assignYears, monthOf, parseLeagues, parseMembers, parseMvp, parseProfile, parseRatingTable, stripTags } from "./imafia.mjs";
+import { assignYears, monthOf, parseLeagues, parseMembers, parseMvp, parseProfile, parseProfileStats, parseRatingTable, stripTags } from "./imafia.mjs";
 
 const parseRatingRows = (html) => parseRatingTable(html).rows;
 
@@ -111,5 +111,43 @@ describe("assignYears", () => {
 
   it("starts last year when the newest month is still ahead in the calendar", () => {
     expect(assignYears([m(11)], new Date(2027, 0, 5))[0].year).toBe(2026);
+  });
+});
+
+describe("parseProfileStats", () => {
+  const stats = parseProfileStats(fixture("profile-full.html"));
+
+  it("reads win rate by role", () => {
+    expect(stats.winRate).toBe(51.1);
+    expect(stats.roles).toEqual({
+      don: { wins: 76, games: 111 },
+      mafia: { wins: 162, games: 256 },
+      civilian: { wins: 343, games: 766 },
+      sheriff: { wins: 58, games: 117 },
+    });
+    expect(stats.firstBlood).toBe(28.9);
+    expect(stats.cups).toBe(28);
+  });
+
+  it("reads awards", () => {
+    expect(stats.awards).toEqual([
+      { year: 2025, name: "Чемпіон iMafia" },
+      { year: 2024, name: "Легенда iMafia" },
+    ]);
+  });
+
+  it("reads tournaments with date, type, level, place and size", () => {
+    expect(stats.tournaments[0]).toEqual({
+      date: "2026-11-14", id: "1732", name: "The Draft EU 2026", type: "team", level: "Gold", place: 27, players: 60,
+    });
+    expect(stats.tournaments[1]).toMatchObject({ name: "Joker Cup 2026", type: "single", place: 4 });
+    expect(stats.tournaments.length).toBe(8);
+  });
+
+  it("copes with a profile that has no stats", () => {
+    const empty = parseProfileStats("<html></html>");
+    expect(empty.winRate).toBe(null);
+    expect(empty.roles.don).toEqual({ wins: 0, games: 0 });
+    expect(empty.tournaments).toEqual([]);
   });
 });

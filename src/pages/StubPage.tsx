@@ -5,7 +5,7 @@ import { pages } from "../i18n/pages";
 import { localize, type StaticPageId } from "../routes";
 
 /** Placeholder for a page that gets its content in a later slice. Kept out of search results (see meta.ts). */
-export default function StubPage({ page }: { page: Exclude<StaticPageId, "rating"> }) {
+export default function StubPage({ page }: { page: Exclude<StaticPageId, "rating" | "compare"> }) {
   const t = useT(pages);
   const { lang } = useLang();
   const copy = t[page];

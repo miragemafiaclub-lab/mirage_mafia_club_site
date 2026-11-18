@@ -1,0 +1,241 @@
+/* Profile numbers: tiles, roles, chart, tables, prizes. Reuses the rating table styles (rating.css). */
+@import "./rating.css";
+
+.player-stats {
+  margin-top: var(--space-6);
+}
+
+.player-stats__tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-3);
+}
+
+.player-stats__tile {
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.player-stats__tile dt {
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.player-stats__tile dd {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--fs-stat);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-white);
+}
+
+.player-stats__tile dd a {
+  color: var(--color-orange);
+  transition: color var(--ease);
+}
+
+.player-stats__tile dd a:hover {
+  color: var(--color-orange-hover);
+}
+
+.player-stats__tile dd span {
+  display: block;
+  margin-top: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--fs-ui);
+  font-weight: 400;
+  color: var(--text-3);
+}
+
+.player-stats__block {
+  margin-top: var(--space-7);
+}
+
+.player-stats__block .player-page__about {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+}
+
+.player-stats__note {
+  margin-top: var(--space-3);
+  font-size: var(--fs-ui);
+  color: var(--text-3);
+}
+
+/* Roles: one bar per role, the share of games won. */
+.player-stats__roles {
+  display: grid;
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.player-stats__role {
+  display: grid;
+  grid-template-columns: 6.5em minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-body);
+}
+
+.player-stats__role-name {
+  font-weight: 600;
+}
+
+.player-stats__role-bar {
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-line);
+  overflow: hidden;
+}
+
+.player-stats__role-bar span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-orange);
+}
+
+.player-stats__role-value {
+  min-width: 9em;
+  text-align: right;
+  font-size: var(--fs-ui);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.player-stats__role-value strong {
+  color: var(--color-white);
+}
+
+.player-stats__of {
+  color: var(--text-3);
+}
+
+/* Prize places: medal-coloured place number, tournament, date. */
+.player-stats__prizes {
+  display: grid;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.player-stats__prize {
+  display: grid;
+  grid-template-columns: 2.25em minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+
+.player-stats__prize.is-top-1 {
+  --medal: var(--medal-1);
+}
+
+.player-stats__prize.is-top-2 {
+  --medal: var(--medal-2);
+}
+
+.player-stats__prize.is-top-3 {
+  --medal: var(--medal-3);
+}
+
+.player-stats__medal {
+  display: grid;
+  place-items: center;
+  width: 2.25em;
+  height: 2.25em;
+  border-radius: 50%;
+  background: var(--medal);
+  color: var(--ink-1);
+  font-weight: 700;
+}
+
+.player-stats__prize a {
+  font-weight: 600;
+  color: var(--color-white);
+  overflow-wrap: anywhere;
+  transition: color var(--ease);
+}
+
+.player-stats__prize a:hover {
+  color: var(--color-orange);
+}
+
+.player-stats__prize-meta {
+  font-size: var(--fs-ui);
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+.player-stats__awards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.player-stats__awards li {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-ui);
+  color: var(--text-2);
+}
+
+.player-stats__awards strong {
+  color: var(--color-orange);
+}
+
+@media (max-width: 760px) {
+  .player-stats__role {
+    grid-template-columns: 5.5em minmax(0, 1fr);
+  }
+
+  .player-stats__role-value {
+    grid-column: 1 / -1;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .player-stats__prize {
+    grid-template-columns: 2.25em minmax(0, 1fr);
+  }
+
+  .player-stats__prize-meta {
+    grid-column: 2;
+    white-space: normal;
+  }
+}
+
+.player-stats__more {
+  margin-top: var(--space-3);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-ui);
+  font-weight: 700;
+}
+
+/* A top-3 place in the "all ratings" table: the place number wears the medal colour. */
+.player-stats__podium.is-top-1 {
+  --medal: var(--medal-1);
+}
+
+.player-stats__podium.is-top-2 {
+  --medal: var(--medal-2);
+}
+
+.player-stats__podium.is-top-3 {
+  --medal: var(--medal-3);
+}
+
+.player-stats__podium .rating-table__player {
+  color: var(--medal);
+  font-weight: 700;
+}

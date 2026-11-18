@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 import LangProvider from "./i18n/LangProvider";
 import { savedLang } from "./i18n/lang";
 import { applyHead, headTags, pageMeta } from "./meta";
+import ComparePage from "./pages/ComparePage";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PageLayout from "./pages/PageLayout";
@@ -26,6 +27,12 @@ function Page({ route }: { route: Route }) {
       return (
         <PageLayout>
           <RatingPage />
+        </PageLayout>
+      );
+    case "compare":
+      return (
+        <PageLayout>
+          <ComparePage />
         </PageLayout>
       );
     case "notFound":

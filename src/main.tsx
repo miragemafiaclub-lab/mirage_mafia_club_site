@@ -3,12 +3,16 @@ import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
 import './index.css'
 import App from './App.tsx'
+import { PageDataProvider } from './pageData.tsx'
+import { readEmbeddedPageData } from './pageDataUrl.ts'
 
 const root = document.getElementById('root')!
 const app = (
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <PageDataProvider cache={readEmbeddedPageData()}>
+        <App />
+      </PageDataProvider>
     </BrowserRouter>
   </StrictMode>
 )

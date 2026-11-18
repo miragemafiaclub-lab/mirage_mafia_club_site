@@ -36,6 +36,8 @@ export const rating: Translations<{
   legendTitle: string;
   legendArrows: string;
   mvp: string;
+  loading: string;
+  loadFailed: string;
 }> = {
   ru: {
     eyebrow: "Рейтинг",
@@ -78,6 +80,8 @@ export const rating: Translations<{
     legendTitle: "Что значат колонки",
     legendArrows: "Стрелки — как изменилось место с прошлого обновления таблицы.",
     mvp: "MVP сезона",
+    loading: "Загружаем рейтинг…",
+    loadFailed: "Не удалось загрузить рейтинг. Обновите страницу.",
   },
   en: {
     eyebrow: "Rating",
@@ -120,5 +124,7 @@ export const rating: Translations<{
     legendTitle: "What the columns mean",
     legendArrows: "Arrows show how the place changed since the table's previous update.",
     mvp: "Season MVP",
+    loading: "Loading the rating…",
+    loadFailed: "Could not load the rating. Please reload the page.",
   },
 };

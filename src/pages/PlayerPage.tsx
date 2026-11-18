@@ -1,13 +1,21 @@
 import { Link } from "react-router";
+import StoryCardButton from "../components/StoryCardButton";
 import logo from "../assets/logo.jpeg";
 import type { ClubPlayer } from "../data/playerDirectory";
+import type { PlayerStats } from "../data/playerStats";
 import { PLACEHOLDER_BIO, playerTitle } from "../data/players";
 import { imafiaProfileUrl } from "../data/rating";
 import { useLang, useT } from "../i18n/lang";
 import { pages } from "../i18n/pages";
+import { profile as profileDict } from "../i18n/profile";
 import { players as playersDict } from "../i18n/players";
 import { displayName, textLang } from "../i18n/translit";
-import { useSectionHref } from "../RouteContext";
+import { usePageData } from "../pageDataCache";
+import { pageDataUrl } from "../pageDataUrl";
+import { useRoute, useSectionHref } from "../RouteContext";
+import { localize } from "../routes";
+import PlayerStatsView from "./PlayerStatsView";
+import "./player-stats.css";
 
 /** A player's own page. Rating places and stats come in slice 3. */
 export default function PlayerPage({ player }: { player: ClubPlayer }) {
@@ -15,6 +23,9 @@ export default function PlayerPage({ player }: { player: ClubPlayer }) {
   const groups = useT(playersDict).groups;
   const { lang } = useLang();
   const sectionHref = useSectionHref();
+  const route = useRoute();
+  const statsText = useT(profileDict);
+  const { data: stats, failed } = usePageData<PlayerStats>(pageDataUrl(route));
   const isGuest = player.group === "guest";
   const title = playerTitle(player);
   const name = player.name ? displayName(player.name, lang) : "";
@@ -69,6 +80,24 @@ export default function PlayerPage({ player }: { player: ClubPlayer }) {
               )}
             </dl>
           )}
+
+          {player.imafiaId && (
+            <div className="page__actions player-page__actions">
+              <StoryCardButton player={player} stats={stats} />
+              <Link className="page__btn" to={`${localize("/compare", lang)}?a=${player.slug}`}>
+                {statsText.compareWith} <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          )}
+
+          {player.imafiaId &&
+            (stats ? (
+              <PlayerStatsView stats={stats} />
+            ) : (
+              <p className="player-stats__note" role="status">
+                {failed ? statsText.loadFailed : statsText.loading}
+              </p>
+            ))}
 
           {bio.length > 0 && (
             <>

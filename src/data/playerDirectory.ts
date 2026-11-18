@@ -1,6 +1,9 @@
 import { slugify } from "../i18n/translit";
 import { CHK_BASE, KCHK_BASE, type RosterPlayer } from "./players";
-import { IMAFIA_MEMBERS, ratingPlayers } from "./rating";
+import index from "./player-index.json";
+
+/** Small list of everyone in the club rating, written by the sync scripts (scripts/lib/playerIndex.mjs). */
+const INDEX = index as { members: { id: string; nick: string }[]; players: { id: string; nick: string; avatar?: string }[] };
 
 export type GroupId = "chk" | "kchk";
 
@@ -40,8 +43,8 @@ export function buildDirectory(players: Source[]): ClubPlayer[] {
 /** iMafia id for each roster nick: club member list first, then any rating table. */
 function imafiaIds(): Map<string, string> {
   const ids = new Map<string, string>();
-  for (const member of IMAFIA_MEMBERS) ids.set(nickKey(member.nick), member.id);
-  for (const player of ratingPlayers()) if (!ids.has(nickKey(player.nick))) ids.set(nickKey(player.nick), player.id);
+  for (const member of INDEX.members) ids.set(nickKey(member.nick), member.id);
+  for (const player of INDEX.players) if (!ids.has(nickKey(player.nick))) ids.set(nickKey(player.nick), player.id);
   return ids;
 }
 
@@ -52,10 +55,11 @@ function allPlayers(): Source[] {
     ...KCHK_BASE.map((p) => ({ ...p, group: "kchk" as const, imafiaId: ids.get(nickKey(p.nick)) })),
   ];
   const onRoster = new Set(roster.map((p) => p.imafiaId).filter(Boolean));
-  const guests: Source[] = ratingPlayers()
+  const guests: Source[] = INDEX.players
     .filter((p) => !onRoster.has(p.id) && !isPlaceholderGuest(p.nick))
     .sort((a, b) => Number(a.id) - Number(b.id))
-    .map((p) => ({ nick: p.nick, group: "guest" as const, imafiaId: p.id }));
+    // Guests' avatars come from iMafia (public/players/<id>.jpg), once their profile has been fetched.
+    .map((p) => ({ nick: p.nick, group: "guest" as const, imafiaId: p.id, ...(p.avatar && { photo: `/${p.avatar}` }) }));
   return [...roster, ...guests];
 }
 
@@ -68,7 +72,17 @@ export function findPlayer(slug: string): ClubPlayer | undefined {
   return BY_SLUG.get(slug);
 }
 
+const BY_ROSTER_NICK = new Map(CLUB_PLAYERS.filter((p) => p.group !== "guest").map((p) => [p.nick, p]));
+
+/** The page of a roster player (as listed in players.ts). */
+export function rosterPlayer(nick: string): ClubPlayer | undefined {
+  return BY_ROSTER_NICK.get(nick);
+}
+
 /** The site page of an iMafia player, if they have one. */
 export function playerByImafiaId(id: string): ClubPlayer | undefined {
   return BY_IMAFIA_ID.get(id);
 }
+
+/** Every player in the rating, as listed in the index (for tests and the sync check). */
+export const INDEXED_PLAYERS = INDEX.players;

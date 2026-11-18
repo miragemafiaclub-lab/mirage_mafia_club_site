@@ -149,3 +149,65 @@ export function parseProfile(html) {
     rank: html.match(/<td>Rank<\/td>\s*<td>\s*([^<(]+)/)?.[1].trim() ?? "",
   };
 }
+
+const ROLE_NAMES = { don: "Дон", mafia: "Мафія", civilian: "Мирний", sheriff: "Шериф" };
+const TOURNAMENT_TYPES = { Одиночний: "single", Командний: "team", Серія: "series", Серійний: "series" };
+
+/** "14/11/2026" → "2026-11-14". */
+const isoDate = (text) => {
+  const [d, m, y] = text.split("/");
+  return y && m && d ? `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}` : "";
+};
+
+/**
+ * Statistics from a player's /u/<id> page: win rate by role, first blood, awards and tournament results.
+ * Numbers are for all the player's games on iMafia, not only the club's.
+ */
+export function parseProfileStats(html) {
+  const { photoPath, rank } = parseProfile(html);
+  const text = stripTags(html.replace(/<script.*?<\/script>|<style.*?<\/style>/gs, ""));
+
+  const roles = {};
+  for (const [key, name] of Object.entries(ROLE_NAMES)) {
+    const m = text.match(new RegExp(`[\\d.]+% \\((\\d+)/(\\d+)\\) ${name}(?![\\p{L}])`, "u"));
+    roles[key] = m ? { wins: Number(m[1]), games: Number(m[2]) } : { wins: 0, games: 0 };
+  }
+
+  const awards = [...html.matchAll(/content_user_page_award_year">\s*(\d{4})\s*<.*?content_user_page_award_name">(.*?)<\/div>/gs)].map(
+    (m) => ({ year: Number(m[1]), name: stripTags(m[2]) }),
+  );
+
+  const tournaments = [];
+  const tableAt = html.indexOf('id="user-tournaments"');
+  const table = tableAt === -1 ? "" : html.slice(tableAt, html.indexOf("</table>", tableAt));
+  for (const [, row] of table.matchAll(/<tr>(.*?)<\/tr>/gs)) {
+    const cells = [...row.matchAll(/<td[^>]*>(.*?)<\/td>/gs)].map((m) => m[1]);
+    const link = cells[1]?.match(/href="\/tournament\/(\d+)"[^>]*>(.*?)<\/a>/s);
+    if (!link || cells.length < 6) continue;
+    const type = cells[2].match(/data-tooltip="([^"]*)"/)?.[1] ?? "";
+    tournaments.push({
+      date: isoDate(stripTags(cells[0])),
+      id: link[1],
+      name: stripTags(link[2]),
+      type: TOURNAMENT_TYPES[type] ?? "single",
+      level: cells[3].match(/data-tooltip="([^"]*)"/)?.[1] ?? "",
+      place: Number(stripTags(cells[4])) || null,
+      players: Number(stripTags(cells[5])) || null,
+    });
+  }
+
+  const pct = (re) => {
+    const m = text.match(re);
+    return m ? Number(m[1]) : null;
+  };
+  return {
+    photoPath,
+    rank,
+    winRate: pct(/([\d.]+)% WinRate/),
+    roles,
+    firstBlood: pct(/First Blood ([\d.]+)%/),
+    cups: pct(/Cups&Medals (\d+)/),
+    awards,
+    tournaments,
+  };
+}

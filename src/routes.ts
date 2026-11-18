@@ -2,12 +2,13 @@ import { CLUB_PLAYERS, findPlayer, type ClubPlayer } from "./data/playerDirector
 import { LANGS, type Lang } from "./i18n/lang";
 
 /** Pages that are not the home page or a player profile. */
-export type StaticPageId = "rating" | "tournaments" | "firstTime";
+export type StaticPageId = "rating" | "tournaments" | "firstTime" | "compare";
 
 export const STATIC_PAGES: Record<StaticPageId, string> = {
   rating: "/rating",
   tournaments: "/tournaments",
   firstTime: "/first-time",
+  compare: "/compare",
 };
 
 export type Route =
