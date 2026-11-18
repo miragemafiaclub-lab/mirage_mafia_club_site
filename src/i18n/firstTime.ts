@@ -96,7 +96,7 @@ export const firstTime: Translations<{
       captains: { name: "Капитанский стол", when: null, note: null },
       fun: { name: "Фановый вечер", when: "Анонс в Telegram", note: null },
       mps: {
-        name: "МПС",
+        name: "Mirage Player Series (МПС)",
         when: "Раз в 2–3 месяца",
         note: "5 недель, одна серия игр в неделю. Расписание в боте",
       },
@@ -201,7 +201,7 @@ export const firstTime: Translations<{
       captains: { name: "Captains' table", when: null, note: null },
       fun: { name: "Fun night", when: "Announced on Telegram", note: null },
       mps: {
-        name: "MPS series",
+        name: "Mirage Player Series (MPS)",
         when: "Every 2–3 months",
         note: "5 weeks, one series of games a week. Schedule in the bot",
       },
