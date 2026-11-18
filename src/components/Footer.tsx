@@ -1,4 +1,4 @@
-import { CLUB_PLACE, SIGNUP_URL, warsawNow } from "../data/schedule";
+import { CLUB_PLACE, TELEGRAM_URL, warsawNow } from "../data/schedule";
 import { footer } from "../i18n/footer";
 import { useT } from "../i18n/lang";
 import { BUILD_TIME } from "../site";
@@ -14,7 +14,7 @@ const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 export default function Footer() {
   const t = useT(footer);
   const links = [
-    { href: SIGNUP_URL, label: t.telegram },
+    { href: TELEGRAM_URL, label: t.telegram },
     { href: INSTAGRAM_URL, label: t.instagram },
     { href: IMAFIA_URL, label: t.imafia },
   ];

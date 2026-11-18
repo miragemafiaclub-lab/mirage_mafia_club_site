@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ComponentProps, type FocusEvent } from "react";
 import { Link } from "react-router";
 import logo from "../assets/logo.jpeg";
-import { SIGNUP_URL } from "../data/schedule";
+import { TELEGRAM_URL } from "../data/schedule";
 import { header, type NavId } from "../i18n/header";
 import { LANGS, useLang, useT } from "../i18n/lang";
 import { useRoute, useSectionHref } from "../RouteContext";
@@ -78,7 +78,7 @@ function SocialLinks({ className }: { className: string }) {
       <a className={className} href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label={t.instagram}>
         <InstagramIcon />
       </a>
-      <a className={className} href={SIGNUP_URL} target="_blank" rel="noopener noreferrer" aria-label={t.telegram}>
+      <a className={className} href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label={t.telegram}>
         <TelegramIcon />
       </a>
     </>

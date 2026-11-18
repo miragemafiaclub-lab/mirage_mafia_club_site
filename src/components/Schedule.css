@@ -148,7 +148,18 @@
     box-shadow var(--ease);
 }
 
-.schedule-next__cta:hover {
+.schedule-next__cta--closed {
+  justify-content: center;
+  border: 1px solid var(--color-line-strong);
+  background: transparent;
+  color: var(--text-2);
+}
+
+.schedule-next__note {
+  color: var(--text-3);
+}
+
+a.schedule-next__cta:hover {
   background: var(--color-orange-hover);
   transform: translateY(-1px);
   box-shadow: 0 10px 24px rgba(242, 96, 12, 0.28);

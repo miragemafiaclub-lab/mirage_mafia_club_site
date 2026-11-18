@@ -100,7 +100,9 @@ function ScheduleView({ now }: { now: Date }) {
             <div className="schedule-next__details" key={selected.date.getTime()}>
               <p className="schedule-next__day">{dayLabel(selected.date)}</p>
               <p className="schedule-next__date">{t.fullDate(selected.date)}</p>
-              <p className="schedule-next__time">{selected.event.time ?? t.timeTba}</p>
+              <p className="schedule-next__time">
+                {selected.event.time ?? (selected.event.usualTime ? t.usually(selected.event.usualTime) : t.timeTba)}
+              </p>
 
               <ul className="schedule-next__facts">
                 <li>
@@ -111,18 +113,23 @@ function ScheduleView({ now }: { now: Date }) {
                   <TagIcon />
                   {t.events[selected.event.kind]}
                 </li>
+                {!selected.event.time && selected.event.usualTime && <li className="schedule-next__note">{t.exactTime}</li>}
               </ul>
             </div>
 
-            <a
-              className="schedule-next__cta"
-              href={SIGNUP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t.signupLabel}
-            >
-              {t.signup} <span aria-hidden="true">→</span>
-            </a>
+            {selected.event.inviteOnly ? (
+              <p className="schedule-next__cta schedule-next__cta--closed">{t.inviteOnly}</p>
+            ) : (
+              <a
+                className="schedule-next__cta"
+                href={SIGNUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t.signupLabel}
+              >
+                {t.signup} <span aria-hidden="true">→</span>
+              </a>
+            )}
           </article>
         )}
 
@@ -165,7 +172,9 @@ function ScheduleView({ now }: { now: Date }) {
                     {day.event ? (
                       <>
                         <span className="schedule-week__kind">{t.events[day.event.kind]}</span>
-                        <span className="schedule-week__time">{day.event.time ?? t.timeTbaShort}</span>
+                        <span className="schedule-week__time">
+                          {day.event.time ?? (day.event.usualTime ? `~${day.event.usualTime}` : t.timeTbaShort)}
+                        </span>
                       </>
                     ) : (
                       <span className="schedule-week__rest" aria-label={t.noGame}>

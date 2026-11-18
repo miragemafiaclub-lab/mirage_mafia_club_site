@@ -8,7 +8,7 @@ describe("first-visit facts", () => {
       { dayIndex: 1, time: "18:30" },
       { dayIndex: 4, time: "18:30" },
     ]);
-    expect(weeklySlots("newcomers")).toEqual([{ dayIndex: 6, time: null }]);
+    expect(weeklySlots("newcomers")).toEqual([{ dayIndex: 6, time: null, usualTime: "18:30" }]);
     expect(weeklySlots("mps")).toEqual([]);
   });
 

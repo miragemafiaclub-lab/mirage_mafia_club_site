@@ -27,7 +27,7 @@ export default function Hero() {
     );
     const day = dayDiff === 0 ? t.today : dayDiff === 1 ? t.tomorrow : t.days[weekIndex(game.date)];
     // Street only: the floor in CLUB_PLACE.address is Russian-only.
-    gameLine = [day, game.event.time ?? t.timeTbd, CLUB_PLACE.address.split(",")[0]].join(", ");
+    gameLine = [day, game.event.time ?? (game.event.usualTime ? `~${game.event.usualTime}` : t.timeTbd), CLUB_PLACE.address.split(",")[0]].join(", ");
   }
 
   return (
