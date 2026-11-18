@@ -1,6 +1,6 @@
 import { Fragment, useId, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { playerByImafiaId } from "../data/playerDirectory";
+import { playerByImafiaId, thumbFor } from "../data/playerDirectory";
 import { IMAFIA_CLUB_URL, unpackRating, type League, type RatingRow, type Season, type StoredRating } from "../data/rating";
 import {
   filterRows,
@@ -47,16 +47,31 @@ function Change({ row, season }: { row: RatingRow; season: Season }) {
   );
 }
 
-function PlayerName({ row }: { row: RatingRow }) {
+/** A 32px round photo, or the nick's first letter when there is none. Decorative: the nick is next to it. */
+export function Avatar({ id, nick }: { id: string; nick: string }) {
+  const thumb = thumbFor(id);
+  return (
+    <span className="rating-avatar" aria-hidden="true">
+      {thumb ? <img src={thumb} alt="" width={32} height={32} loading="lazy" decoding="async" /> : [...nick][0]?.toUpperCase()}
+    </span>
+  );
+}
+
+function PlayerName({ row, avatar = false }: { row: RatingRow; avatar?: boolean }) {
   const { lang } = useLang();
   const player = playerByImafiaId(row.id);
-  const nick = <span lang={textLang(row.nick)}>{row.nick}</span>;
+  const nick = (
+    <>
+      {avatar && <Avatar id={row.id} nick={row.nick} />}
+      <span lang={textLang(row.nick)}>{row.nick}</span>
+    </>
+  );
   return player ? (
     <Link className="rating-table__player" to={localize(`/players/${player.slug}`, lang)}>
       {nick}
     </Link>
   ) : (
-    nick
+    <span className="rating-table__player is-plain">{nick}</span>
   );
 }
 
@@ -219,7 +234,7 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
                       </td>
                     )}
                     <th scope="row" className="rating-table__name">
-                      <PlayerName row={row} />
+                      <PlayerName row={row} avatar />
                     </th>
                     {COLUMNS.map((c) => (
                       <td
