@@ -12,7 +12,7 @@ export const firstTime: Translations<{
   signup: string;
   signupLabel: string;
   schedule: string;
-  facts: { price: (zl: number) => string; priceSub: string; lang: string; langSub: string; place: string; placeSub: string };
+  facts: { price: (zl: number) => string; priceSub: string; place: string; placeSub: string };
 
   eveningTitle: string;
   steps: Step[];
@@ -57,8 +57,6 @@ export const firstTime: Translations<{
     facts: {
       price: (zl) => `от ${zl} zł`,
       priceSub: "за вечер, оплата в боте",
-      lang: "Русский",
-      langSub: "иногда украинский",
       place: "Ludna 2",
       placeSub: "Wisla Plaza, 5 этаж",
     },
@@ -141,10 +139,6 @@ export const firstTime: Translations<{
         q: "Нужна ли регистрация?",
         a: "На День новичка нет. Для рейтинговых вечеров нужны аккаунты на iMafia и Emotion Games: через них игры попадают в рейтинг.",
       },
-      {
-        q: "На каком языке игры?",
-        a: "На русском, иногда на украинском.",
-      },
     ],
     school: "Mafia School",
     schoolLabel: "Mafia School, школа мафии (откроется в новой вкладке)",
@@ -162,8 +156,6 @@ export const firstTime: Translations<{
     facts: {
       price: (zl) => `from ${zl} zł`,
       priceSub: "per night, paid in the bot",
-      lang: "Russian",
-      langSub: "sometimes Ukrainian",
       place: "Ludna 2",
       placeSub: "Wisla Plaza, 5th floor",
     },
@@ -245,10 +237,6 @@ export const firstTime: Translations<{
       {
         q: "Do I need to register anywhere?",
         a: "Not for Newcomers' day. Rating nights need accounts on iMafia and Emotion Games: that is how games get into the rating.",
-      },
-      {
-        q: "What language are the games in?",
-        a: "Russian, sometimes Ukrainian. If you speak neither, message us before you come.",
       },
     ],
     school: "Mafia School",

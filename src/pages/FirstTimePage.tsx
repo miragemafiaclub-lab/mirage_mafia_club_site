@@ -39,7 +39,6 @@ export default function FirstTimePage() {
 
   const facts = [
     { value: t.facts.price(MIN_PRICE_ZL), sub: t.facts.priceSub },
-    { value: t.facts.lang, sub: t.facts.langSub },
     { value: t.facts.place, sub: t.facts.placeSub },
   ];
 
