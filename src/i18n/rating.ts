@@ -29,6 +29,7 @@ export const rating: Translations<{
   extraParts: { plus: string; minus: string; discipline: string; bestMoves: string };
   cutoff: (games: number, percent: number) => string;
   nobody: string;
+  showAll: (n: number) => string;
   empty: string;
   newEntry: string;
   up: (n: number) => string;
@@ -83,6 +84,7 @@ export const rating: Translations<{
     cutoff: (games, percent) =>
       `Ниже — меньше ${games} ${games % 10 === 1 && games % 100 !== 11 ? "игры" : "игр"} (${percent}% игр сезона): вне зачёта`,
     nobody: "Никого не нашли",
+    showAll: (n) => `Показать всех (${n})`,
     empty: "В этом сезоне пока нет игр",
     newEntry: "Новый в таблице",
     up: (n) => `Поднялся на ${n}`,
@@ -144,6 +146,7 @@ export const rating: Translations<{
     extraParts: { plus: "bonus", minus: "fines", discipline: "discipline", bestMoves: "best move" },
     cutoff: (games, percent) => `Below: fewer than ${games} ${games === 1 ? "game" : "games"} (${percent}% of the season's games), not counted`,
     nobody: "No one found",
+    showAll: (n) => `Show all (${n})`,
     empty: "No games in this season yet",
     newEntry: "New in the table",
     up: (n) => `Up ${n}`,

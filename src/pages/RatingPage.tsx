@@ -1,4 +1,4 @@
-import { Fragment, useId, useMemo, useState } from "react";
+import { Fragment, useEffect, useId, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { playerByImafiaId, thumbFor } from "../data/playerDirectory";
 import { clubRecords, recordsSince } from "../data/records";
@@ -11,7 +11,9 @@ import {
   monthLabel,
   pickSelection,
   placeChange,
+  COLLAPSED_ROWS,
   seasonLabel,
+  visibleRows,
 } from "../data/ratingView";
 import { useHydrated } from "../hooks/useHydrated";
 import { useLang, useT } from "../i18n/lang";
@@ -116,8 +118,51 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
     hydrated ? { league: params.get("league"), season: params.get("season") } : {},
   );
   const [query, setQuery] = useState("");
+  // Which table was opened with "Show all": another league or season starts collapsed again.
+  // Collapsed in the prerendered HTML and on the first live render alike, so hydration matches.
+  const [expandedTable, setExpandedTable] = useState<string | null>(null);
   const searchId = useId();
   const seasonId = useId();
+  const tableKey = `${league.id}/${season.id}`;
+  const leaguesRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLTableElement>(null);
+  // Set by "Show all": the button goes away, so focus moves on to the first row it revealed.
+  const focusRevealed = useRef(false);
+  const [leagueEnds, setLeagueEnds] = useState({ start: true, end: false });
+
+  // Phones: the leagues are one swipeable row (rating.css). Its edges fade while there is more to
+  // scroll that way, and the chosen league is brought into the row's view (without moving the page).
+  useEffect(() => {
+    const strip = leaguesRef.current;
+    if (!strip) return;
+    const measure = () =>
+      setLeagueEnds({
+        start: strip.scrollLeft <= 1,
+        end: strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 1,
+      });
+    measure();
+    strip.addEventListener("scroll", measure, { passive: true });
+    window.addEventListener("resize", measure);
+    return () => {
+      strip.removeEventListener("scroll", measure);
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  useEffect(() => {
+    const strip = leaguesRef.current;
+    const tab = strip?.querySelector<HTMLElement>(".rating__league.is-active");
+    if (!strip || !tab || strip.scrollWidth <= strip.clientWidth) return;
+    const left = tab.offsetLeft - strip.offsetLeft;
+    const right = left + tab.offsetWidth;
+    const pad = 24;
+    let target = strip.scrollLeft;
+    if (left - pad < strip.scrollLeft) target = left - pad;
+    else if (right + pad > strip.scrollLeft + strip.clientWidth) target = right + pad - strip.clientWidth;
+    if (target === strip.scrollLeft) return;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    strip.scrollTo({ left: Math.max(0, target), behavior: still ? "auto" : "smooth" });
+  }, [league.id]);
 
   const select = (leagueId: string, nextSeasonId?: string) => {
     const next = pickSelection(LEAGUES, { league: leagueId, season: nextSeasonId });
@@ -127,7 +172,21 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
     });
   };
 
-  const rows = filterRows(season.rows, query);
+  useEffect(() => {
+    if (!focusRevealed.current) return;
+    focusRevealed.current = false;
+    const row = tableRef.current?.querySelectorAll<HTMLElement>("tbody tr:not(.rating-table__cutoff)")[COLLAPSED_ROWS];
+    const target = row?.querySelector<HTMLElement>("a") ?? row?.querySelector<HTMLElement>("th");
+    if (!target) return;
+    if (target.tagName !== "A") target.tabIndex = -1;
+    target.focus();
+  }, [expandedTable]);
+
+  const matches = filterRows(season.rows, query);
+  const { rows, hidden } = visibleRows(matches, {
+    searching: query.trim() !== "",
+    expanded: expandedTable === tableKey,
+  });
   const firstUncounted = season.rows.find((row) => !row.counted);
   const updated = formatDate(updatedAt);
   const mvp = season.mvp[0] && season.rows.find((row) => row.id === season.mvp[0]);
@@ -135,7 +194,12 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
   return (
     <>
       <div className="rating__controls">
-        <div className="rating__leagues" role="group" aria-label={t.leagueLabel}>
+        <div
+          className={`rating__leagues${leagueEnds.start ? "" : " is-scrolled"}${leagueEnds.end ? " is-end" : ""}`}
+          role="group"
+          aria-label={t.leagueLabel}
+          ref={leaguesRef}
+        >
           {LEAGUES.map((l) => (
             <button
               key={l.id}
@@ -208,13 +272,13 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
 
       {season.rows.length === 0 ? (
         <p className="rating__empty">{t.empty}</p>
-      ) : rows.length === 0 ? (
+      ) : matches.length === 0 ? (
         <p className="rating__empty" role="status">
           {t.nobody}
         </p>
       ) : (
         <div className="rating-table__wrap rating-table__wrap--page">
-          <table className="rating-table">
+          <table className="rating-table" ref={tableRef}>
             <caption className="visually-hidden">
               {leagueLabel(league, lang)} · {seasonLabel(season, lang)}
             </caption>
@@ -280,6 +344,15 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
             </tbody>
           </table>
         </div>
+      )}
+
+      {hidden > 0 && (
+        <button type="button" className="rating__more" onClick={() => {
+            focusRevealed.current = true;
+            setExpandedTable(tableKey);
+          }}>
+          {t.showAll(matches.length)}
+        </button>
       )}
 
     </>

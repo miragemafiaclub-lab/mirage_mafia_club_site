@@ -43,6 +43,23 @@ export function filterRows(rows: RatingRow[], query: string): RatingRow[] {
   return key ? rows.filter((row) => nickKey(row.nick).includes(key)) : rows;
 }
 
+/** Rows a long table shows before "Show all": a phone screen or two, not 130 rows in one scroll. */
+export const COLLAPSED_ROWS = 20;
+/** A table only this much longer than the collapsed view is shown whole: a button for five rows is not worth it. */
+const COLLAPSE_SLACK = 5;
+
+/**
+ * The rows a table shows: all of them while searching (every match), once opened, or when the table is short;
+ * otherwise the first COLLAPSED_ROWS, with how many more there are behind the "Show all" button.
+ */
+export function visibleRows(
+  rows: RatingRow[],
+  { searching, expanded }: { searching: boolean; expanded: boolean },
+): { rows: RatingRow[]; hidden: number } {
+  if (searching || expanded || rows.length <= COLLAPSED_ROWS + COLLAPSE_SLACK) return { rows, hidden: 0 };
+  return { rows: rows.slice(0, COLLAPSED_ROWS), hidden: rows.length - COLLAPSED_ROWS };
+}
+
 export type PlaceChange = { kind: "up" | "down"; by: number } | { kind: "same" } | { kind: "new" } | null;
 
 /** How a row moved since the table's previous update; null when the table has no history yet. */

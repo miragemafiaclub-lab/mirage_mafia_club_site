@@ -919,9 +919,13 @@
     transition-delay: calc(var(--i, 0) * 45ms);
   }
 
-  .js .archive__grid:not(.is-in) .archive-card {
-    opacity: 0;
-    transform: translateY(8px);
+  /* Side-by-side layout only. Below 1100px the archive is a grid taller than the screen:
+     cards hidden until the observer fires read as an empty block on a quick scroll. */
+  @media (min-width: 1101px) {
+    .js .archive__grid:not(.is-in) .archive-card {
+      opacity: 0;
+      transform: translateY(8px);
+    }
   }
 }
 
