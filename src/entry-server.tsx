@@ -5,6 +5,7 @@ import { StrictMode } from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
 import App from "./App";
+import { heroPreloadTag } from "./components/heroImage";
 import { headHtml, headTags, pageMeta } from "./meta";
 import { PageDataProvider } from "./pageData";
 import { prerenderPaths, resolveRoute } from "./routes";
@@ -27,5 +28,7 @@ export function render(url: string) {
     </StrictMode>,
   );
   const meta = pageMeta(route);
-  return { html, head: headHtml(headTags(meta)), lang: route.lang, page: route.page, noindex: meta.noindex, pageData };
+  // The home page's largest paint is the hero photo: let the browser start it from the head.
+  const head = headHtml(headTags(meta)) + (route.page === "home" ? `\n    ${heroPreloadTag()}` : "");
+  return { html, head, lang: route.lang, page: route.page, noindex: meta.noindex, pageData };
 }

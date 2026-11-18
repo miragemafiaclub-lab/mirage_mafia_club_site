@@ -11,6 +11,7 @@
     "sync-rating": "node scripts/sync-rating.mjs",
     "sync-profiles": "node scripts/sync-profiles.mjs",
     "thumbs": "node scripts/make-thumbs.mjs",
+    "images": "node scripts/optimize-images.mjs",
     "sync-podium": "node scripts/sync-podium.mjs",
     "test": "vitest run"
   },
