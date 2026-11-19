@@ -4,8 +4,22 @@ import type { League, RatingRow, Season } from "./rating";
 import { rating as dict } from "../i18n/rating";
 import type { Lang } from "../i18n/lang";
 
-/** The league shown first: the annual rating, the one most players care about. */
+/** The annual rating: the club's year-long table (a profile's "annual place"). */
 export const DEFAULT_LEAGUE_NAME = /^Годовой рейтинг/;
+
+/**
+ * The rating page's tabs: the month first (opened by default: the table that changes every evening), then the
+ * annual rating, then the rest in iMafia's order.
+ */
+export function orderLeagues(leagues: League[]): League[] {
+  const rank = (l: League) => (l.name === MONTH_LEAGUE ? 0 : DEFAULT_LEAGUE_NAME.test(l.name) ? 1 : 2);
+  return leagues.map((l, i) => ({ l, i })).sort((a, b) => rank(a.l) - rank(b.l) || a.i - b.i).map(({ l }) => l);
+}
+
+/** The club's annual table, if it has one. */
+export function annualLeague(leagues: League[]): League | undefined {
+  return leagues.find((l) => DEFAULT_LEAGUE_NAME.test(l.name));
+}
 
 export function leagueLabel(league: League, lang: Lang): string {
   const t = dict[lang];
@@ -27,12 +41,13 @@ export function seasonLabel(season: Season, lang: Lang): string {
   return year ? t.annual(year) : t.season(season.name);
 }
 
-/** Which league and season to show: from the address (?league=…&season=…) if valid, otherwise the defaults. */
+/** Which league and season to show: from the address (?league=…&season=…) if valid, otherwise the current month. */
 export function pickSelection(
   leagues: League[],
   params: { league?: string | null; season?: string | null },
 ): { league: League; season: Season } {
-  const fallback = leagues.find((l) => DEFAULT_LEAGUE_NAME.test(l.name)) ?? leagues[0];
+  // The newest month (seasons are newest first), then the annual rating if the club has no monthly table.
+  const fallback = leagues.find((l) => l.name === MONTH_LEAGUE) ?? annualLeague(leagues) ?? leagues[0];
   const league = leagues.find((l) => l.id === params.league) ?? fallback;
   const season = league.seasons.find((s) => s.id === (params.season ?? "")) ?? league.seasons[0];
   return { league, season };

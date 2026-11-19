@@ -15,6 +15,7 @@ import {
   leagueLabel,
   monthTop,
   otherRoleWins,
+  orderLeagues,
   pickSelection,
   placeChange,
   podiumRows,
@@ -64,8 +65,10 @@ describe("labels", () => {
 });
 
 describe("pickSelection", () => {
-  it("opens the annual rating by default", () => {
-    expect(pickSelection(LEAGUES, {}).league.name).toMatch(/^Годовой/);
+  it("opens the newest month by default", () => {
+    const { league, season } = pickSelection(LEAGUES, {});
+    expect(league.name).toBe("Month Rating");
+    expect(season).toBe(league.seasons[0]);
   });
 
   it("follows a valid address and ignores a broken one", () => {
@@ -73,7 +76,19 @@ describe("pickSelection", () => {
     const older = month.seasons[1];
     expect(pickSelection(LEAGUES, { league: month.id, season: older.id }).season).toBe(older);
     expect(pickSelection(LEAGUES, { league: month.id, season: "nope" }).season).toBe(month.seasons[0]);
-    expect(pickSelection(LEAGUES, { league: "nope" }).league.name).toMatch(/^Годовой/);
+    expect(pickSelection(LEAGUES, { league: "nope" }).league.name).toBe("Month Rating");
+  });
+
+  it("falls back to the annual rating without a monthly table", () => {
+    expect(pickSelection(LEAGUES.filter((l) => l.name !== "Month Rating"), {}).league.name).toMatch(/^Годовой/);
+  });
+});
+
+describe("orderLeagues", () => {
+  it("puts the month first, the annual rating second, the rest in their order", () => {
+    const names = orderLeagues(LEAGUES).map((l) => l.name);
+    expect(names.slice(0, 2)).toEqual(["Month Rating", expect.stringMatching(/^Годовой/)]);
+    expect(names.slice(2)).toEqual(LEAGUES.map((l) => l.name).filter((n) => n !== "Month Rating" && !/^Годовой/.test(n)));
   });
 });
 

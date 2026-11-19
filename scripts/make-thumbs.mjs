@@ -1,6 +1,6 @@
 // Small round-photo thumbnails (96×96, ~3 KB) for tables: public/thumbs/<iMafia id>.jpg.
 // Sources: the club's own photos (src/assets/players, matched to iMafia ids through src/data/players.ts)
-// and guests' iMafia avatars (public/players). Only missing or outdated thumbnails are made.
+// and iMafia avatars (public/players) for everyone else. Only missing or outdated thumbnails are made.
 // Runs after the profile sync and on `npm run thumbs`.
 import { mkdir, readFile, readdir, stat } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -22,6 +22,14 @@ export function rosterPhotos(playersTs) {
     if (variable && files.has(variable)) photos.set(m[1], files.get(variable));
   }
   return photos;
+}
+
+/** iMafia ids of roster players with the club's own photo: their iMafia avatar is never used. */
+export async function ownPhotoIds() {
+  const index = JSON.parse(await readFile(path("src/data/player-index.json"), "utf8"));
+  const idByNick = new Map([...index.players, ...index.members].map((p) => [nickKey(p.nick), p.id]));
+  const photos = rosterPhotos(await readFile(path("src/data/players.ts"), "utf8"));
+  return new Set([...photos.keys()].map((nick) => idByNick.get(nickKey(nick))).filter(Boolean));
 }
 
 async function newer(source, target) {
@@ -54,10 +62,11 @@ async function main() {
     const id = idByNick.get(nickKey(nick));
     if (id && (await makeThumb(path(`src/assets/players/${file}`), id))) made += 1;
   }
+  // The club's own photo wins over an iMafia avatar.
+  const own = await ownPhotoIds();
   for (const file of await readdir(path("public/players")).catch(() => [])) {
     const id = file.match(/^(\d+)\.jpg$/)?.[1];
-    // A club member's own photo wins over their iMafia avatar.
-    if (id && !index.members.some((m) => m.id === id) && (await makeThumb(path(`public/players/${file}`), id))) made += 1;
+    if (id && !own.has(id) && (await makeThumb(path(`public/players/${file}`), id))) made += 1;
   }
   await writePlayerIndex();
   console.log(`Thumbnails: ${made} made`);

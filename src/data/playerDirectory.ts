@@ -63,11 +63,19 @@ function imafiaIds(): Map<string, string> {
   return ids;
 }
 
+/** A roster player's own photo, or else their iMafia avatar (public/players/<id>.jpg) once the sync has it. */
+function rosterEntry(p: RosterPlayer, group: GroupId, ids: Map<string, string>, avatars: Map<string, string>): Source {
+  const imafiaId = ids.get(nickKey(p.nick));
+  const avatar = imafiaId ? avatars.get(imafiaId) : undefined;
+  return { ...p, group, imafiaId, ...(!p.photo && avatar && { photo: `/${avatar}` }) };
+}
+
 function allPlayers(): Source[] {
   const ids = imafiaIds();
+  const avatars = new Map(INDEX.players.flatMap((p) => (p.avatar ? [[p.id, p.avatar] as const] : [])));
   const roster: Source[] = [
-    ...CHK_BASE.map((p) => ({ ...p, group: "chk" as const, imafiaId: ids.get(nickKey(p.nick)) })),
-    ...KCHK_BASE.map((p) => ({ ...p, group: "kchk" as const, imafiaId: ids.get(nickKey(p.nick)) })),
+    ...CHK_BASE.map((p) => rosterEntry(p, "chk", ids, avatars)),
+    ...KCHK_BASE.map((p) => rosterEntry(p, "kchk", ids, avatars)),
   ];
   const onRoster = new Set(roster.map((p) => p.imafiaId).filter(Boolean));
   const guests: Source[] = INDEX.players
