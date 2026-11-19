@@ -1,65 +1,6 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "tournaments": [
-    {
-      "id": "mafgame-1048",
-      "source": "MafGame",
-      "title": "Финал годового сезона ИСМG-26",
-      "url": "https://mafgame.org/tournaments/1048/view",
-      "start": "2026-11-16",
-      "end": "2026-11-18",
-      "city": "Warsaw",
-      "country": "Poland",
-      "kind": "europe",
-      "players": [
-        {
-          "nick": "aptah",
-          "imafiaId": "3265",
-          "status": "confirmed"
-        },
-        {
-          "nick": "Lюц",
-          "imafiaId": "2991",
-          "status": "confirmed"
-        }
-      ]
-    },
-    {
-      "id": "imafia-1982",
-      "source": "iMafia",
-      "title": "IMafia Pro League Online 2026 5th Semi-final",
-      "url": "https://imafia.org/tournament/1982",
-      "start": "2026-11-17",
-      "end": "2026-11-18",
-      "city": "",
-      "country": null,
-      "kind": "online",
-      "players": [
-        {
-          "nick": "Космічна",
-          "imafiaId": "1233",
-          "status": "confirmed"
-        }
-      ]
-    },
-    {
-      "id": "imafia-2010",
-      "source": "iMafia",
-      "title": "LEVIATHAN Серія 10",
-      "url": "https://imafia.org/tournament/2010",
-      "start": "2026-11-18",
-      "end": "2026-11-18",
-      "city": "",
-      "country": null,
-      "kind": "online",
-      "players": [
-        {
-          "nick": "Kamille",
-          "imafiaId": "908",
-          "status": "confirmed"
-        }
-      ]
-    },
     {
       "id": "imafia-1465",
       "source": "iMafia",

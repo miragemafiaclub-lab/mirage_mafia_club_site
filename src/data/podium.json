@@ -450,39 +450,6 @@
       ]
     },
     {
-      "source": "MafGame",
-      "title": "Mediterranean Grand-Prix",
-      "url": "https://mafgame.org/tournaments/687/view",
-      "start": "2026-10-31",
-      "end": "2026-11-01",
-      "location": "Limassol",
-      "format": "single",
-      "players": 41,
-      "results": [
-        {
-          "nick": "Lюц",
-          "group": "ЧК",
-          "place": 19,
-          "team": null,
-          "profileUrl": null
-        },
-        {
-          "nick": "aptah",
-          "group": "ЧК",
-          "place": 20,
-          "team": null,
-          "profileUrl": null
-        },
-        {
-          "nick": "Сью⚡️",
-          "group": "ЧК",
-          "place": 26,
-          "team": null,
-          "profileUrl": null
-        }
-      ]
-    },
-    {
       "source": "iMafia",
       "title": "IMafia Pro League Online 2026 5TH SF Series 2",
       "url": "https://imafia.org/tournament/1970",
