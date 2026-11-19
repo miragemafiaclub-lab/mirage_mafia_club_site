@@ -115,7 +115,15 @@ export default function RowDetails({ row, season }: { row: RatingRow; season: Se
             </div>
           ))}
         </dl>
-        <p className="row-details__note">{d.rolesNote}</p>
+        <p className="row-details__note">
+          {d.rolesNote}
+          {player && (
+            <>
+              {" "}
+              <Link to={`${localize(`/players/${player.slug}`, lang)}#roles`}>{d.rolesAllTime}</Link>
+            </>
+          )}
+        </p>
       </div>
 
       <div className="row-details__side">
