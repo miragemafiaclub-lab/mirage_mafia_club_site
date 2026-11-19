@@ -11,8 +11,8 @@ const files = {
 };
 
 /**
- * { members: [{id, nick}], players: [{id, nick, avatar?, thumb?}] } — newest nick for each id; avatar only for
- * guests that have one; thumb (1) when public/thumbs/<id>.jpg exists.
+ * { members: [{id, nick}], players: [{id, nick, avatar?, thumb?}] } — newest nick for each id; avatar for those with an
+ * iMafia avatar on the site; thumb (1) when public/thumbs/<id>.jpg exists.
  */
 export function buildPlayerIndex(rating, profiles, thumbs = new Set()) {
   const nicks = new Map();

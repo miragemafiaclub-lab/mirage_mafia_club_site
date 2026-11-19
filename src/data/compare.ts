@@ -1,7 +1,7 @@
 import { playerByImafiaId } from "./playerDirectory";
 import type { PlayerStats } from "./playerStats";
 import type { League, Season } from "./rating";
-import { DEFAULT_LEAGUE_NAME, pickSelection } from "./ratingView";
+import { annualLeague, DEFAULT_LEAGUE_NAME } from "./ratingView";
 
 export type CompareRowId =
   | "annual" | "month" | "games" | "wins" | "winRate" | "mvp" | "prizes" | "cups"
@@ -55,7 +55,7 @@ export function suggestedPairs(leagues: League[], winners: Record<string, MonthW
   const top = (season: Season | undefined) =>
     (season?.rows ?? []).filter((row) => row.counted).sort((x, y) => x.place - y.place).map((row) => row.id);
 
-  const annual = top(pickSelection(leagues, {}).season);
+  const annual = top(annualLeague(leagues)?.seasons[0]);
   const month = top(leagues.find((l) => l.name === "Month Rating")?.seasons[0]);
   const lastWinners = [
     ...new Set(

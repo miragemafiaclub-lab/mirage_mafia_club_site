@@ -1,12 +1,13 @@
 // Refreshes iMafia profile stats (roles, first blood, awards, prize places) into src/data/profiles.json
 // for players in the club rating, a few per day (docs/decisions/0005-profile-sync.md).
-// Guests' avatars go to public/players/<id>.jpg; roster players use the club's own photos.
+// iMafia avatars go to public/players/<id>.jpg for everyone without the club's own photo on the site.
 // Usage: node scripts/sync-profiles.mjs [limit]
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { parseProfileStats } from "./lib/imafia.mjs";
 import { writePlayerIndex } from "./lib/playerIndex.mjs";
+import { ownPhotoIds } from "./make-thumbs.mjs";
 import { candidatesFrom, DAILY_LIMIT, pickProfiles, profileRecord } from "./lib/profiles.mjs";
 
 const SITE = "https://imafia.org";
@@ -54,13 +55,14 @@ async function main() {
   const now = Date.now();
   const picked = pickProfiles(candidates, stored, now, limit);
 
+  const own = await ownPhotoIds();
   let failed = 0;
   for (const id of picked) {
     try {
       const stats = parseProfileStats(await (await request(`/u/${id}`)).text());
       const player = byId.get(id);
-      // Club members have photos on the site already; only guests need iMafia's avatar.
-      const avatar = !player.member && stats.photoPath ? await saveAvatar(id, stats.photoPath) : (stored[id]?.avatar ?? null);
+      // Players with the club's own photo keep it; everyone else gets their iMafia avatar, if they have one.
+      const avatar = !own.has(id) && stats.photoPath ? await saveAvatar(id, stats.photoPath) : (stored[id]?.avatar ?? null);
       stored[id] = profileRecord(stats, { games: player.games, now, avatar });
       console.log(`${player.nick}: ${stats.tournaments.length} tournaments, ${stored[id].prizes.length} prize places`);
     } catch (error) {

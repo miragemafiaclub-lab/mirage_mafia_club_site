@@ -14,6 +14,7 @@ import {
   isHiddenRow,
   leagueLabel,
   monthLabel,
+  orderLeagues,
   pickSelection,
   placeChange,
   rankMetric,
@@ -103,7 +104,7 @@ export default function RatingPage() {
   const t = useT(dict);
   const { lang } = useLang();
   const { data, failed } = usePageData<StoredRating>("/data/rating.json");
-  const leagues = useMemo(() => (data ? unpackRating(data) : null), [data]);
+  const leagues = useMemo(() => (data ? orderLeagues(unpackRating(data)) : null), [data]);
 
   return (
     <section className="rating">
