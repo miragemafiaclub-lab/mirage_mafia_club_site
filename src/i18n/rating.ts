@@ -86,6 +86,7 @@ export const rating: Translations<{
     asOther: string;
     firstKilled: string;
     rolesNote: string;
+    rolesAllTime: string;
     leader: string;
     leadOver: (nick: string) => string;
     gapTo: (place: number, nick: string) => string;
@@ -194,6 +195,7 @@ export const rating: Translations<{
       asOther: "Мирным или мафией",
       firstKilled: "Первым убит",
       rolesNote: "iMafia считает по сезону только победы Доном и Шерифом; остальные — мирным или мафией, без разбивки.",
+      rolesAllTime: "Все четыре роли за всю историю — в профиле →",
       leader: "Лидер таблицы.",
       leadOver: (nick) => `Отрыв от 2-го места (${nick}):`,
       gapTo: (place, nick) => `До ${place}-го места (${nick}):`,
@@ -304,6 +306,7 @@ export const rating: Translations<{
       asOther: "As a civilian or mafia",
       firstKilled: "Killed first",
       rolesNote: "Per season iMafia only counts wins as the Don and as the Sheriff; the rest are as a civilian or mafia, not split further.",
+      rolesAllTime: "All four roles over the whole history are in the profile →",
       leader: "Leads the table.",
       leadOver: (nick) => `Ahead of 2nd place (${nick}) by`,
       gapTo: (place, nick) => `To place ${place} (${nick}):`,

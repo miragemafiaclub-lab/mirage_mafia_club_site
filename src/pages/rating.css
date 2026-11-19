@@ -1233,3 +1233,9 @@ a.podium-card__link:is(:hover, :focus-visible) .podium-card__nick {
   font-size: var(--fs-ui);
   color: var(--text-3);
 }
+
+.row-details__note a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

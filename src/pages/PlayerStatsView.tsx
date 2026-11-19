@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import MonthlyChart, { type MonthBar } from "../components/MonthlyChart";
 import type { ClubPlayer } from "../data/playerDirectory";
@@ -45,6 +45,13 @@ export default function PlayerStatsView({ stats, player }: { stats: PlayerStats;
   const lastMonth = stats.places.find((p) => p.month !== null);
   const profile = stats.profile;
   const [showAllPrizes, setShowAllPrizes] = useState(false);
+  const hasRoles =
+    !!profile && profile.roles.don.games + profile.roles.mafia.games + profile.roles.civilian.games + profile.roles.sheriff.games > 0;
+
+  // Arriving from a rating row (…/players/<slug>#roles): the stats load after the page, so the browser's own jump misses.
+  useEffect(() => {
+    if (hasRoles && window.location.hash === "#roles") document.getElementById("roles")?.scrollIntoView({ block: "start" });
+  }, [hasRoles]);
 
   const bars: MonthBar[] = stats.monthly.map((m) => ({
     label: months[m.month].slice(0, 3),
@@ -102,8 +109,8 @@ export default function PlayerStatsView({ stats, player }: { stats: PlayerStats;
         </dl>
       )}
 
-      {profile && profile.roles.don.games + profile.roles.mafia.games + profile.roles.civilian.games + profile.roles.sheriff.games > 0 && (
-        <section className="player-stats__block" aria-labelledby="roles-title">
+      {profile && hasRoles && (
+        <section className="player-stats__block" id="roles" aria-labelledby="roles-title">
           <h2 className="player-page__about" id="roles-title">
             {t.rolesTitle}
           </h2>
