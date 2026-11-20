@@ -190,7 +190,8 @@ describe("monthTop: the home page's best players of the month", () => {
     expect(top.seasonId).toBe(latest.id);
     expect(top.leagueId).toBe(month.id);
     expect(top.rows.length).toBeLessThanOrEqual(5);
-    expect(top.rows.map((x) => x.place)).toEqual(latest.rows.filter((x) => x.counted).slice(0, 5).map((x) => x.place));
+    const real = (x: { counted: boolean; nick: string }) => x.counted && !/^(гость|guest)\s*\d*$/i.test(x.nick.trim());
+    expect(top.rows.map((x) => x.place)).toEqual(latest.rows.filter(real).slice(0, 5).map((x) => x.place));
   });
 
   it("skips a new month nobody is counted in yet", () => {
@@ -198,6 +199,15 @@ describe("monthTop: the home page's best players of the month", () => {
     const fresh = { ...month.seasons[0], id: "new", month: 10, rows: month.seasons[0].rows.map((x) => ({ ...x, counted: false })) };
     const top = monthTop([{ ...month, seasons: [fresh, ...month.seasons] }])!;
     expect(top.seasonId).toBe(month.seasons[0].id);
+  });
+
+  it("leaves out iMafia's shared guest accounts, keeping the others' places", () => {
+    const month = LEAGUES.find((l) => l.name === "Month Rating")!;
+    const latest = month.seasons.find((s) => s.rows.some((x) => x.counted))!;
+    const rows = latest.rows.map((x, i) => (i === 1 ? { ...x, nick: "Гость1" } : x));
+    const top = monthTop([{ ...month, seasons: [{ ...latest, rows }] }])!;
+    expect(top.rows.some((x) => x.nick === "Гость1")).toBe(false);
+    expect(top.rows.map((x) => x.place)).toEqual(rows.filter((x) => x.counted && !/^(гость|guest)\s*\d*$/i.test(x.nick.trim())).slice(0, 5).map((x) => x.place));
   });
 
   it("is empty without a monthly league", () => {
