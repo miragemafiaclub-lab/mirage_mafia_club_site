@@ -1235,7 +1235,7 @@ a.podium-card__link:is(:hover, :focus-visible) .podium-card__nick {
 }
 
 .row-details__note a {
-  color: var(--accent);
+  color: var(--color-orange);
   text-decoration: underline;
   text-underline-offset: 2px;
 }

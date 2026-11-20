@@ -9,6 +9,7 @@ import { usePageData } from "../pageDataCache";
 import { MONTH_TOP_URL } from "../pageDataUrl";
 import { localize } from "../routes";
 import "./MonthTop.css";
+import NoPhoto from "./NoPhoto";
 
 // Numbers as iMafia writes them (2.28, 11); the rating's own helper would bring the whole rating view along.
 const format = (value: number) => String(Math.round(value * 100) / 100);
@@ -61,7 +62,7 @@ export default function MonthTop() {
                   <span className="visually-hidden">{t.place(row.place)}:</span>
                 </span>
                 <span className="month-top__photo" aria-hidden="true">
-                  {photo ? <img src={photo} alt="" width={44} height={44} loading="lazy" decoding="async" /> : [...row.nick][0]?.toUpperCase()}
+                  {photo ? <img src={photo} alt="" width={44} height={44} loading="lazy" decoding="async" /> : <NoPhoto />}
                 </span>
                 <span className="month-top__who">
                   <span className="month-top__nick" lang={textLang(row.nick)}>
