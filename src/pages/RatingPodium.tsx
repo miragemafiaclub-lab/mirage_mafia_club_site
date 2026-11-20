@@ -7,6 +7,7 @@ import { rating as dict } from "../i18n/rating";
 import { textLang } from "../i18n/translit";
 import { localize } from "../routes";
 import NoPhoto from "../components/NoPhoto";
+import MemberBadge from "../components/MemberBadge";
 
 /** The profile photo when there is one; the small table thumb otherwise; the club's lion as a last resort. */
 export function PlayerPhoto({ id, size, className }: { id: string; size: number; className: string }) {
@@ -37,6 +38,7 @@ export default function RatingPodium({ season, metric }: { season: Season; metri
       <PlayerPhoto id={row.id} size={160} className="podium-card__photo" />
       <span className="podium-card__nick" lang={textLang(row.nick)}>
         {row.nick}
+        <MemberBadge id={row.id} />
       </span>
       <span className="podium-card__score">
         {metric === "points" ? formatNumber(row.points) : formatNumber(row.avg)}

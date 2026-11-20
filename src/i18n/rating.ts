@@ -54,6 +54,9 @@ export const rating: Translations<{
   legendTitle: string;
   legendArrows: string;
   legendDetails: string;
+  /** What the lion after a nick stands for. */
+  member: Record<"chk" | "kchk", string>;
+  legendMembers: string;
   tableTitle: string;
   rankedBy: { avg: string; points: string };
   find: {
@@ -163,6 +166,8 @@ export const rating: Translations<{
     legendTitle: "Что значат колонки",
     legendArrows: "Стрелки — как изменилось место с прошлого обновления таблицы.",
     legendDetails: "Нажмите на строку: победы по ролям, разрыв до следующего места и все баллы игрока.",
+    member: { chk: "член клуба", kchk: "кандидат в члены клуба" },
+    legendMembers: "Оранжевый лев у ника — член клуба (ЧК), серый — кандидат в члены клуба (КЧК).",
     tableTitle: "Вся таблица",
     rankedBy: { avg: "Место считается по среднему баллу за игру", points: "Место считается по сумме баллов" },
     find: {
@@ -274,6 +279,8 @@ export const rating: Translations<{
     legendTitle: "What the columns mean",
     legendArrows: "Arrows show how the place changed since the table's previous update.",
     legendDetails: "Open a row for wins by role, the gap to the next place and all of the player's points.",
+    member: { chk: "club member", kchk: "membership candidate" },
+    legendMembers: "An orange lion after a nick marks a club member, a grey one a membership candidate.",
     tableTitle: "Full table",
     rankedBy: { avg: "Places follow the average points per game", points: "Places follow the total points" },
     find: {

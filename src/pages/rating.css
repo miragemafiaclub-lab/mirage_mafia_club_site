@@ -1239,3 +1239,33 @@ a.podium-card__link:is(:hover, :focus-visible) .podium-card__nick {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* The lion after a roster player's nick (components/MemberBadge.tsx): orange for ЧК, grey for КЧК. */
+.member-badge {
+  display: inline-flex;
+  flex: none;
+  align-self: center;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.member-badge__lion {
+  display: block;
+  width: 16px;
+  height: 16px;
+  -webkit-mask: var(--lion) center / contain no-repeat;
+  mask: var(--lion) center / contain no-repeat;
+}
+
+.member-badge--chk .member-badge__lion {
+  background: var(--color-orange);
+}
+
+.member-badge--kchk .member-badge__lion {
+  background: #8a8580;
+}
+
+.podium-card__nick .member-badge__lion {
+  width: 18px;
+  height: 18px;
+}
