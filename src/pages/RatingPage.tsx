@@ -30,6 +30,7 @@ import { localize, STATIC_PAGES } from "../routes";
 import RatingPodium from "./RatingPodium";
 import RowDetails from "./RatingRowDetails";
 import "./rating.css";
+import NoPhoto from "../components/NoPhoto";
 
 /**
  * Numeric columns in table order, most important first. `show` is the narrowest screen that still has the
@@ -68,12 +69,12 @@ function Change({ row, season }: { row: RatingRow; season: Season }) {
   );
 }
 
-/** A 32px round photo, or the nick's first letter when there is none. Decorative: the nick is next to it. */
-function Avatar({ id, nick }: { id: string; nick: string }) {
+/** A 32px round photo, or the club's lion when there is none. Decorative: the nick is next to it. */
+function Avatar({ id }: { id: string }) {
   const thumb = thumbFor(id);
   return (
     <span className="rating-avatar" aria-hidden="true">
-      {thumb ? <img src={thumb} alt="" width={32} height={32} loading="lazy" decoding="async" /> : [...nick][0]?.toUpperCase()}
+      {thumb ? <img src={thumb} alt="" width={32} height={32} loading="lazy" decoding="async" /> : <NoPhoto />}
     </span>
   );
 }
@@ -83,7 +84,7 @@ function PlayerName({ row, avatar = false }: { row: Pick<RatingRow, "id" | "nick
   const player = playerByImafiaId(row.id);
   const nick = (
     <>
-      {avatar && <Avatar id={row.id} nick={row.nick} />}
+      {avatar && <Avatar id={row.id} />}
       <span className="rating-table__nick" lang={textLang(row.nick)}>
         {row.nick}
       </span>

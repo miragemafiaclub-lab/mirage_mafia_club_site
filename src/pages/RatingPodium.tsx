@@ -6,13 +6,14 @@ import { useLang, useT } from "../i18n/lang";
 import { rating as dict } from "../i18n/rating";
 import { textLang } from "../i18n/translit";
 import { localize } from "../routes";
+import NoPhoto from "../components/NoPhoto";
 
-/** The profile photo when there is one; the small table thumb otherwise; the nick's first letter as a last resort. */
-export function PlayerPhoto({ id, nick, size, className }: { id: string; nick: string; size: number; className: string }) {
+/** The profile photo when there is one; the small table thumb otherwise; the club's lion as a last resort. */
+export function PlayerPhoto({ id, size, className }: { id: string; size: number; className: string }) {
   const src = playerByImafiaId(id)?.photo ?? thumbFor(id);
   return (
     <span className={className} aria-hidden="true">
-      {src ? <img src={src} alt="" width={size} height={size} decoding="async" /> : [...nick][0]?.toUpperCase()}
+      {src ? <img src={src} alt="" width={size} height={size} decoding="async" /> : <NoPhoto />}
     </span>
   );
 }
@@ -33,7 +34,7 @@ export default function RatingPodium({ season, metric }: { season: Season; metri
         <span aria-hidden="true">{row.place}</span>
         <span className="visually-hidden">{t.podium.place(row.place)}:</span>
       </span>
-      <PlayerPhoto id={row.id} nick={row.nick} size={160} className="podium-card__photo" />
+      <PlayerPhoto id={row.id} size={160} className="podium-card__photo" />
       <span className="podium-card__nick" lang={textLang(row.nick)}>
         {row.nick}
       </span>

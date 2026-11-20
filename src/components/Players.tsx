@@ -8,6 +8,7 @@ import { players as playersDict } from "../i18n/players";
 import { rosterPlayer } from "../data/playerDirectory";
 import { CHK_BASE, KCHK_BASE, playerTitle, type RosterPlayer } from "../data/players";
 import { localize } from "../routes";
+import NoPhoto from "./NoPhoto";
 
 type GroupId = "chk" | "kchk";
 
@@ -127,7 +128,7 @@ export default function Players({ onOpenRoster }: { onOpenRoster: (groupId: Grou
                   to={profileHref(player)}
                 >
                   <div className="players-card__photo" aria-hidden="true">
-                    {player.photo ? <img src={player.photo} alt="" width={300} height={400} loading="lazy" decoding="async" /> : <span>{player.nick.charAt(0)}</span>}
+                    {player.photo ? <img src={player.photo} alt="" width={300} height={400} loading="lazy" decoding="async" /> : <NoPhoto />}
                   </div>
 
                   <div className="players-card__body">
