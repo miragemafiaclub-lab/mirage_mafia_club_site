@@ -1,4 +1,4 @@
-import { nickKey } from "./playerDirectory";
+import { isPlaceholderGuest, nickKey } from "./playerDirectory";
 import { MONTH_LEAGUE } from "./playerStats";
 import type { League, RatingRow, Season } from "./rating";
 import { rating as dict } from "../i18n/rating";
@@ -182,7 +182,10 @@ export function formatDate(iso: string): string {
 /** Numbers as iMafia writes them, without trailing zeros: 2.5, 11, -0.3. */
 export const formatNumber = (value: number) => String(Math.round(value * 100) / 100);
 
-/** The home page's "best players of the month": the Month Rating's latest month that has counted players. */
+/**
+ * The home page's "best players of the month": the Month Rating's latest month that has counted players.
+ * iMafia's shared one-off accounts ("Гость") are left out; the others keep their real place.
+ */
 export type MonthTop = {
   leagueId: string;
   seasonId: string;
@@ -199,7 +202,7 @@ export function monthTop(leagues: League[], size = 5): MonthTop | null {
   if (!league) return null;
   for (const season of league.seasons) {
     if (season.month === null || season.year === null) continue;
-    const counted = season.rows.filter((row) => row.counted);
+    const counted = season.rows.filter((row) => row.counted && !isPlaceholderGuest(row.nick));
     if (counted.length === 0) continue;
     return {
       leagueId: league.id,
