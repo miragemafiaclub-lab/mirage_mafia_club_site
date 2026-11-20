@@ -31,6 +31,7 @@ import RatingPodium from "./RatingPodium";
 import RowDetails from "./RatingRowDetails";
 import "./rating.css";
 import NoPhoto from "../components/NoPhoto";
+import MemberBadge from "../components/MemberBadge";
 
 /**
  * Numeric columns in table order, most important first. `show` is the narrowest screen that still has the
@@ -88,6 +89,7 @@ function PlayerName({ row, avatar = false }: { row: Pick<RatingRow, "id" | "nick
       <span className="rating-table__nick" lang={textLang(row.nick)}>
         {row.nick}
       </span>
+      <MemberBadge id={row.id} />
     </>
   );
   return player ? (
@@ -381,7 +383,7 @@ function RatingTables({ leagues: LEAGUES, updatedAt }: { leagues: League[]; upda
             </dl>
             <p>
               {t.legendDetails}
-              {season.hasHistory && ` ${t.legendArrows}`}
+              {season.hasHistory && ` ${t.legendArrows}`} {t.legendMembers}
             </p>
           </details>
 
