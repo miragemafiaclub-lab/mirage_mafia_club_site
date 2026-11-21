@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-21",
   "tournaments": [
     {
       "id": "imafia-1465",
@@ -51,6 +51,11 @@
         {
           "nick": "filister",
           "imafiaId": "2330",
+          "status": "confirmed"
+        },
+        {
+          "nick": "sladkiy",
+          "imafiaId": "3251",
           "status": "confirmed"
         }
       ]
