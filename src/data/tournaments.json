@@ -1,24 +1,6 @@
 {
-  "updated": "2026-11-21",
+  "updated": "2026-11-23",
   "tournaments": [
-    {
-      "id": "imafia-1465",
-      "source": "iMafia",
-      "title": "High Level Games 2026",
-      "url": "https://imafia.org/tournament/1465",
-      "start": "2026-11-21",
-      "end": "2026-11-22",
-      "city": "Warsaw",
-      "country": "Poland",
-      "kind": "europe",
-      "players": [
-        {
-          "nick": "Космічна",
-          "imafiaId": "1233",
-          "status": "confirmed"
-        }
-      ]
-    },
     {
       "id": "imafia-1960",
       "source": "iMafia",
@@ -224,6 +206,11 @@
       "country": "Poland",
       "kind": "europe",
       "players": [
+        {
+          "nick": "Вінні-Пух",
+          "imafiaId": "1246",
+          "status": "confirmed"
+        },
         {
           "nick": "Комар",
           "imafiaId": "90",
