@@ -1,24 +1,6 @@
 {
-  "updated": "2026-11-23",
+  "updated": "2026-11-25",
   "tournaments": [
-    {
-      "id": "imafia-1960",
-      "source": "iMafia",
-      "title": "LEVIATHAN",
-      "url": "https://imafia.org/tournament/1960",
-      "start": "2026-11-23",
-      "end": "2026-11-24",
-      "city": "",
-      "country": null,
-      "kind": "online",
-      "players": [
-        {
-          "nick": "Kamille",
-          "imafiaId": "908",
-          "status": "confirmed"
-        }
-      ]
-    },
     {
       "id": "imafia-1779",
       "source": "iMafia",
@@ -119,6 +101,11 @@
       "country": null,
       "kind": "online",
       "players": [
+        {
+          "nick": "Космічна",
+          "imafiaId": "1233",
+          "status": "confirmed"
+        },
         {
           "nick": "filister",
           "imafiaId": "2330",
