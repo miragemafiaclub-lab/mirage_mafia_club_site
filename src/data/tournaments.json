@@ -1,29 +1,6 @@
 {
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "tournaments": [
-    {
-      "id": "imafia-1779",
-      "source": "iMafia",
-      "title": "The Draft Online USA",
-      "url": "https://imafia.org/tournament/1779",
-      "start": "2026-11-24",
-      "end": "2026-11-25",
-      "city": "",
-      "country": null,
-      "kind": "online",
-      "players": [
-        {
-          "nick": "filister",
-          "imafiaId": "2330",
-          "status": "confirmed"
-        },
-        {
-          "nick": "sladkiy",
-          "imafiaId": "3251",
-          "status": "confirmed"
-        }
-      ]
-    },
     {
       "id": "imafia-1457",
       "source": "iMafia",
