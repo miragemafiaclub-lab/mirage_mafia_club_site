@@ -5,6 +5,9 @@ name: Sync club data
 on:
   schedule:
     - cron: "0 5 * * *" # every day, 07:00 Warsaw summer time / 06:00 winter time
+    # Again after the evening's games (00:30 Warsaw winter time / 01:30 summer), so the morning shows last night.
+    # Rating only: the heavy profile pages stay once a day.
+    - cron: "30 23 * * *"
   workflow_dispatch: # "Run workflow" button on the Actions tab
 
 permissions:
@@ -28,6 +31,7 @@ jobs:
       - run: npm run sync-rating
       # A few iMafia profiles per day (roles, prize places, guests' avatars): docs/decisions/0005-profile-sync.md
       - run: npm run sync-profiles
+        if: github.event.schedule != '30 23 * * *'
       # Round photos for the rating table, for anyone new.
       - run: npm run thumbs
       - run: npm run sync-podium
